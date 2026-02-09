@@ -188,7 +188,9 @@ vi.mock('@/components/ui/input-otp', () => ({
       {children}
     </div>
   ),
-  InputOTPGroup: ({ children }: { children: React.ReactNode }) => <div data-testid="input-otp-group">{children}</div>,
+  InputOTPGroup: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="input-otp-group">{children}</div>
+  ),
   InputOTPSlot: ({ index }: { index: number }) => (
     <input
       data-testid={`input-otp-slot-${index}`}

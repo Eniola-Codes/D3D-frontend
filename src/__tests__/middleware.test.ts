@@ -11,7 +11,6 @@ import {
 import { cookieOptionsAuth } from '@/lib/utils/cookie';
 import { jwtVerify } from 'jose';
 
-// Mock jose at the top level (hoisted)
 vi.mock('jose', () => ({
   jwtVerify: vi.fn(),
 }));
@@ -237,7 +236,9 @@ describe('verifyAuthToken', () => {
   describe('Successful token verification', () => {
     it('should return status 200 when token is valid', async () => {
       const validToken = 'valid-jwt-token';
-      vi.mocked(jwtVerify).mockResolvedValueOnce({} as unknown as Awaited<ReturnType<typeof jwtVerify>>);
+      vi.mocked(jwtVerify).mockResolvedValueOnce(
+        {} as unknown as Awaited<ReturnType<typeof jwtVerify>>
+      );
 
       const result = await verifyAuthToken(validToken);
 
@@ -247,7 +248,9 @@ describe('verifyAuthToken', () => {
 
     it('should call jwtVerify with correct parameters', async () => {
       const token = 'test-token';
-      vi.mocked(jwtVerify).mockResolvedValueOnce({} as unknown as Awaited<ReturnType<typeof jwtVerify>>);
+      vi.mocked(jwtVerify).mockResolvedValueOnce(
+        {} as unknown as Awaited<ReturnType<typeof jwtVerify>>
+      );
 
       await verifyAuthToken(token);
 
@@ -260,7 +263,9 @@ describe('verifyAuthToken', () => {
 
     it('should use HS256 algorithm', async () => {
       const token = 'test-token';
-      vi.mocked(jwtVerify).mockResolvedValueOnce({} as unknown as Awaited<ReturnType<typeof jwtVerify>>);
+      vi.mocked(jwtVerify).mockResolvedValueOnce(
+        {} as unknown as Awaited<ReturnType<typeof jwtVerify>>
+      );
 
       await verifyAuthToken(token);
 
