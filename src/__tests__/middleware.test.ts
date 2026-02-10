@@ -65,7 +65,6 @@ describe('setCookieHandler', () => {
 
     expect(result).toBe(mockResponse);
   });
-  });
 
   it('should use correct dashboard path from routes', () => {
     const queryToken = 'test-token';
