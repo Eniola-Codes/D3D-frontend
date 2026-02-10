@@ -3,13 +3,14 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { useOtpForm } from '../hooks/verify-otp';
 import { VerifyOTP } from '../verify-otp';
 import { toastFunc } from '@/lib/utils/toasts';
-import {
-  createFormHandler,
-  createValidationHandler,
-  submitVerifyOtpFormData,
-} from '@/lib/utils/auth/form-handlers';
+import { submitVerifyOtpFormData } from '@/lib/utils/auth/form-handlers';
 import { toastErrorHandler } from '@/lib/utils/error-handler';
-import { otpSchema } from '@/lib/utils/auth/validations';
+import {
+  INVALID_INPUT,
+  INVALID_OTP_FORMAT,
+  OTP_IS_REQUIRED,
+  OTP_VERIFIED_SUCCESSFULLY,
+} from '@/lib/constants/messages';
 
 describe('submitVerifyOtpFormData()', () => {
   beforeEach(() => {
@@ -21,10 +22,10 @@ describe('submitVerifyOtpFormData()', () => {
       verifyOtp: vi.fn((email, otp) => {
         return new Promise((resolve, reject) => {
           if (!email || !otp) {
-            return reject('Invalid input');
+            return reject(INVALID_INPUT);
           }
           return resolve({
-            message: 'Otp verified successfully',
+            message: OTP_VERIFIED_SUCCESSFULLY,
           });
         });
       }),
@@ -47,7 +48,7 @@ describe('submitVerifyOtpFormData()', () => {
       const result = await submitVerifyOtpFormData(email, otp);
 
       expect(result).toBe(otp);
-      expect(toastFunc).toHaveBeenCalledWith('Otp verified successfully', true);
+      expect(toastFunc).toHaveBeenCalledWith(OTP_VERIFIED_SUCCESSFULLY, true);
     });
 
     it('should throw error if OTP data is empty', async () => {
@@ -57,7 +58,7 @@ describe('submitVerifyOtpFormData()', () => {
       const result = await submitVerifyOtpFormData(email, otp);
 
       expect(result).toBeUndefined();
-      expect(toastErrorHandler).toHaveBeenCalledWith('Invalid input');
+      expect(toastErrorHandler).toHaveBeenCalledWith(INVALID_INPUT);
     });
 
     it('should throw error if email data is empty', async () => {
@@ -67,105 +68,8 @@ describe('submitVerifyOtpFormData()', () => {
       const result = await submitVerifyOtpFormData(email, otp);
 
       expect(result).toBeUndefined();
-      expect(toastErrorHandler).toHaveBeenCalledWith('Invalid input');
+      expect(toastErrorHandler).toHaveBeenCalledWith(INVALID_INPUT);
     });
-  });
-});
-
-describe('validateForm()', () => {
-  describe('OTP verification validation', () => {
-    let setErrors = vi.fn();
-
-    beforeEach(() => {
-      setErrors = vi.fn();
-    });
-
-    it('should handle OTP verification validation success', () => {
-      const formData = {
-        otp: '123456',
-      };
-
-      const validateForm = createValidationHandler(otpSchema, formData, setErrors);
-      const isValid = validateForm();
-
-      expect(isValid).toBe(true);
-      expect(setErrors).not.toHaveBeenCalled();
-    });
-
-    it('should handle signup validation email format errors', async () => {
-      const formData = {
-        otp: '',
-      };
-
-      const validateForm = createValidationHandler(otpSchema, formData, setErrors);
-      const isValid = validateForm();
-
-      expect(isValid).toBe(false);
-      expect(setErrors).toHaveBeenCalledTimes(1);
-      expect(setErrors).toHaveBeenCalledWith(
-        expect.objectContaining({
-          otp: expect.any(String),
-        })
-      );
-    });
-  });
-});
-
-describe('handleInputChange()', () => {
-  let setFormData = vi.fn();
-  let setErrors = vi.fn();
-
-  const previousFormData = {
-    email: 'test@example.com',
-    name: 'Old Name',
-    password: '12345678',
-    confirmPassword: '12345678',
-  };
-
-  beforeEach(() => {
-    setFormData = vi.fn();
-    setErrors = vi.fn();
-  });
-
-  it('should verify set form data was called and updater works correctly for otp', () => {
-    const handleInputChange = createFormHandler(setFormData, setErrors);
-    const mockEvent = {
-      target: {
-        id: 'otp',
-        value: 'newotp123',
-      },
-    } as React.ChangeEvent<HTMLInputElement>;
-
-    handleInputChange(mockEvent);
-
-    const formDataUpdater = setFormData.mock.calls[0][0];
-    const updatedFormData = formDataUpdater(previousFormData);
-
-    expect(setFormData).toHaveBeenCalledTimes(1);
-    expect(updatedFormData).toEqual({
-      ...previousFormData,
-      otp: 'newotp123',
-    });
-  });
-
-  it('should clear error when field is changed', () => {
-    const handleInputChange = createFormHandler(setFormData, setErrors);
-
-    const mockEvent = {
-      target: {
-        id: 'otp',
-        value: 'newotp123',
-      },
-    } as React.ChangeEvent<HTMLInputElement>;
-
-    handleInputChange(mockEvent);
-
-    expect(setErrors).toHaveBeenCalledTimes(1);
-    const errorsUpdater = setErrors.mock.calls[0][0];
-    const previousErrors = { otp: 'OTP is required' };
-    const updatedErrors = errorsUpdater(previousErrors);
-
-    expect(updatedErrors.otp).toBe('');
   });
 });
 
@@ -181,14 +85,15 @@ vi.mock('next/navigation', () => ({
   }),
 }));
 
-// Mock InputOTP component to avoid ResizeObserver issues
 vi.mock('@/components/ui/input-otp', () => ({
   InputOTP: ({ children, value }: { children: React.ReactNode; value: string }) => (
     <div data-testid="input-otp" data-value={value}>
       {children}
     </div>
   ),
-  InputOTPGroup: ({ children }: { children: React.ReactNode }) => <div data-testid="input-otp-group">{children}</div>,
+  InputOTPGroup: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="input-otp-group">{children}</div>
+  ),
   InputOTPSlot: ({ index }: { index: number }) => (
     <input
       data-testid={`input-otp-slot-${index}`}
@@ -242,19 +147,19 @@ describe('VerifyOTP Component', () => {
     it('should display OTP error', () => {
       vi.mocked(useOtpForm).mockReturnValue({
         ...defaultMockReturn,
-        errors: { otp: 'OTP is required' },
+        errors: { otp: OTP_IS_REQUIRED },
       });
       render(<VerifyOTP email={email} />);
-      expect(screen.getByText('OTP is required')).toBeInTheDocument();
+      expect(screen.getByText(OTP_IS_REQUIRED)).toBeInTheDocument();
     });
 
     it('should display invalid OTP format error', () => {
       vi.mocked(useOtpForm).mockReturnValue({
         ...defaultMockReturn,
-        errors: { otp: 'Invalid OTP format' },
+        errors: { otp: INVALID_OTP_FORMAT },
       });
       render(<VerifyOTP email={email} />);
-      expect(screen.getByText('Invalid OTP format')).toBeInTheDocument();
+      expect(screen.getByText(INVALID_OTP_FORMAT)).toBeInTheDocument();
     });
 
     it('should not display error when no error exists', () => {

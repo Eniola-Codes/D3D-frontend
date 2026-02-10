@@ -8,9 +8,9 @@ export const endpoints = {
     verifyOTP: '/verify-otp',
     resetPassword: '/reset-password',
     logout: '/logout',
-    verifyAuth: '/verify-auth',
   },
   user: {
     base: '/user',
+    getUser: '/',
   },
 };

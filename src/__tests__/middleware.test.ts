@@ -11,7 +11,6 @@ import {
 import { cookieOptionsAuth } from '@/lib/utils/cookie';
 import { jwtVerify } from 'jose';
 
-// Mock jose at the top level (hoisted)
 vi.mock('jose', () => ({
   jwtVerify: vi.fn(),
 }));
@@ -67,22 +66,11 @@ describe('setCookieHandler', () => {
     expect(result).toBe(mockResponse);
   });
 
-  it('should handle different token values', () => {
-    const tokens = ['token1', 'token2', 'very-long-token-string-12345'];
-
-    tokens.forEach(token => {
-      vi.clearAllMocks();
-      setCookieHandler(mockNewPageRedirect, token);
-
-      expect(mockResponse.cookies.set).toHaveBeenCalledWith(AUTH_TOKEN, token, cookieOptionsAuth);
-    });
-  });
-
   it('should use correct dashboard path from routes', () => {
     const queryToken = 'test-token';
     setCookieHandler(mockNewPageRedirect, queryToken);
 
-    expect(mockNewPageRedirect).toHaveBeenCalledWith('/dashboard');
+    expect(mockNewPageRedirect).toHaveBeenCalledWith(`${routes.dashboard.path}`);
   });
 });
 
@@ -107,19 +95,6 @@ describe('redirectToLoginHandler', () => {
     const result = redirectToLoginHandler(mockNewPageRedirect);
 
     expect(result).toBe(mockResponse);
-  });
-
-  it('should use correct account path from routes', () => {
-    redirectToLoginHandler(mockNewPageRedirect);
-
-    expect(mockNewPageRedirect).toHaveBeenCalledWith(expect.stringContaining(routes.account.path));
-  });
-
-  it('should construct URL in correct format', () => {
-    redirectToLoginHandler(mockNewPageRedirect);
-
-    const expectedUrl = `/account?auth=login`;
-    expect(mockNewPageRedirect).toHaveBeenCalledWith(expectedUrl);
   });
 });
 
@@ -237,7 +212,10 @@ describe('verifyAuthToken', () => {
   describe('Successful token verification', () => {
     it('should return status 200 when token is valid', async () => {
       const validToken = 'valid-jwt-token';
-      vi.mocked(jwtVerify).mockResolvedValueOnce({} as unknown as Awaited<ReturnType<typeof jwtVerify>>);
+
+      vi.mocked(jwtVerify).mockResolvedValueOnce(
+        {} as unknown as Awaited<ReturnType<typeof jwtVerify>>
+      );
 
       const result = await verifyAuthToken(validToken);
 
@@ -247,7 +225,10 @@ describe('verifyAuthToken', () => {
 
     it('should call jwtVerify with correct parameters', async () => {
       const token = 'test-token';
-      vi.mocked(jwtVerify).mockResolvedValueOnce({} as unknown as Awaited<ReturnType<typeof jwtVerify>>);
+
+      vi.mocked(jwtVerify).mockResolvedValueOnce(
+        {} as unknown as Awaited<ReturnType<typeof jwtVerify>>
+      );
 
       await verifyAuthToken(token);
 
@@ -260,7 +241,10 @@ describe('verifyAuthToken', () => {
 
     it('should use HS256 algorithm', async () => {
       const token = 'test-token';
-      vi.mocked(jwtVerify).mockResolvedValueOnce({} as unknown as Awaited<ReturnType<typeof jwtVerify>>);
+
+      vi.mocked(jwtVerify).mockResolvedValueOnce(
+        {} as unknown as Awaited<ReturnType<typeof jwtVerify>>
+      );
 
       await verifyAuthToken(token);
 

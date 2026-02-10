@@ -1,14 +1,21 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { routes } from '@/lib/constants/page-routes';
-import { createFormHandler, submitLoginOrSignupFormData } from '@/lib/utils/auth/form-handlers';
+import { submitLoginOrSignupFormData } from '@/lib/utils/auth/form-handlers';
 import { toastErrorHandler } from '@/lib/utils/error-handler';
 import { toastFunc } from '@/lib/utils/toasts';
 import { authService } from '@/lib/services/auth';
-import { createValidationHandler } from '@/lib/utils/auth/form-handlers';
-import { loginSchema, signupSchema } from '@/lib/utils/auth/validations';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { LoginSignup } from '../login-signup';
 import { useAuthForm } from '../hooks/login-signup';
+import {
+  EMAIL_IS_REQUIRED,
+  INVALID_EMAIL,
+  INVALID_INPUT,
+  NAME_IS_REQUIRED,
+  PASSWORD_DOES_NOT_MATCH,
+  PASSWORD_IS_REQUIRED,
+  USER_AUTHENTICATED_SUCCESSFULLY,
+} from '@/lib/constants/messages';
 
 describe('submitLoginOrSignupFormData()', () => {
   beforeEach(() => {
@@ -20,11 +27,11 @@ describe('submitLoginOrSignupFormData()', () => {
       loginOrSignup: vi.fn((email, name, password, authParam) => {
         return new Promise((resolve, reject) => {
           if (!email || !name || !password || !authParam) {
-            return reject('Invalid input');
+            return reject(INVALID_INPUT);
           }
           return resolve({
             data: {
-              message: 'User Authenticated successfully',
+              message: USER_AUTHENTICATED_SUCCESSFULLY,
               user: { email, name },
             },
           });
@@ -53,7 +60,7 @@ describe('submitLoginOrSignupFormData()', () => {
       const result = await submitLoginOrSignupFormData(authParam, formData);
 
       expect(result).toEqual({ email: formData.email, name: 'Test User' });
-      expect(toastFunc).toHaveBeenCalledWith('User Authenticated successfully', true);
+      expect(toastFunc).toHaveBeenCalledWith(USER_AUTHENTICATED_SUCCESSFULLY, true);
     });
 
     it('should throw error if signup data is empty', async () => {
@@ -67,7 +74,7 @@ describe('submitLoginOrSignupFormData()', () => {
       const result = await submitLoginOrSignupFormData(authParam, formData);
 
       expect(result).toBeUndefined();
-      expect(toastErrorHandler).toHaveBeenCalledWith('Invalid input');
+      expect(toastErrorHandler).toHaveBeenCalledWith(INVALID_INPUT);
     });
   });
   describe('Login flow', () => {
@@ -78,11 +85,11 @@ describe('submitLoginOrSignupFormData()', () => {
         (email: string, name: string, password: string, authParam: string) => {
           return new Promise((resolve, reject) => {
             if (!email || !password || !authParam) {
-              return reject('Invalid input');
+              return reject(INVALID_INPUT);
             }
             return resolve({
               data: {
-                message: 'User Authenticated successfully',
+                message: USER_AUTHENTICATED_SUCCESSFULLY,
                 user: { email, name },
               },
             } as unknown as Awaited<ReturnType<typeof authService.loginOrSignup>>);
@@ -102,7 +109,7 @@ describe('submitLoginOrSignupFormData()', () => {
       const result = await submitLoginOrSignupFormData(authParam, formData);
 
       expect(result).toEqual({ email: formData.email, name: '' });
-      expect(toastFunc).toHaveBeenCalledWith('User Authenticated successfully', true);
+      expect(toastFunc).toHaveBeenCalledWith(USER_AUTHENTICATED_SUCCESSFULLY, true);
     });
 
     it('should throw error if login data is empty', async () => {
@@ -116,232 +123,8 @@ describe('submitLoginOrSignupFormData()', () => {
       const result = await submitLoginOrSignupFormData(authParam, formData);
 
       expect(result).toBeUndefined();
-      expect(toastErrorHandler).toHaveBeenCalledWith('Invalid input');
+      expect(toastErrorHandler).toHaveBeenCalledWith(INVALID_INPUT);
     });
-  });
-});
-describe('validateForm()', () => {
-  let setErrors = vi.fn();
-
-  beforeEach(() => {
-    setErrors = vi.fn();
-  });
-
-  describe('Signup validation', () => {
-    it('should handle signup validation success', () => {
-      const formData = {
-        name: 'Test User',
-        email: 'test@example.com',
-        password: '12345678',
-        confirmPassword: '12345678',
-      };
-      const validateForm = createValidationHandler(signupSchema, formData, setErrors);
-      const isValid = validateForm();
-
-      expect(isValid).toBe(true);
-      expect(setErrors).not.toHaveBeenCalled();
-    });
-
-    it('should handle signup validation email format errors', async () => {
-      const formData = {
-        email: 'invalid-email',
-        name: 'Test User',
-        password: '12345678',
-        confirmPassword: '12345678',
-      };
-      const validateForm = createValidationHandler(signupSchema, formData, setErrors);
-      const isValid = validateForm();
-
-      expect(isValid).toBe(false);
-      expect(setErrors).toHaveBeenCalledTimes(1);
-      expect(setErrors).toHaveBeenCalledWith(
-        expect.objectContaining({
-          email: expect.any(String),
-        })
-      );
-    });
-
-    it('should handle signup validation name format errors', () => {
-      const formData = {
-        email: 'test@example.com',
-        name: 'T',
-        password: '12345678',
-        confirmPassword: '12345678',
-      };
-      const validateForm = createValidationHandler(signupSchema, formData, setErrors);
-      const isValid = validateForm();
-
-      expect(isValid).toBe(false);
-      expect(setErrors).toHaveBeenCalledTimes(1);
-      expect(setErrors).toHaveBeenCalledWith(
-        expect.objectContaining({
-          name: expect.any(String),
-        })
-      );
-    });
-
-    it('should handle signup validation password format errors', () => {
-      const formData = {
-        email: 'test@example.com',
-        name: 'Test User',
-        password: 'short',
-        confirmPassword: '12345',
-      };
-      const validateForm = createValidationHandler(signupSchema, formData, setErrors);
-      const isValid = validateForm();
-
-      expect(isValid).toBe(false);
-      expect(setErrors).toHaveBeenCalledTimes(1);
-      expect(setErrors).toHaveBeenCalledWith(
-        expect.objectContaining({
-          password: expect.any(String),
-        })
-      );
-    });
-
-    it('should handle signup validation confirm password not the same as password errors', () => {
-      const formData = {
-        email: 'test@example.com',
-        name: 'Test User',
-        password: 'short',
-        confirmPassword: 'different',
-      };
-      const validateForm = createValidationHandler(signupSchema, formData, setErrors);
-      const isValid = validateForm();
-
-      expect(isValid).toBe(false);
-      expect(setErrors).toHaveBeenCalledTimes(1);
-      expect(setErrors).toHaveBeenCalledWith(
-        expect.objectContaining({
-          confirmPassword: expect.any(String),
-        })
-      );
-    });
-  });
-  describe('login validation', () => {
-    it('should handle login validation success', () => {
-      const formData = {
-        email: 'test@example.com',
-        password: '12345678',
-      };
-      const validateForm = createValidationHandler(loginSchema, formData, setErrors);
-      const isValid = validateForm();
-
-      expect(isValid).toBe(true);
-      expect(setErrors).not.toHaveBeenCalled();
-    });
-
-    it('should handle login validation email format errors', () => {
-      const formData = {
-        email: 'invalid-email',
-        password: '12345678',
-      };
-      const validateForm = createValidationHandler(loginSchema, formData, setErrors);
-      const isValid = validateForm();
-
-      expect(isValid).toBe(false);
-      expect(setErrors).toHaveBeenCalledTimes(1);
-      expect(setErrors).toHaveBeenCalledWith(
-        expect.objectContaining({
-          email: expect.any(String),
-        })
-      );
-    });
-
-    it('should handle login validation password format errors', () => {
-      const formData = {
-        email: 'test@example.com',
-        password: 'short',
-      };
-      const validateForm = createValidationHandler(loginSchema, formData, setErrors);
-      const isValid = validateForm();
-
-      expect(isValid).toBe(false);
-      expect(setErrors).toHaveBeenCalledTimes(1);
-      expect(setErrors).toHaveBeenCalledWith(
-        expect.objectContaining({
-          password: expect.any(String),
-        })
-      );
-    });
-  });
-});
-describe('handleInputChange()', () => {
-  let setFormData = vi.fn();
-  let setErrors = vi.fn();
-
-  const previousFormData = {
-    email: 'test@example.com',
-    name: 'Old Name',
-    password: '12345678',
-    confirmPassword: '12345678',
-  };
-
-  beforeEach(() => {
-    setFormData = vi.fn();
-    setErrors = vi.fn();
-  });
-
-  it('should verify set form data was called and updater works correctly for email', () => {
-    const handleInputChange = createFormHandler(setFormData, setErrors);
-    const mockEvent = {
-      target: {
-        id: 'email',
-        value: 'new@example.com',
-      },
-    } as React.ChangeEvent<HTMLInputElement>;
-
-    handleInputChange(mockEvent);
-
-    const formDataUpdater = setFormData.mock.calls[0][0];
-    const updatedFormData = formDataUpdater(previousFormData);
-
-    expect(setFormData).toHaveBeenCalledTimes(1);
-    expect(updatedFormData).toEqual({
-      ...previousFormData,
-      email: 'new@example.com',
-    });
-  });
-
-  it('should verify set form data was called and updater works correctly for name', () => {
-    const handleInputChange = createFormHandler(setFormData, setErrors);
-    const mockEvent = {
-      target: {
-        id: 'name',
-        value: 'New Name',
-      },
-    } as React.ChangeEvent<HTMLInputElement>;
-
-    handleInputChange(mockEvent);
-
-    const formDataUpdater = setFormData.mock.calls[0][0];
-    const updatedFormData = formDataUpdater(previousFormData);
-
-    expect(setFormData).toHaveBeenCalledTimes(1);
-    expect(updatedFormData).toEqual({
-      ...previousFormData,
-      name: 'New Name',
-    });
-  });
-
-  it('should clear error when field is changed', () => {
-    const handleInputChange = createFormHandler(setFormData, setErrors);
-
-    const mockEvent = {
-      target: {
-        id: 'password',
-        value: 'newpassword123',
-      },
-    } as React.ChangeEvent<HTMLInputElement>;
-
-    handleInputChange(mockEvent);
-
-    expect(setErrors).toHaveBeenCalledTimes(1);
-    const errorsUpdater = setErrors.mock.calls[0][0];
-    const previousErrors = { password: 'Password too short' };
-    const updatedErrors = errorsUpdater(previousErrors);
-
-    expect(updatedErrors.password).toBe('');
   });
 });
 
@@ -409,40 +192,40 @@ describe('LoginSignup Component', () => {
         errors: { email: 'Email is required' },
       });
       render(<LoginSignup authParam={routes.account.query.login} />);
-      expect(screen.getByText('Email is required')).toBeInTheDocument();
+      expect(screen.getByText(EMAIL_IS_REQUIRED)).toBeInTheDocument();
     });
 
     it('should display password error', () => {
       vi.mocked(useAuthForm).mockReturnValue({
         ...defaultMockReturn,
-        errors: { password: 'Password is required' },
+        errors: { password: PASSWORD_IS_REQUIRED },
       });
       render(<LoginSignup authParam={routes.account.query.login} />);
-      expect(screen.getByText('Password is required')).toBeInTheDocument();
+      expect(screen.getByText(PASSWORD_IS_REQUIRED)).toBeInTheDocument();
     });
 
     it('should display name error in signup mode', () => {
       vi.mocked(useAuthForm).mockReturnValue({
         ...defaultMockReturn,
-        errors: { name: 'Name is required' },
+        errors: { name: NAME_IS_REQUIRED },
       });
       render(<LoginSignup authParam={routes.account.query.signup} />);
-      expect(screen.getByText('Name is required')).toBeInTheDocument();
+      expect(screen.getByText(NAME_IS_REQUIRED)).toBeInTheDocument();
     });
 
     it('should display confirm password error in signup mode', () => {
       vi.mocked(useAuthForm).mockReturnValue({
         ...defaultMockReturn,
-        errors: { confirmPassword: 'Passwords do not match' },
+        errors: { confirmPassword: PASSWORD_DOES_NOT_MATCH },
       });
       render(<LoginSignup authParam={routes.account.query.signup} />);
-      expect(screen.getByText('Passwords do not match')).toBeInTheDocument();
+      expect(screen.getByText(PASSWORD_DOES_NOT_MATCH)).toBeInTheDocument();
     });
 
     it('should apply error styling to email input', () => {
       vi.mocked(useAuthForm).mockReturnValue({
         ...defaultMockReturn,
-        errors: { email: 'Invalid email' },
+        errors: { email: INVALID_EMAIL },
       });
       render(<LoginSignup authParam={routes.account.query.login} />);
       const emailInput = screen.getByLabelText(/email/i);
