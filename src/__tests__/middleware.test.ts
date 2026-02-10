@@ -59,6 +59,14 @@ describe('setCookieHandler', () => {
     expect(cookieSetCall[2]).toEqual(cookieOptionsAuth);
   });
 
+  it('should return the response from newPageRedirect', () => {
+    const queryToken = 'test-token-789';
+    const result = setCookieHandler(mockNewPageRedirect, queryToken);
+
+    expect(result).toBe(mockResponse);
+  });
+  });
+
   it('should use correct dashboard path from routes', () => {
     const queryToken = 'test-token';
     setCookieHandler(mockNewPageRedirect, queryToken);
@@ -205,6 +213,7 @@ describe('verifyAuthToken', () => {
   describe('Successful token verification', () => {
     it('should return status 200 when token is valid', async () => {
       const validToken = 'valid-jwt-token';
+
       vi.mocked(jwtVerify).mockResolvedValueOnce(
         {} as unknown as Awaited<ReturnType<typeof jwtVerify>>
       );
@@ -217,6 +226,7 @@ describe('verifyAuthToken', () => {
 
     it('should call jwtVerify with correct parameters', async () => {
       const token = 'test-token';
+
       vi.mocked(jwtVerify).mockResolvedValueOnce(
         {} as unknown as Awaited<ReturnType<typeof jwtVerify>>
       );
@@ -232,6 +242,7 @@ describe('verifyAuthToken', () => {
 
     it('should use HS256 algorithm', async () => {
       const token = 'test-token';
+
       vi.mocked(jwtVerify).mockResolvedValueOnce(
         {} as unknown as Awaited<ReturnType<typeof jwtVerify>>
       );
