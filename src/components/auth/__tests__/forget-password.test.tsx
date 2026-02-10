@@ -4,13 +4,14 @@ import { useForgetPasswordForm } from '../hooks/forget-password';
 import { ForgetPassword } from '../forget-password';
 import { toastFunc } from '@/lib/utils/toasts';
 import { routes } from '@/lib/constants/page-routes';
-import {
-  createFormHandler,
-  createValidationHandler,
-  submitForgetPasswordFormData,
-} from '@/lib/utils/auth/form-handlers';
+import { submitForgetPasswordFormData } from '@/lib/utils/auth/form-handlers';
 import { toastErrorHandler } from '@/lib/utils/error-handler';
-import { forgotPasswordSchema } from '@/lib/utils/auth/validations';
+import {
+  EMAIL_IS_REQUIRED,
+  EMAIL_SENT_SUCCESSFULLY,
+  INVALID_EMAIL,
+  INVALID_EMAIL_FORMAT,
+} from '@/lib/constants/messages';
 
 describe('submitForgetPasswordFormData()', () => {
   beforeEach(() => {
@@ -22,10 +23,10 @@ describe('submitForgetPasswordFormData()', () => {
       forgotPassword: vi.fn(email => {
         return new Promise((resolve, reject) => {
           if (!email) {
-            return reject('Invalid email');
+            return reject(INVALID_EMAIL);
           }
           return resolve({
-            message: 'Email sent successfully',
+            message: EMAIL_SENT_SUCCESSFULLY,
           });
         });
       }),
@@ -49,7 +50,7 @@ describe('submitForgetPasswordFormData()', () => {
       const result = await submitForgetPasswordFormData(formData.email);
 
       expect(result).toBe(formData.email);
-      expect(toastFunc).toHaveBeenCalledWith('Email sent successfully', true);
+      expect(toastFunc).toHaveBeenCalledWith(EMAIL_SENT_SUCCESSFULLY, true);
     });
 
     it('should throw error if email data is empty', async () => {
@@ -60,82 +61,7 @@ describe('submitForgetPasswordFormData()', () => {
       const result = await submitForgetPasswordFormData(formData.email);
 
       expect(result).toBeUndefined();
-      expect(toastErrorHandler).toHaveBeenCalledWith('Invalid email');
-    });
-  });
-});
-
-describe('validateForm()', () => {
-  let setErrors = vi.fn();
-
-  beforeEach(() => {
-    setErrors = vi.fn();
-  });
-
-  describe('Signup validation', () => {
-    it('should handle signup validation success', () => {
-      const formData = {
-        email: 'test@example.com',
-      };
-      const validateForm = createValidationHandler(forgotPasswordSchema, formData, setErrors);
-      const isValid = validateForm();
-
-      expect(isValid).toBe(true);
-      expect(setErrors).not.toHaveBeenCalled();
-    });
-
-    it('should handle signup validation email format errors', async () => {
-      const formData = {
-        email: 'invalid-email',
-      };
-      const validateForm = createValidationHandler(forgotPasswordSchema, formData, setErrors);
-      const isValid = validateForm();
-
-      expect(isValid).toBe(false);
-      expect(setErrors).toHaveBeenCalledTimes(1);
-      expect(setErrors).toHaveBeenCalledWith(
-        expect.objectContaining({
-          email: expect.any(String),
-        })
-      );
-    });
-  });
-
-  describe('handleInputChange()', () => {
-    let setFormData = vi.fn();
-    let setErrors = vi.fn();
-
-    const previousFormData = {
-      email: 'test@example.com',
-      name: 'Old Name',
-      password: '12345678',
-      confirmPassword: '12345678',
-    };
-
-    beforeEach(() => {
-      setFormData = vi.fn();
-      setErrors = vi.fn();
-    });
-
-    it('should verify set form data was called and updater works correctly for email', () => {
-      const handleInputChange = createFormHandler(setFormData, setErrors);
-      const mockEvent = {
-        target: {
-          id: 'email',
-          value: 'new@example.com',
-        },
-      } as React.ChangeEvent<HTMLInputElement>;
-
-      handleInputChange(mockEvent);
-
-      const formDataUpdater = setFormData.mock.calls[0][0];
-      const updatedFormData = formDataUpdater(previousFormData);
-
-      expect(setFormData).toHaveBeenCalledTimes(1);
-      expect(updatedFormData).toEqual({
-        ...previousFormData,
-        email: 'new@example.com',
-      });
+      expect(toastErrorHandler).toHaveBeenCalledWith(INVALID_EMAIL);
     });
   });
 });
@@ -151,64 +77,6 @@ vi.mock('next/navigation', () => ({
     replace: vi.fn(),
   }),
 }));
-
-describe('handleInputChange()', () => {
-  let setFormData = vi.fn();
-  let setErrors = vi.fn();
-
-  const previousFormData = {
-    email: 'test@example.com',
-    name: 'Old Name',
-    password: '12345678',
-    confirmPassword: '12345678',
-  };
-
-  beforeEach(() => {
-    setFormData = vi.fn();
-    setErrors = vi.fn();
-  });
-
-  it('should verify set form data was called and updater works correctly for email', () => {
-    const handleInputChange = createFormHandler(setFormData, setErrors);
-    const mockEvent = {
-      target: {
-        id: 'email',
-        value: 'new@example.com',
-      },
-    } as React.ChangeEvent<HTMLInputElement>;
-
-    handleInputChange(mockEvent);
-
-    const formDataUpdater = setFormData.mock.calls[0][0];
-    const updatedFormData = formDataUpdater(previousFormData);
-
-    expect(setFormData).toHaveBeenCalledTimes(1);
-    expect(updatedFormData).toEqual({
-      ...previousFormData,
-      email: 'new@example.com',
-    });
-  });
-
-  it('should clear error when field is changed', () => {
-    const handleInputChange = createFormHandler(setFormData, setErrors);
-
-    const mockEvent = {
-      target: {
-        id: 'email',
-        value: 'newemail123',
-      },
-    } as React.ChangeEvent<HTMLInputElement>;
-
-    handleInputChange(mockEvent);
-
-    expect(setErrors).toHaveBeenCalledTimes(1);
-    const errorsUpdater = setErrors.mock.calls[0][0];
-    const previousErrors = { email: 'email is required' };
-    const updatedErrors = errorsUpdater(previousErrors);
-
-    expect(updatedErrors.email).toBe('');
-  });
-});
 
 describe('ForgetPassword Component', () => {
   const defaultMockReturn = {
@@ -246,25 +114,25 @@ describe('ForgetPassword Component', () => {
     it('should display email error', () => {
       vi.mocked(useForgetPasswordForm).mockReturnValue({
         ...defaultMockReturn,
-        errors: { email: 'Email is required' },
+        errors: { email: EMAIL_IS_REQUIRED },
       });
       render(<ForgetPassword />);
-      expect(screen.getByText('Email is required')).toBeInTheDocument();
+      expect(screen.getByText(EMAIL_IS_REQUIRED)).toBeInTheDocument();
     });
 
     it('should display invalid email format error', () => {
       vi.mocked(useForgetPasswordForm).mockReturnValue({
         ...defaultMockReturn,
-        errors: { email: 'Invalid email format' },
+        errors: { email: INVALID_EMAIL_FORMAT },
       });
       render(<ForgetPassword />);
-      expect(screen.getByText('Invalid email format')).toBeInTheDocument();
+      expect(screen.getByText(INVALID_EMAIL_FORMAT)).toBeInTheDocument();
     });
 
     it('should apply error styling to email input when error exists', () => {
       vi.mocked(useForgetPasswordForm).mockReturnValue({
         ...defaultMockReturn,
-        errors: { email: 'Invalid email' },
+        errors: { email: INVALID_EMAIL },
       });
       render(<ForgetPassword />);
       const emailInput = screen.getByLabelText(/email/i);

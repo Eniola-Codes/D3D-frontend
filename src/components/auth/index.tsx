@@ -4,6 +4,18 @@ import { VerifyOTP } from './verify-otp';
 import { ResetPassword } from './reset-password';
 import { routes } from '@/lib/constants/page-routes';
 import { UrlQueryParams } from '../../../interfaces/auth';
+import {
+  RESET_PASSWORD,
+  FORGET_PASSWORD,
+  GET_STARTED,
+  WELCOME_BACK,
+  VERIFY_ACCOUNT,
+  BEGIN_YOUR_JOURNEY,
+  ENTER_ASSOCIATED_EMAIL,
+  ONE_TIME_PASSWORD,
+  CREATE_NEW_PASSWORD,
+  ENTER_LOGIN_DETAILS,
+} from '@/lib/constants/messages';
 
 export const AuthForms: React.FC<{ params: UrlQueryParams }> = ({ params }) => {
   const { auth, mail, otp, error } = params;
@@ -12,20 +24,18 @@ export const AuthForms: React.FC<{ params: UrlQueryParams }> = ({ params }) => {
     <div>
       <div className="flex flex-col items-center gap-4 md:items-start">
         <p className="mt-8 text-3xl sm:text-4xl md:mt-12">
-          {auth === routes.account.query.login && 'Welcome Back!'}
-          {auth === routes.account.query.signup && 'Get Started!'}
-          {auth === routes.account.query.forgetPassword && 'Forget Password'}
-          {auth === routes.account.query.inputOTP && 'Verify Account'}
-          {auth === routes.account.query.resetPassword && 'Reset Password'}
+          {auth === routes.account.query.login && WELCOME_BACK}
+          {auth === routes.account.query.signup && GET_STARTED}
+          {auth === routes.account.query.forgetPassword && FORGET_PASSWORD}
+          {auth === routes.account.query.inputOTP && VERIFY_ACCOUNT}
+          {auth === routes.account.query.resetPassword && RESET_PASSWORD}
         </p>
         <p className="text-muted-foreground text-sm leading-relaxed">
-          {auth === routes.account.query.login && 'Please enter your details below to login'}
-          {auth === routes.account.query.signup && 'Begin your journey with us in simple steps.'}
-          {auth === routes.account.query.forgetPassword &&
-            'Please enter the email address associated with your account'}
-          {auth === routes.account.query.inputOTP && `We have sent a one time password to ${mail}`}
-          {auth === routes.account.query.resetPassword &&
-            `Create a new password for your account (${mail})`}
+          {auth === routes.account.query.login && ENTER_LOGIN_DETAILS}
+          {auth === routes.account.query.signup && BEGIN_YOUR_JOURNEY}
+          {auth === routes.account.query.forgetPassword && ENTER_ASSOCIATED_EMAIL}
+          {auth === routes.account.query.inputOTP && ONE_TIME_PASSWORD + ' ' + `${mail}`}
+          {auth === routes.account.query.resetPassword && CREATE_NEW_PASSWORD + ' ' + `${mail}`}
         </p>
       </div>
       {(auth === routes.account.query.login || auth === routes.account.query.signup) && (

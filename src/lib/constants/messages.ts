@@ -1,4 +1,4 @@
-export const UNEXPECTED_ERROR = 'An unexpected error occurred, please try again.';
+//AUTHENTICATION MESSAGES
 export const AUTH_FAILED = 'User authentication failed.';
 export const LOGOUT_FAILED = 'Logout Unsuccessful.';
 export const VALID_EMAIL_ADDRESS = 'Please enter a valid email address';
@@ -8,3 +8,32 @@ export const PASSWORD_DOES_NOT_MATCH = "Passwords don't match";
 export const VALID_OTP_LENGTH = 'OTP must be 6 digits';
 export const VALID_OTP_FORMAT = 'OTP must contain only numbers';
 export const CONFIRM_PASSWORD_FIELD = 'confirmPassword';
+export const WELCOME_BACK = 'Welcome Back!';
+export const GET_STARTED = 'Get Started!';
+export const FORGET_PASSWORD = 'Forget Password';
+export const VERIFY_ACCOUNT = 'Verify Account';
+export const RESET_PASSWORD = 'Reset Password';
+export const ENTER_LOGIN_DETAILS = 'Please enter your details below to login';
+export const BEGIN_YOUR_JOURNEY = 'Begin your journey with us in simple steps.';
+export const ENTER_ASSOCIATED_EMAIL = 'Please enter the email address associated with your account';
+export const ONE_TIME_PASSWORD = 'We have sent a one time password to';
+export const CREATE_NEW_PASSWORD = 'Create a new password for your account';
+export const EMAIL_SENT_SUCCESSFULLY = 'Email sent successfully';
+export const INVALID_EMAIL = 'Invalid email';
+export const EMAIL_IS_REQUIRED = 'Email is required';
+export const INVALID_EMAIL_FORMAT = 'Invalid email format';
+export const INVALID_INPUT = 'Invalid input';
+export const USER_AUTHENTICATED_SUCCESSFULLY = 'User Authenticated successfully';
+export const PASSWORD_TOO_SHORT = 'Password too short';
+export const PASSWORD_IS_REQUIRED = 'Password is required';
+export const NAME_IS_REQUIRED = 'Name is required';
+export const LOGOUT_SUCCESSFUL = 'Logout successful';
+export const PASSWORD_RESET_FAILED = 'Password reset failed';
+export const PASSWORD_CHANGED_SUCCESSFULLY = 'Password changed successfully';
+export const INVALID_PASSWORD = 'Invalid password';
+export const OTP_VERIFIED_SUCCESSFULLY = 'Otp verified successfully';
+export const OTP_IS_REQUIRED = 'OTP is required';
+export const INVALID_OTP_FORMAT = 'Invalid OTP format';
+
+//COMMON MESSAGES
+export const UNEXPECTED_ERROR = 'An unexpected error occurred, please try again.';

@@ -7,6 +7,7 @@ import { toastErrorHandler } from '@/lib/utils/error-handler';
 import { useLogout } from '../hooks/logout';
 import React from 'react';
 import { IUser } from '../../../../interfaces/user';
+import { LOGOUT_SUCCESSFUL } from '@/lib/constants/messages';
 
 const mockClearUser = vi.fn();
 const mockRouterReplace = vi.fn();
@@ -16,7 +17,7 @@ vi.mock('@/lib/services/auth', () => ({
     logout: vi.fn(() => {
       return Promise.resolve({
         data: {
-          message: 'Logout successful',
+          message: LOGOUT_SUCCESSFUL,
         },
       });
     }),
@@ -62,7 +63,7 @@ describe('logout()', () => {
       const result = await logout();
 
       expect(result).toBe(true);
-      expect(toastFunc).toHaveBeenCalledWith('Logout successful', true);
+      expect(toastFunc).toHaveBeenCalledWith(LOGOUT_SUCCESSFUL, true);
     });
   });
 });
@@ -92,7 +93,7 @@ describe('useLogout Hook (UI Tests)', () => {
       fireEvent.click(logoutButton);
 
       await waitFor(() => {
-        expect(toastFunc).toHaveBeenCalledWith('Logout successful', true);
+        expect(toastFunc).toHaveBeenCalledWith(LOGOUT_SUCCESSFUL, true);
       });
     });
 
@@ -133,7 +134,6 @@ describe('useLogout Hook (UI Tests)', () => {
         expect(toastErrorHandler).toHaveBeenCalled();
       });
 
-      // Should not clear user or navigate on error
       expect(mockClearUser).not.toHaveBeenCalled();
       expect(mockRouterReplace).not.toHaveBeenCalled();
     });

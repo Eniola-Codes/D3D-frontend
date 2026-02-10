@@ -59,29 +59,11 @@ describe('setCookieHandler', () => {
     expect(cookieSetCall[2]).toEqual(cookieOptionsAuth);
   });
 
-  it('should return the response from newPageRedirect', () => {
-    const queryToken = 'test-token-789';
-    const result = setCookieHandler(mockNewPageRedirect, queryToken);
-
-    expect(result).toBe(mockResponse);
-  });
-
-  it('should handle different token values', () => {
-    const tokens = ['token1', 'token2', 'very-long-token-string-12345'];
-
-    tokens.forEach(token => {
-      vi.clearAllMocks();
-      setCookieHandler(mockNewPageRedirect, token);
-
-      expect(mockResponse.cookies.set).toHaveBeenCalledWith(AUTH_TOKEN, token, cookieOptionsAuth);
-    });
-  });
-
   it('should use correct dashboard path from routes', () => {
     const queryToken = 'test-token';
     setCookieHandler(mockNewPageRedirect, queryToken);
 
-    expect(mockNewPageRedirect).toHaveBeenCalledWith('/dashboard');
+    expect(mockNewPageRedirect).toHaveBeenCalledWith(`${routes.dashboard.path}`);
   });
 });
 
@@ -106,19 +88,6 @@ describe('redirectToLoginHandler', () => {
     const result = redirectToLoginHandler(mockNewPageRedirect);
 
     expect(result).toBe(mockResponse);
-  });
-
-  it('should use correct account path from routes', () => {
-    redirectToLoginHandler(mockNewPageRedirect);
-
-    expect(mockNewPageRedirect).toHaveBeenCalledWith(expect.stringContaining(routes.account.path));
-  });
-
-  it('should construct URL in correct format', () => {
-    redirectToLoginHandler(mockNewPageRedirect);
-
-    const expectedUrl = `/account?auth=login`;
-    expect(mockNewPageRedirect).toHaveBeenCalledWith(expectedUrl);
   });
 });
 

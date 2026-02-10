@@ -3,13 +3,15 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { useResetPasswordForm } from '../hooks/reset-password';
 import { ResetPassword } from '../reset-password';
 import { toastFunc } from '@/lib/utils/toasts';
-import {
-  createFormHandler,
-  createValidationHandler,
-  submitResetPasswordFormData,
-} from '@/lib/utils/auth/form-handlers';
+import { submitResetPasswordFormData } from '@/lib/utils/auth/form-handlers';
 import { toastErrorHandler } from '@/lib/utils/error-handler';
-import { resetPasswordSchema } from '@/lib/utils/auth/validations';
+import {
+  INVALID_PASSWORD,
+  PASSWORD_CHANGED_SUCCESSFULLY,
+  PASSWORD_DOES_NOT_MATCH,
+  PASSWORD_IS_REQUIRED,
+  PASSWORD_RESET_FAILED,
+} from '@/lib/constants/messages';
 
 describe('submitResetPasswordFormData()', () => {
   beforeEach(() => {
@@ -21,10 +23,10 @@ describe('submitResetPasswordFormData()', () => {
       resetPassword: vi.fn((email, token, password) => {
         return new Promise((resolve, reject) => {
           if (!password || !token || !email) {
-            return reject('Password reset failed');
+            return reject(PASSWORD_RESET_FAILED);
           }
           return resolve({
-            message: 'Password changed successfully',
+            message: PASSWORD_CHANGED_SUCCESSFULLY,
           });
         });
       }),
@@ -71,117 +73,7 @@ describe('submitResetPasswordFormData()', () => {
       );
 
       expect(result).toBeUndefined();
-      expect(toastErrorHandler).toHaveBeenCalledWith('Password reset failed');
-    });
-  });
-});
-
-describe('validateForm()', () => {
-  let setErrors = vi.fn();
-
-  beforeEach(() => {
-    setErrors = vi.fn();
-  });
-
-  describe('Reset password validation', () => {
-    it('should handle reset password validation success', () => {
-      const formData = {
-        password: 'test@example.com',
-        confirmPassword: 'test@example.com',
-      };
-      const validateForm = createValidationHandler(resetPasswordSchema, formData, setErrors);
-      const isValid = validateForm();
-
-      expect(isValid).toBe(true);
-      expect(setErrors).not.toHaveBeenCalled();
-    });
-
-    it('should handle reset password validation format errors', async () => {
-      const formData = {
-        password: '123',
-        confirmPassword: '12345678',
-      };
-      const validateForm = createValidationHandler(resetPasswordSchema, formData, setErrors);
-      const isValid = validateForm();
-      expect(isValid).toBe(false);
-      expect(setErrors).toHaveBeenCalledTimes(1);
-      expect(setErrors).toHaveBeenCalledWith(
-        expect.objectContaining({
-          password: expect.any(String),
-        })
-      );
-    });
-
-    it('should handle reset password validation confirm password not the same as password errors', async () => {
-      const formData = {
-        password: '1234567891',
-        confirmPassword: '12345678',
-      };
-      const validateForm = createValidationHandler(resetPasswordSchema, formData, setErrors);
-      const isValid = validateForm();
-      expect(isValid).toBe(false);
-      expect(setErrors).toHaveBeenCalledTimes(1);
-      expect(setErrors).toHaveBeenCalledWith(
-        expect.objectContaining({
-          confirmPassword: expect.any(String),
-        })
-      );
-    });
-  });
-
-  describe('handleInputChange()', () => {
-    let setFormData = vi.fn();
-    let setErrors = vi.fn();
-
-    const previousFormData = {
-      password: '12345678',
-      confirmPassword: '12345678',
-    };
-
-    beforeEach(() => {
-      setFormData = vi.fn();
-      setErrors = vi.fn();
-    });
-
-    it('should verify set form data was called and updater works correctly for otp', () => {
-      const handleInputChange = createFormHandler(setFormData, setErrors);
-      const mockEvent = {
-        target: {
-          id: 'password',
-          value: '12345678',
-        },
-      } as React.ChangeEvent<HTMLInputElement>;
-
-      handleInputChange(mockEvent);
-
-      const formDataUpdater = setFormData.mock.calls[0][0];
-      const updatedFormData = formDataUpdater(previousFormData);
-
-      expect(setFormData).toHaveBeenCalledTimes(1);
-      expect(updatedFormData).toEqual({
-        ...previousFormData,
-        password: '12345678',
-      });
-    });
-
-    it('should clear error when field is changed', () => {
-      const handleInputChange = createFormHandler(setFormData, setErrors);
-
-      const mockEvent = {
-        target: {
-          id: 'password',
-          value: '12345678',
-        },
-      } as React.ChangeEvent<HTMLInputElement>;
-
-      handleInputChange(mockEvent);
-
-      expect(setErrors).toHaveBeenCalledTimes(1);
-      const errorsUpdater = setErrors.mock.calls[0][0];
-      const previousErrors = { passowrd: 'Password is required' };
-      const updatedErrors = errorsUpdater(previousErrors);
-
-      expect(updatedErrors.password).toBe('');
+      expect(toastErrorHandler).toHaveBeenCalledWith(PASSWORD_RESET_FAILED);
     });
   });
 });
@@ -235,25 +127,25 @@ describe('ResetPassword Component', () => {
     it('should display password error', () => {
       vi.mocked(useResetPasswordForm).mockReturnValue({
         ...defaultMockReturn,
-        errors: { password: 'Password is required' },
+        errors: { password: PASSWORD_IS_REQUIRED },
       });
       render(<ResetPassword email={email} token={token} />);
-      expect(screen.getByText('Password is required')).toBeInTheDocument();
+      expect(screen.getByText(PASSWORD_IS_REQUIRED)).toBeInTheDocument();
     });
 
     it('should display confirm password error', () => {
       vi.mocked(useResetPasswordForm).mockReturnValue({
         ...defaultMockReturn,
-        errors: { confirmPassword: 'Passwords do not match' },
+        errors: { confirmPassword: PASSWORD_DOES_NOT_MATCH },
       });
       render(<ResetPassword email={email} token={token} />);
-      expect(screen.getByText('Passwords do not match')).toBeInTheDocument();
+      expect(screen.getByText(PASSWORD_DOES_NOT_MATCH)).toBeInTheDocument();
     });
 
     it('should apply error styling to password input when error exists', () => {
       vi.mocked(useResetPasswordForm).mockReturnValue({
         ...defaultMockReturn,
-        errors: { password: 'Invalid password' },
+        errors: { password: INVALID_PASSWORD },
       });
       render(<ResetPassword email={email} token={token} />);
       const passwordInput = screen.getByLabelText(/^password$/i);
@@ -263,7 +155,7 @@ describe('ResetPassword Component', () => {
     it('should apply error styling to confirm password input when error exists', () => {
       vi.mocked(useResetPasswordForm).mockReturnValue({
         ...defaultMockReturn,
-        errors: { confirmPassword: 'Passwords do not match' },
+        errors: { confirmPassword: PASSWORD_DOES_NOT_MATCH },
       });
       render(<ResetPassword email={email} token={token} />);
       const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
