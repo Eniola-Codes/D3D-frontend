@@ -102,6 +102,8 @@ describe('ForgetPassword Component', () => {
       expect(screen.getByText(/remember your password now/i)).toBeInTheDocument();
       expect(screen.getByText(/log in/i)).toBeInTheDocument();
       expect(screen.getByPlaceholderText(/nathansmt@example.com/i)).toBeInTheDocument();
+      const emailInput = screen.getByLabelText(/email/i);
+      expect(emailInput).not.toHaveClass('border-red-500');
     });
   });
 
@@ -118,6 +120,8 @@ describe('ForgetPassword Component', () => {
       });
       render(<ForgetPassword />);
       expect(screen.getByText(EMAIL_IS_REQUIRED)).toBeInTheDocument();
+      const emailInput = screen.getByLabelText(/email/i);
+      expect(emailInput).toHaveClass('border-red-500');
     });
 
     it('should display invalid email format error', () => {
@@ -127,22 +131,8 @@ describe('ForgetPassword Component', () => {
       });
       render(<ForgetPassword />);
       expect(screen.getByText(INVALID_EMAIL_FORMAT)).toBeInTheDocument();
-    });
-
-    it('should apply error styling to email input when error exists', () => {
-      vi.mocked(useForgetPasswordForm).mockReturnValue({
-        ...defaultMockReturn,
-        errors: { email: INVALID_EMAIL },
-      });
-      render(<ForgetPassword />);
       const emailInput = screen.getByLabelText(/email/i);
       expect(emailInput).toHaveClass('border-red-500');
-    });
-
-    it('should not apply error styling when no error', () => {
-      render(<ForgetPassword />);
-      const emailInput = screen.getByLabelText(/email/i);
-      expect(emailInput).not.toHaveClass('border-red-500');
     });
   });
 
@@ -159,24 +149,17 @@ describe('ForgetPassword Component', () => {
       });
       render(<ForgetPassword />);
       const submitButton = screen.getByRole('button', { name: /submit email/i });
-      expect(submitButton).toBeDisabled();
-    });
-
-    it('should show loading spinner when loading', () => {
-      vi.mocked(useForgetPasswordForm).mockReturnValue({
-        ...defaultMockReturn,
-        isLoading: true,
-      });
-      render(<ForgetPassword />);
-      const submitButton = screen.getByRole('button', { name: /submit email/i });
       const spinner = submitButton.querySelector('svg');
+      expect(submitButton).toBeDisabled();
       expect(spinner).toBeInTheDocument();
     });
 
     it('should enable submit button when not loading', () => {
       render(<ForgetPassword />);
       const submitButton = screen.getByRole('button', { name: /submit email/i });
+      const spinner = submitButton.querySelector('svg');
       expect(submitButton).not.toBeDisabled();
+      expect(spinner).not.toBeInTheDocument();
     });
   });
 

@@ -9,7 +9,6 @@ import { LoginSignup } from '../login-signup';
 import { useAuthForm } from '../hooks/login-signup';
 import {
   EMAIL_IS_REQUIRED,
-  INVALID_EMAIL,
   INVALID_INPUT,
   NAME_IS_REQUIRED,
   PASSWORD_DOES_NOT_MATCH,
@@ -63,9 +62,9 @@ describe('submitLoginOrSignupFormData()', () => {
       expect(toastFunc).toHaveBeenCalledWith(USER_AUTHENTICATED_SUCCESSFULLY, true);
     });
 
-    it('should throw error if signup data is empty', async () => {
+    it('should throw error if any input field is empty', async () => {
       const formData = {
-        email: 'test@example.com',
+        email: '',
         name: '',
         password: '12345678',
         confirmPassword: '12345678',
@@ -189,10 +188,12 @@ describe('LoginSignup Component', () => {
     it('should display email error', () => {
       vi.mocked(useAuthForm).mockReturnValue({
         ...defaultMockReturn,
-        errors: { email: 'Email is required' },
+        errors: { email: EMAIL_IS_REQUIRED },
       });
       render(<LoginSignup authParam={routes.account.query.login} />);
       expect(screen.getByText(EMAIL_IS_REQUIRED)).toBeInTheDocument();
+      const emailInput = screen.getByLabelText(/email/i);
+      expect(emailInput).toHaveClass('border-red-500');
     });
 
     it('should display password error', () => {
@@ -202,6 +203,8 @@ describe('LoginSignup Component', () => {
       });
       render(<LoginSignup authParam={routes.account.query.login} />);
       expect(screen.getByText(PASSWORD_IS_REQUIRED)).toBeInTheDocument();
+      const passwordInput = screen.getByLabelText(/password/i);
+      expect(passwordInput).toHaveClass('border-red-500');
     });
 
     it('should display name error in signup mode', () => {
@@ -211,6 +214,8 @@ describe('LoginSignup Component', () => {
       });
       render(<LoginSignup authParam={routes.account.query.signup} />);
       expect(screen.getByText(NAME_IS_REQUIRED)).toBeInTheDocument();
+      const nameInput = screen.getByLabelText(/name/i);
+      expect(nameInput).toHaveClass('border-red-500');
     });
 
     it('should display confirm password error in signup mode', () => {
@@ -220,16 +225,8 @@ describe('LoginSignup Component', () => {
       });
       render(<LoginSignup authParam={routes.account.query.signup} />);
       expect(screen.getByText(PASSWORD_DOES_NOT_MATCH)).toBeInTheDocument();
-    });
-
-    it('should apply error styling to email input', () => {
-      vi.mocked(useAuthForm).mockReturnValue({
-        ...defaultMockReturn,
-        errors: { email: INVALID_EMAIL },
-      });
-      render(<LoginSignup authParam={routes.account.query.login} />);
-      const emailInput = screen.getByLabelText(/email/i);
-      expect(emailInput).toHaveClass('border-red-500');
+      const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
+      expect(confirmPasswordInput).toHaveClass('border-red-500');
     });
   });
 
@@ -246,16 +243,6 @@ describe('LoginSignup Component', () => {
       expect(mockRouterPush).toHaveBeenCalledWith(
         `?${routes.account.keys.auth}=${routes.account.query.forgetPassword}`
       );
-    });
-
-    it('should show signup link in login mode', () => {
-      render(<LoginSignup authParam={routes.account.query.login} />);
-      expect(screen.getByText(/signup/i)).toBeInTheDocument();
-    });
-
-    it('should show login link in signup mode', () => {
-      render(<LoginSignup authParam={routes.account.query.signup} />);
-      expect(screen.getByText(/login/i)).toBeInTheDocument();
     });
 
     it('should navigate to signup when clicking signup link in login mode', () => {
@@ -303,17 +290,17 @@ describe('Loading State', () => {
     });
     render(<LoginSignup authParam={routes.account.query.login} />);
     const submitButton = screen.getByRole('button', { name: /login/i });
+    const spinner = screen.getByRole('button', { name: /login/i }).querySelector('svg');
     expect(submitButton).toBeDisabled();
+    expect(spinner).toBeInTheDocument();
   });
 
-  it('should show loading spinner when loading', () => {
-    vi.mocked(useAuthForm).mockReturnValue({
-      ...defaultMockReturn,
-      isLoading: true,
-    });
+  it('should enable submit button when not loading', () => {
     render(<LoginSignup authParam={routes.account.query.login} />);
-    const spinner = screen.getByRole('button', { name: /login/i }).querySelector('svg');
-    expect(spinner).toBeInTheDocument();
+    const submitButton = screen.getByRole('button', { name: /login/i });
+    const spinner = submitButton.querySelector('svg');
+    expect(submitButton).not.toBeDisabled();
+    expect(spinner).not.toBeInTheDocument();
   });
 });
 
@@ -336,7 +323,6 @@ describe('Form Submission', () => {
     vi.clearAllMocks();
     vi.mocked(useAuthForm).mockReturnValue(defaultMockReturn);
   });
-
   it('should call handleSubmit on form submit', () => {
     render(<LoginSignup authParam={routes.account.query.login} />);
     const form = screen.getByRole('button', { name: /login/i }).closest('form');

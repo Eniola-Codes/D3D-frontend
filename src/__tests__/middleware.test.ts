@@ -59,13 +59,6 @@ describe('setCookieHandler', () => {
     expect(cookieSetCall[2]).toEqual(cookieOptionsAuth);
   });
 
-  it('should return the response from newPageRedirect', () => {
-    const queryToken = 'test-token-789';
-    const result = setCookieHandler(mockNewPageRedirect, queryToken);
-
-    expect(result).toBe(mockResponse);
-  });
-
   it('should use correct dashboard path from routes', () => {
     const queryToken = 'test-token';
     setCookieHandler(mockNewPageRedirect, queryToken);
@@ -90,12 +83,6 @@ describe('redirectToLoginHandler', () => {
     expect(mockNewPageRedirect).toHaveBeenCalledTimes(1);
     expect(mockNewPageRedirect).toHaveBeenCalledWith(expectedUrl);
   });
-
-  it('should return the response from newPageRedirect', () => {
-    const result = redirectToLoginHandler(mockNewPageRedirect);
-
-    expect(result).toBe(mockResponse);
-  });
 });
 
 describe('verifyAuthHandler', () => {
@@ -109,16 +96,8 @@ describe('verifyAuthHandler', () => {
   });
 
   describe('Status 500', () => {
-    it('should redirect to error page when status is 500', () => {
-      const result = verifyAuthHandler(mockNewPageRedirect, 500, '/any-path');
-
-      expect(mockNewPageRedirect).toHaveBeenCalledTimes(1);
-      expect(mockNewPageRedirect).toHaveBeenCalledWith(routes.error);
-      expect(result).toBe(mockResponse);
-    });
-
     it('should redirect to error page regardless of pathname when status is 500', () => {
-      const pathnames = [routes.dashboard.path, routes.account.path, routes.error];
+      const pathnames = [routes.dashboard.path, routes.account.path, routes.error, '/any-path'];
 
       pathnames.forEach(pathname => {
         vi.clearAllMocks();
@@ -147,7 +126,7 @@ describe('verifyAuthHandler', () => {
       expect(result).toBe(mockResponse);
     });
 
-    it('should return undefined when status is 401 but pathname does not include dashboard or error', () => {
+    it('should return undefined when status is 401 but pathname includes account', () => {
       const result = verifyAuthHandler(mockNewPageRedirect, 401, routes.account.path);
 
       expect(mockNewPageRedirect).not.toHaveBeenCalled();
@@ -179,7 +158,7 @@ describe('verifyAuthHandler', () => {
       expect(result).toBe(mockResponse);
     });
 
-    it('should return undefined when status is 200 but pathname does not include account or error', () => {
+    it('should return undefined when status is 200 but pathname includes dashboard', () => {
       const result = verifyAuthHandler(mockNewPageRedirect, 200, routes.dashboard.path);
 
       expect(mockNewPageRedirect).not.toHaveBeenCalled();

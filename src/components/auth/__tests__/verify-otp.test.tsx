@@ -128,6 +128,8 @@ describe('VerifyOTP Component', () => {
       for (let i = 0; i < 6; i++) {
         expect(screen.getByTestId(`input-otp-slot-${i}`)).toBeInTheDocument();
       }
+      const errorParagraph = document.querySelector('p.text-red-500');
+      expect(errorParagraph).not.toBeInTheDocument();
     });
 
     it('should render button and resend code link', () => {
@@ -161,12 +163,6 @@ describe('VerifyOTP Component', () => {
       render(<VerifyOTP email={email} />);
       expect(screen.getByText(INVALID_OTP_FORMAT)).toBeInTheDocument();
     });
-
-    it('should not display error when no error exists', () => {
-      render(<VerifyOTP email={email} />);
-      const errorParagraph = document.querySelector('p.text-red-500');
-      expect(errorParagraph).not.toBeInTheDocument();
-    });
   });
 
   describe('Loading State', () => {
@@ -182,17 +178,8 @@ describe('VerifyOTP Component', () => {
       });
       render(<VerifyOTP email={email} />);
       const submitButton = screen.getByRole('button', { name: /verify & continue/i });
-      expect(submitButton).toBeDisabled();
-    });
-
-    it('should show loading spinner when loading', () => {
-      vi.mocked(useOtpForm).mockReturnValue({
-        ...defaultMockReturn,
-        isLoading: true,
-      });
-      render(<VerifyOTP email={email} />);
-      const submitButton = screen.getByRole('button', { name: /verify & continue/i });
       const spinner = submitButton.querySelector('svg');
+      expect(submitButton).toBeDisabled();
       expect(spinner).toBeInTheDocument();
     });
 
@@ -200,6 +187,8 @@ describe('VerifyOTP Component', () => {
       render(<VerifyOTP email={email} />);
       const submitButton = screen.getByRole('button', { name: /verify & continue/i });
       expect(submitButton).not.toBeDisabled();
+      const spinner = submitButton.querySelector('svg');
+      expect(spinner).not.toBeInTheDocument();
     });
   });
 
