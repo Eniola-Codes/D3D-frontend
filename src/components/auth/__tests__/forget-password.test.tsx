@@ -120,7 +120,7 @@ describe('ForgetPassword Component', () => {
       });
       render(<ForgetPassword />);
       expect(screen.getByText(EMAIL_IS_REQUIRED)).toBeInTheDocument();
-      const emailInput = screen.getByLabelText(/email/i)
+      const emailInput = screen.getByLabelText(/email/i);
       expect(emailInput).toHaveClass('border-red-500');
     });
 
@@ -131,7 +131,7 @@ describe('ForgetPassword Component', () => {
       });
       render(<ForgetPassword />);
       expect(screen.getByText(INVALID_EMAIL_FORMAT)).toBeInTheDocument();
-      const emailInput = screen.getByLabelText(/email/i)
+      const emailInput = screen.getByLabelText(/email/i);
       expect(emailInput).toHaveClass('border-red-500');
     });
   });

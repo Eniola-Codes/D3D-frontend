@@ -9,7 +9,6 @@ import { LoginSignup } from '../login-signup';
 import { useAuthForm } from '../hooks/login-signup';
 import {
   EMAIL_IS_REQUIRED,
-  INVALID_EMAIL,
   INVALID_INPUT,
   NAME_IS_REQUIRED,
   PASSWORD_DOES_NOT_MATCH,

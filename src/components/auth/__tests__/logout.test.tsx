@@ -4,7 +4,6 @@ import { toastFunc } from '@/lib/utils/toasts';
 import { routes } from '@/lib/constants/page-routes';
 import { logout } from '@/lib/utils/auth/form-handlers';
 import { toastErrorHandler } from '@/lib/utils/error-handler';
-import { useLogout } from '../hooks/logout';
 import React from 'react';
 import { IUser } from '../../../../interfaces/user';
 import { LOGOUT_SUCCESSFUL } from '@/lib/constants/messages';
