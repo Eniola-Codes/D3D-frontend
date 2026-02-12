@@ -8,6 +8,7 @@ import { useLogout } from '../hooks/logout';
 import React from 'react';
 import { IUser } from '../../../../interfaces/user';
 import { LOGOUT_SUCCESSFUL } from '@/lib/constants/messages';
+import DashboardLayout from '@/components/dashboard/layout';
 
 const mockClearUser = vi.fn();
 const mockRouterReplace = vi.fn();
@@ -66,28 +67,17 @@ describe('logout()', () => {
       expect(toastFunc).toHaveBeenCalledWith(LOGOUT_SUCCESSFUL, true);
     });
   });
-});
-
-const LogoutButton: React.FC = () => {
-  const { logoutHandler } = useLogout();
-  return <button onClick={logoutHandler}>Log out</button>;
-};
-
-describe('useLogout Hook (UI Tests)', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
 
   describe('Rendering', () => {
     it('should render logout button', () => {
-      render(<LogoutButton />);
+      render(<DashboardLayout>text</DashboardLayout>);
       expect(screen.getByRole('button', { name: /log out/i })).toBeInTheDocument();
     });
   });
 
   describe('Logout Functionality', () => {
     it('should call logout handler on button click', async () => {
-      render(<LogoutButton />);
+      render(<DashboardLayout>text</DashboardLayout>);
       const logoutButton = screen.getByRole('button', { name: /log out/i });
 
       fireEvent.click(logoutButton);
@@ -98,7 +88,7 @@ describe('useLogout Hook (UI Tests)', () => {
     });
 
     it('should clear user store after successful logout', async () => {
-      render(<LogoutButton />);
+      render(<DashboardLayout>text</DashboardLayout>);
       const logoutButton = screen.getByRole('button', { name: /log out/i });
 
       fireEvent.click(logoutButton);
@@ -109,7 +99,7 @@ describe('useLogout Hook (UI Tests)', () => {
     });
 
     it('should navigate to login page after successful logout', async () => {
-      render(<LogoutButton />);
+      render(<DashboardLayout>text</DashboardLayout>);
       const logoutButton = screen.getByRole('button', { name: /log out/i });
 
       fireEvent.click(logoutButton);
@@ -125,7 +115,7 @@ describe('useLogout Hook (UI Tests)', () => {
       const { authService } = await import('@/lib/services/auth');
       vi.mocked(authService.logout).mockRejectedValueOnce(new Error('Logout failed'));
 
-      render(<LogoutButton />);
+      render(<DashboardLayout>text</DashboardLayout>);
       const logoutButton = screen.getByRole('button', { name: /log out/i });
 
       fireEvent.click(logoutButton);

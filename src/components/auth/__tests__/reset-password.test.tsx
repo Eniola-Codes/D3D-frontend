@@ -6,7 +6,6 @@ import { toastFunc } from '@/lib/utils/toasts';
 import { submitResetPasswordFormData } from '@/lib/utils/auth/form-handlers';
 import { toastErrorHandler } from '@/lib/utils/error-handler';
 import {
-  INVALID_PASSWORD,
   PASSWORD_CHANGED_SUCCESSFULLY,
   PASSWORD_DOES_NOT_MATCH,
   PASSWORD_IS_REQUIRED,
@@ -56,7 +55,7 @@ describe('submitResetPasswordFormData()', () => {
       );
 
       expect(result).toBe(true);
-      expect(toastFunc).toHaveBeenCalledWith('Password changed successfully', true);
+      expect(toastFunc).toHaveBeenCalledWith(PASSWORD_CHANGED_SUCCESSFULLY, true);
     });
 
     it('should throw error if data is incomplete', async () => {
@@ -115,6 +114,10 @@ describe('ResetPassword Component', () => {
       expect(screen.getByLabelText(/^password$/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/confirm password/i)).toBeInTheDocument();
       expect(screen.getByRole('button', { name: /reset password/i })).toBeInTheDocument();
+      const passwordInput = screen.getByLabelText(/^password$/i);
+      const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
+      expect(passwordInput).not.toHaveClass('border-red-500');
+      expect(confirmPasswordInput).not.toHaveClass('border-red-500');
     });
   });
 
@@ -131,6 +134,8 @@ describe('ResetPassword Component', () => {
       });
       render(<ResetPassword email={email} token={token} />);
       expect(screen.getByText(PASSWORD_IS_REQUIRED)).toBeInTheDocument();
+      const passwordInput = screen.getByLabelText(/^password$/i);
+      expect(passwordInput).toHaveClass('border-red-500');
     });
 
     it('should display confirm password error', () => {
@@ -140,34 +145,8 @@ describe('ResetPassword Component', () => {
       });
       render(<ResetPassword email={email} token={token} />);
       expect(screen.getByText(PASSWORD_DOES_NOT_MATCH)).toBeInTheDocument();
-    });
-
-    it('should apply error styling to password input when error exists', () => {
-      vi.mocked(useResetPasswordForm).mockReturnValue({
-        ...defaultMockReturn,
-        errors: { password: INVALID_PASSWORD },
-      });
-      render(<ResetPassword email={email} token={token} />);
-      const passwordInput = screen.getByLabelText(/^password$/i);
-      expect(passwordInput).toHaveClass('border-red-500');
-    });
-
-    it('should apply error styling to confirm password input when error exists', () => {
-      vi.mocked(useResetPasswordForm).mockReturnValue({
-        ...defaultMockReturn,
-        errors: { confirmPassword: PASSWORD_DOES_NOT_MATCH },
-      });
-      render(<ResetPassword email={email} token={token} />);
       const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
       expect(confirmPasswordInput).toHaveClass('border-red-500');
-    });
-
-    it('should not apply error styling when no error', () => {
-      render(<ResetPassword email={email} token={token} />);
-      const passwordInput = screen.getByLabelText(/^password$/i);
-      const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
-      expect(passwordInput).not.toHaveClass('border-red-500');
-      expect(confirmPasswordInput).not.toHaveClass('border-red-500');
     });
   });
 
@@ -184,24 +163,17 @@ describe('ResetPassword Component', () => {
       });
       render(<ResetPassword email={email} token={token} />);
       const submitButton = screen.getByRole('button', { name: /reset password/i });
-      expect(submitButton).toBeDisabled();
-    });
-
-    it('should show loading spinner when loading', () => {
-      vi.mocked(useResetPasswordForm).mockReturnValue({
-        ...defaultMockReturn,
-        isLoading: true,
-      });
-      render(<ResetPassword email={email} token={token} />);
-      const submitButton = screen.getByRole('button', { name: /reset password/i });
       const spinner = submitButton.querySelector('svg');
+      expect(submitButton).toBeDisabled();
       expect(spinner).toBeInTheDocument();
     });
 
     it('should enable submit button when not loading', () => {
       render(<ResetPassword email={email} token={token} />);
       const submitButton = screen.getByRole('button', { name: /reset password/i });
+      const spinner = submitButton.querySelector('svg');
       expect(submitButton).not.toBeDisabled();
+      expect(spinner).not.toBeInTheDocument();
     });
   });
 
