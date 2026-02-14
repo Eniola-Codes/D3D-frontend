@@ -85,7 +85,7 @@ vi.mock('next/navigation', () => ({
   }),
 }));
 
-vi.mock('@/components/ui/input-otp', () => ({
+vi.mock('@/components/ui/input/input-otp', () => ({
   InputOTP: ({ children, value }: { children: React.ReactNode; value: string }) => (
     <div data-testid="input-otp" data-value={value}>
       {children}
