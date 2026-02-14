@@ -2,7 +2,8 @@
 
 import { cn } from '@/lib/utils/class-merge';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/input/input';
+import { PasswordInput } from '@/components/ui/input/password-input';
 import { Label } from '@/components/ui/label';
 import { FcGoogle } from 'react-icons/fc';
 import { Loader2 } from 'lucide-react';
@@ -59,9 +60,8 @@ export function LoginSignup({ className, authParam, errorParam, ...props }: Logi
         </div>
         <div className="grid gap-2">
           <Label htmlFor="password">Password</Label>
-          <Input
+          <PasswordInput
             id="password"
-            type="password"
             value={formData.password}
             onChange={handleInputChange}
             className={cn(errors.password && 'border-red-500')}
@@ -82,9 +82,8 @@ export function LoginSignup({ className, authParam, errorParam, ...props }: Logi
         {authParam === routes.account.query.signup && (
           <div className="grid gap-2">
             <Label htmlFor="confirmPassword">Confirm password</Label>
-            <Input
+            <PasswordInput
               id="confirmPassword"
-              type="password"
               value={formData.confirmPassword}
               onChange={handleInputChange}
               className={cn(errors.confirmPassword && 'border-red-500')}

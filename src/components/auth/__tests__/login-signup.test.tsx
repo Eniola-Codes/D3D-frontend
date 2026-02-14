@@ -162,7 +162,7 @@ describe('LoginSignup Component', () => {
       render(<LoginSignup authParam={routes.account.query.login} />);
 
       expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+      expect(screen.getAllByLabelText(/password/i)[0]).toBeInTheDocument();
       expect(screen.getByText(/forgot your password/i)).toBeInTheDocument();
       expect(screen.queryByLabelText(/name/i)).not.toBeInTheDocument();
       expect(screen.queryByLabelText(/confirm password/i)).not.toBeInTheDocument();
@@ -201,9 +201,10 @@ describe('LoginSignup Component', () => {
         ...defaultMockReturn,
         errors: { password: PASSWORD_IS_REQUIRED },
       });
+
       render(<LoginSignup authParam={routes.account.query.login} />);
       expect(screen.getByText(PASSWORD_IS_REQUIRED)).toBeInTheDocument();
-      const passwordInput = screen.getByLabelText(/password/i);
+      const passwordInput = screen.getAllByLabelText(/password/i)[0];
       expect(passwordInput).toHaveClass('border-red-500');
     });
 
@@ -386,5 +387,27 @@ describe('Input Interactions', () => {
     render(<LoginSignup authParam={routes.account.query.login} />);
     expect(screen.getByDisplayValue('test@example.com')).toBeInTheDocument();
     expect(screen.getByDisplayValue('password123')).toBeInTheDocument();
+  });
+
+  it('should toggle password visibility when eye icon is clicked', () => {
+    render(<LoginSignup authParam={routes.account.query.login} />);
+    const passwordInput = document.getElementById('password') as HTMLInputElement;
+    const toggleButton = screen.getAllByRole('button', { name: /show password/i });
+    expect(passwordInput.type).toBe('password');
+    fireEvent.click(toggleButton[0]);
+    expect(passwordInput.type).toBe('text');
+    fireEvent.click(toggleButton[0]);
+    expect(passwordInput.type).toBe('password');
+  });
+
+  it('should toggle confirm password visibility in signup mode', () => {
+    render(<LoginSignup authParam={routes.account.query.signup} />);
+    const confirmPasswordInput = document.getElementById('confirmPassword') as HTMLInputElement;
+    const toggleButtons = screen.getAllByRole('button', { name: /show password/i });
+    expect(confirmPasswordInput.type).toBe('password');
+    fireEvent.click(toggleButtons[1]);
+    expect(confirmPasswordInput.type).toBe('text');
+    fireEvent.click(toggleButtons[1]);
+    expect(confirmPasswordInput.type).toBe('password');
   });
 });

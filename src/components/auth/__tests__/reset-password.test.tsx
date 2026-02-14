@@ -260,5 +260,27 @@ describe('ResetPassword Component', () => {
       const passwordInputs = screen.getAllByDisplayValue('newpassword123');
       expect(passwordInputs).toHaveLength(2);
     });
+
+    it('should toggle password visibility when eye icon is clicked', () => {
+      render(<ResetPassword email={email} token={token} />);
+      const passwordInput = document.getElementById('password') as HTMLInputElement;
+      const toggleButtons = screen.getAllByRole('button', { name: /show password/i });
+      expect(passwordInput.type).toBe('password');
+      fireEvent.click(toggleButtons[0]);
+      expect(passwordInput.type).toBe('text');
+      fireEvent.click(toggleButtons[0]);
+      expect(passwordInput.type).toBe('password');
+    });
+
+    it('should toggle confirm password visibility when eye icon is clicked', () => {
+      render(<ResetPassword email={email} token={token} />);
+      const confirmPasswordInput = document.getElementById('confirmPassword') as HTMLInputElement;
+      const toggleButtons = screen.getAllByRole('button', { name: /show password/i });
+      expect(confirmPasswordInput.type).toBe('password');
+      fireEvent.click(toggleButtons[1]);
+      expect(confirmPasswordInput.type).toBe('text');
+      fireEvent.click(toggleButtons[1]);
+      expect(confirmPasswordInput.type).toBe('password');
+    });
   });
 });
