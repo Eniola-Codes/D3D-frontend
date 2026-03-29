@@ -13,4 +13,8 @@ export const endpoints = {
     base: '/user',
     getUser: '/',
   },
+  shopify: {
+    base: '/shopify',
+    init: '/init',
+  },
 };

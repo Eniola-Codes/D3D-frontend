@@ -9,22 +9,18 @@ import {
   VALID_PASSWORD_LENGTH,
 } from '../../constants/messages';
 
-// Base schema for common fields
 const baseAuthSchema = {
   email: z.string().email(VALID_EMAIL_ADDRESS),
   password: z.string().min(8, VALID_PASSWORD_LENGTH),
 };
 
-// Reusable password matching validation
 const passwordMatchRefine = (data: { password: string; confirmPassword: string }) =>
   data.password === data.confirmPassword;
 
-// Login validation schema
 export const loginSchema = z.object({
   ...baseAuthSchema,
 });
 
-// Signup validation schema
 export const signupSchema = z
   .object({
     ...baseAuthSchema,
@@ -36,12 +32,10 @@ export const signupSchema = z
     path: [CONFIRM_PASSWORD_FIELD],
   });
 
-// Forgot password validation schema
 export const forgotPasswordSchema = z.object({
   email: baseAuthSchema.email,
 });
 
-// Reset password validation schema
 export const resetPasswordSchema = z
   .object({
     password: baseAuthSchema.password,
@@ -52,12 +46,10 @@ export const resetPasswordSchema = z
     path: [CONFIRM_PASSWORD_FIELD],
   });
 
-// OTP validation schema
 export const otpSchema = z.object({
   otp: z.string().length(6, VALID_OTP_LENGTH).regex(/^\d+$/, VALID_OTP_FORMAT),
 });
 
-// Types for form data
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type SignupFormData = z.infer<typeof signupSchema>;
 export type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;

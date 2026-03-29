@@ -15,6 +15,7 @@ import skynews from './skynews.png';
 import the_sun from './the_sun.png';
 import the_times from './the_times.png';
 import time from './time.png';
+import shopify_logo from './shopify_logo.png';
 
 export {
   abc,
@@ -34,4 +35,5 @@ export {
   the_sun,
   the_times,
   time,
+  shopify_logo,
 };

@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
 import { z } from 'zod';
 import { authService } from '../../services/auth';
+import { shopifyService } from '../../services/shopify';
 import { AuthFormData } from '../../../../interfaces/auth';
 import { toastFunc } from '../toasts';
 import { toastErrorHandler } from '../error-handler';
@@ -94,6 +95,16 @@ export const logout = async () => {
     const response = await authService.logout();
     toastFunc(response.data.message, true);
     return true;
+  } catch (error: unknown) {
+    toastErrorHandler(error);
+  }
+};
+
+export const submitShopifyInitData = async (shop: string) => {
+  try {
+    const response = await shopifyService.init(shop);
+    toastFunc(response.message, true);
+    return response.url;
   } catch (error: unknown) {
     toastErrorHandler(error);
   }

@@ -39,7 +39,7 @@ export function useAuthForm(authParam: string, errorParam?: string) {
     setErrors
   );
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>, authParam: string) => {
     e.preventDefault();
     setIsLoading(true);
     if (!validateForm()) {

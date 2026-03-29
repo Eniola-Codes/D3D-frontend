@@ -15,20 +15,24 @@ import {
   ONE_TIME_PASSWORD,
   CREATE_NEW_PASSWORD,
   ENTER_LOGIN_DETAILS,
+  CONNECTSTORE,
+  SELECTSTOREOPTION,
 } from '@/lib/constants/messages';
+import { ConnectPlatform } from './connect-platform';
 
 export const AuthForms: React.FC<{ params: UrlQueryParams }> = ({ params }) => {
   const { auth, mail, otp, error } = params;
 
   return (
-    <div>
-      <div className="flex flex-col items-center gap-4 md:items-start">
-        <p className="mt-8 text-3xl sm:text-4xl md:mt-12">
+    <>
+      <div className="flex flex-col items-center gap-3 md:items-start">
+        <p className="text-3xl sm:text-4xl">
           {auth === routes.account.query.login && WELCOME_BACK}
           {auth === routes.account.query.signup && GET_STARTED}
           {auth === routes.account.query.forgetPassword && FORGET_PASSWORD}
           {auth === routes.account.query.inputOTP && VERIFY_ACCOUNT}
           {auth === routes.account.query.resetPassword && RESET_PASSWORD}
+          {auth === routes.account.query.connectPlatform && CONNECTSTORE}
         </p>
         <p className="text-muted-foreground text-sm leading-relaxed">
           {auth === routes.account.query.login && ENTER_LOGIN_DETAILS}
@@ -36,16 +40,18 @@ export const AuthForms: React.FC<{ params: UrlQueryParams }> = ({ params }) => {
           {auth === routes.account.query.forgetPassword && ENTER_ASSOCIATED_EMAIL}
           {auth === routes.account.query.inputOTP && ONE_TIME_PASSWORD + ' ' + `${mail}`}
           {auth === routes.account.query.resetPassword && CREATE_NEW_PASSWORD + ' ' + `${mail}`}
+          {auth === routes.account.query.connectPlatform && SELECTSTOREOPTION}
         </p>
       </div>
       {(auth === routes.account.query.login || auth === routes.account.query.signup) && (
         <LoginSignup authParam={auth} errorParam={error} />
       )}
+      {auth === routes.account.query.connectPlatform && <ConnectPlatform />}
       {auth === routes.account.query.forgetPassword && <ForgetPassword />}
       {auth === routes.account.query.inputOTP && <VerifyOTP email={mail as string} />}
       {auth === routes.account.query.resetPassword && (
         <ResetPassword email={mail as string} token={otp as string} />
       )}
-    </div>
+    </>
   );
 };
