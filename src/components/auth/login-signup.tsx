@@ -20,7 +20,11 @@ export function LoginSignup({ className, authParam, errorParam, ...props }: Logi
   );
 
   return (
-    <form className={cn('flex flex-col gap-6', className)} {...props} onSubmit={handleSubmit}>
+    <form
+      className={cn('flex flex-col gap-6', className)}
+      {...props}
+      onSubmit={e => handleSubmit(e, authParam)}
+    >
       <div className="grid gap-6">
         <a href={process.env.NEXT_PUBLIC_GOOGLE_CALLBACK_URL} className="mt-8 w-full">
           <Button type="button" variant="outline" className="w-full sm:flex-1/2">
@@ -73,7 +77,7 @@ export function LoginSignup({ className, authParam, errorParam, ...props }: Logi
               onClick={() =>
                 router.push(`?${routes.account.keys.auth}=${routes.account.query.forgetPassword}`)
               }
-              className="mt-0.5 ml-auto cursor-pointer text-sm underline-offset-4 hover:underline"
+              className="mt-1 ml-auto cursor-pointer text-sm underline-offset-4 hover:underline"
             >
               Forgot your password?
             </button>

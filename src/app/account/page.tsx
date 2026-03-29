@@ -34,15 +34,17 @@ const Account = async ({
       <div className="flex flex-col gap-4 p-6 md:p-10 md:px-16">
         <div className="flex justify-center gap-2 md:justify-start">
           <Link href={routes.home} className="flex items-center gap-2.5 font-medium">
-            <div className="bg-primary text-primary-foreground flex h-8 w-8 items-center justify-center rounded-md">
-              <SiDatabricks className="size-5" />
+            <div className="bg-primary text-primary-foreground flex h-8 w-8 items-center justify-center rounded-md sm:h-[36px] sm:w-[36px]">
+              <SiDatabricks className="size-5 sm:size-6" />
             </div>
-            d3d
+            <span className="sm:text-lg">d3d</span>
           </Link>
         </div>
-        <AuthForms
-          params={{ auth: authParam, mail: mailParam, otp: otpParam, error: errorParam }}
-        />
+        <div className="mt-8 w-full md:mt-10 2xl:m-auto 2xl:max-w-xl 2xl:-translate-y-10">
+          <AuthForms
+            params={{ auth: authParam, mail: mailParam, otp: otpParam, error: errorParam }}
+          />
+        </div>
       </div>
       <div className="fixed right-0 hidden h-screen w-1/2 py-4 pr-4 lg:block">
         <Image src={authBg} alt="auth-bg" className="inset-0 h-full rounded-2xl" />

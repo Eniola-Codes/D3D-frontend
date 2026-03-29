@@ -9,6 +9,10 @@ export interface AuthResponse {
 export interface LogoutResponse {
   message: string;
 }
+export interface ShopifyInitResponse {
+  message: string;
+  url: string;
+}
 export interface AuthFormData {
   email: string;
   name: string;
