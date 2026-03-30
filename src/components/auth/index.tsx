@@ -32,7 +32,7 @@ export const AuthForms: React.FC<{ params: UrlQueryParams }> = ({ params }) => {
           {auth === routes.account.query.forgetPassword && FORGET_PASSWORD}
           {auth === routes.account.query.inputOTP && VERIFY_ACCOUNT}
           {auth === routes.account.query.resetPassword && RESET_PASSWORD}
-          {auth === routes.account.query.connectPlatform && CONNECTSTORE}
+          {auth === routes.account.query.connectStore && CONNECTSTORE}
         </p>
         <p className="text-muted-foreground text-sm leading-relaxed">
           {auth === routes.account.query.login && ENTER_LOGIN_DETAILS}
@@ -40,13 +40,13 @@ export const AuthForms: React.FC<{ params: UrlQueryParams }> = ({ params }) => {
           {auth === routes.account.query.forgetPassword && ENTER_ASSOCIATED_EMAIL}
           {auth === routes.account.query.inputOTP && ONE_TIME_PASSWORD + ' ' + `${mail}`}
           {auth === routes.account.query.resetPassword && CREATE_NEW_PASSWORD + ' ' + `${mail}`}
-          {auth === routes.account.query.connectPlatform && SELECTSTOREOPTION}
+          {auth === routes.account.query.connectStore && SELECTSTOREOPTION}
         </p>
       </div>
       {(auth === routes.account.query.login || auth === routes.account.query.signup) && (
         <LoginSignup authParam={auth} errorParam={error} />
       )}
-      {auth === routes.account.query.connectPlatform && <ConnectPlatform />}
+      {auth === routes.account.query.connectStore && <ConnectPlatform />}
       {auth === routes.account.query.forgetPassword && <ForgetPassword />}
       {auth === routes.account.query.inputOTP && <VerifyOTP email={mail as string} />}
       {auth === routes.account.query.resetPassword && (

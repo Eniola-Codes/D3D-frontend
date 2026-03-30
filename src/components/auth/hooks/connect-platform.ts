@@ -1,20 +1,12 @@
-import { useState } from 'react';
-import { submitShopifyInitData } from '@/lib/utils/auth/form-handlers';
+import { endpoints } from '@/lib/constants/endpoints';
 
 export function useConnectPlatform() {
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleConnect = async (shop: string) => {
-    setIsLoading(true);
-    const url = await submitShopifyInitData(shop);
-    if (url) {
-      window.location.href = url;
-    }
-    setIsLoading(false);
+  const handleConnect = async () => {
+    const url = `${process.env.NEXT_PUBLIC_API_URL}${endpoints.shopify.base}${endpoints.shopify.init}`;
+    window.location.href = url;
   };
 
   return {
-    isLoading,
     handleConnect,
   };
 }

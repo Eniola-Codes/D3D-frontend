@@ -21,7 +21,7 @@ export const routes = {
       forgetPassword: 'forget-password',
       inputOTP: 'input-otp',
       resetPassword: 'reset-password',
-      connectPlatform: 'connect-platform',
+      connectStore: 'connect-store',
     },
   },
 };
