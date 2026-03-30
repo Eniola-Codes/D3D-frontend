@@ -9,19 +9,13 @@ import { Input } from '../ui/input/input';
 import { Button } from '../ui/button';
 import Image from 'next/image';
 import { shopify_logo } from '../../../public/assets/logo';
-import { useConnectPlatform } from './hooks/connect-platform';
+import { useConnectStore } from './hooks/connect-store';
 
-export function ConnectPlatform({ className }: React.ComponentPropsWithoutRef<'form'>) {
+export function ConnectStore({ className }: React.ComponentPropsWithoutRef<'form'>) {
   const router = useRouter();
-  const { isLoading, handleConnect } = useConnectPlatform();
+  const { handleConnect } = useConnectStore();
   const [showStoreInput, setShowStoreInput] = useState(false);
   const [storeName, setStoreName] = useState('');
-
-  const handleSend = async () => {
-    const trimmedStoreName = storeName.trim();
-    if (!trimmedStoreName) return;
-    await handleConnect(trimmedStoreName);
-  };
 
   return (
     <div className={cn('flex flex-col items-center gap-6 md:items-start', className)}>
@@ -44,12 +38,7 @@ export function ConnectPlatform({ className }: React.ComponentPropsWithoutRef<'f
               onChange={e => setStoreName(e.target.value)}
               className="h-10"
             />
-            <Button
-              type="button"
-              size="sm"
-              onClick={handleSend}
-              disabled={isLoading || !storeName.trim()}
-            >
+            <Button type="button" size="sm" onClick={() => handleConnect(storeName.trim())}>
               Send
             </Button>
           </div>
