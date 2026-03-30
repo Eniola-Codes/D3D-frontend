@@ -2,7 +2,6 @@ import { LoginSignup } from './login-signup';
 import { ForgetPassword } from './forget-password';
 import { VerifyOTP } from './verify-otp';
 import { ResetPassword } from './reset-password';
-import { ConnectStore } from './connect-store';
 import { routes } from '@/lib/constants/page-routes';
 import { UrlQueryParams } from '../../../interfaces/auth';
 import {
@@ -19,6 +18,7 @@ import {
   CONNECTSTORE,
   SELECTSTOREOPTION,
 } from '@/lib/constants/messages';
+import { ConnectPlatform } from './connect-platform';
 
 export const AuthForms: React.FC<{ params: UrlQueryParams }> = ({ params }) => {
   const { auth, mail, otp, error } = params;
@@ -46,7 +46,7 @@ export const AuthForms: React.FC<{ params: UrlQueryParams }> = ({ params }) => {
       {(auth === routes.account.query.login || auth === routes.account.query.signup) && (
         <LoginSignup authParam={auth} errorParam={error} />
       )}
-      {auth === routes.account.query.connectStore && <ConnectStore />}
+      {auth === routes.account.query.connectStore && <ConnectPlatform />}
       {auth === routes.account.query.forgetPassword && <ForgetPassword />}
       {auth === routes.account.query.inputOTP && <VerifyOTP email={mail as string} />}
       {auth === routes.account.query.resetPassword && (
