@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { toastFunc } from '@/lib/utils/toasts';
 import { routes } from '@/lib/constants/page-routes';
 import { logout } from '@/lib/utils/auth/form-handlers';
@@ -11,6 +12,7 @@ import DashboardLayout from '@/components/dashboard/layout';
 
 const mockClearUser = vi.fn();
 const mockRouterReplace = vi.fn();
+const mockRouterPush = vi.fn();
 
 vi.mock('@/lib/services/auth', () => ({
   authService: {
@@ -35,6 +37,7 @@ vi.mock('@/lib/utils/toasts', () => ({
 vi.mock('next/navigation', () => ({
   useRouter: () => ({
     replace: mockRouterReplace,
+    push: mockRouterPush,
   }),
 }));
 
@@ -58,6 +61,12 @@ describe('logout()', () => {
     vi.clearAllMocks();
   });
 
+  const openUserMenu = async () => {
+    const user = userEvent.setup();
+    const trigger = screen.getByTestId('dropdown-menu-trigger');
+    await user.click(trigger);
+  };
+
   describe('Logout flow', () => {
     it('should handle successful logout', async () => {
       const result = await logout();
@@ -68,16 +77,20 @@ describe('logout()', () => {
   });
 
   describe('Rendering', () => {
-    it('should render logout button', () => {
+    it('should render logout button', async () => {
       render(<DashboardLayout>text</DashboardLayout>);
-      expect(screen.getByRole('button', { name: /log out/i })).toBeInTheDocument();
+
+      await openUserMenu();
+
+      expect(screen.getByRole('menuitem', { name: /log out/i })).toBeInTheDocument();
     });
   });
 
   describe('Logout Functionality', () => {
     it('should call logout handler on button click', async () => {
       render(<DashboardLayout>text</DashboardLayout>);
-      const logoutButton = screen.getByRole('button', { name: /log out/i });
+      await openUserMenu();
+      const logoutButton = screen.getByRole('menuitem', { name: /log out/i });
 
       fireEvent.click(logoutButton);
 
@@ -88,7 +101,8 @@ describe('logout()', () => {
 
     it('should clear user store after successful logout', async () => {
       render(<DashboardLayout>text</DashboardLayout>);
-      const logoutButton = screen.getByRole('button', { name: /log out/i });
+      await openUserMenu();
+      const logoutButton = screen.getByRole('menuitem', { name: /log out/i });
 
       fireEvent.click(logoutButton);
 
@@ -99,7 +113,8 @@ describe('logout()', () => {
 
     it('should navigate to login page after successful logout', async () => {
       render(<DashboardLayout>text</DashboardLayout>);
-      const logoutButton = screen.getByRole('button', { name: /log out/i });
+      await openUserMenu();
+      const logoutButton = screen.getByRole('menuitem', { name: /log out/i });
 
       fireEvent.click(logoutButton);
 
@@ -115,7 +130,8 @@ describe('logout()', () => {
       vi.mocked(authService.logout).mockRejectedValueOnce(new Error('Logout failed'));
 
       render(<DashboardLayout>text</DashboardLayout>);
-      const logoutButton = screen.getByRole('button', { name: /log out/i });
+      await openUserMenu();
+      const logoutButton = screen.getByRole('menuitem', { name: /log out/i });
 
       fireEvent.click(logoutButton);
 
