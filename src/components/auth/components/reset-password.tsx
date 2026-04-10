@@ -6,7 +6,7 @@ import { PasswordInput } from '@/components/ui/input/password-input';
 import { Label } from '@/components/ui/label';
 import { ResetPasswordProps } from '../../../interfaces/auth';
 import { Loader2 } from 'lucide-react';
-import { useResetPasswordForm } from './hooks/reset-password';
+import { useResetPasswordForm } from '../hooks/reset-password';
 
 export function ResetPassword({ className, email, token, ...props }: ResetPasswordProps) {
   const { formData, errors, isLoading, handleInputChange, handleSubmit } = useResetPasswordForm(

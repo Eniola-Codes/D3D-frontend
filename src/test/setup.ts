@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/vitest';
-// Mock window.matchMedia for jsdom environment
+
 if (typeof window !== 'undefined' && !window.matchMedia) {
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
@@ -7,8 +7,8 @@ if (typeof window !== 'undefined' && !window.matchMedia) {
       matches: false,
       media: query,
       onchange: null,
-      addListener: () => {}, // deprecated
-      removeListener: () => {}, // deprecated
+      addListener: () => {},
+      removeListener: () => {},
       addEventListener: () => {},
       removeEventListener: () => {},
       dispatchEvent: () => false,

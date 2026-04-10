@@ -17,7 +17,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import type { IUser } from '../../../../interfaces/user';
+import { IUser } from '@/interfaces/user';
 import { getUserInitials } from '@/lib/utils/user';
 import { menuItems } from '@/lib/data/layout/sidebar';
 import { useRouter } from 'next/navigation';

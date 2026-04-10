@@ -1,7 +1,7 @@
 import { AUTH_TOKEN } from '@/lib/constants';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { AuthResponse } from '../../../../../interfaces/auth';
+import { AuthResponse } from '../../../../interfaces/auth';
 import { endpoints } from '@/lib/constants/endpoints';
 import { cookieOptionsUnAuth } from '@/lib/utils/cookie';
 import { apiServerService } from '@/lib/services/api/server';

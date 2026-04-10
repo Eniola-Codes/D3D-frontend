@@ -24,7 +24,7 @@ export async function middleware(request: NextRequest) {
     if (queryToken) {
       return setCookieHandler(newPageRedirect, queryToken);
     }
-    if (!cookieToken && pathname.includes(routes.dashboard.path)) {
+    if (!cookieToken && pathname.includes(routes.dashboard.path.base)) {
       return redirectToLoginHandler(newPageRedirect);
     }
     if (cookieToken) {

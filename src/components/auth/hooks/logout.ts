@@ -15,7 +15,7 @@ export const useLogout = () => {
     if (result) {
       clearUser();
       router.replace(
-        `${routes.account.path}?${routes.account.keys.auth}=${routes.account.query.login}`
+        `${routes.account.path.base}?${routes.account.keys.auth}=${routes.account.query.login}`
       );
     }
   };

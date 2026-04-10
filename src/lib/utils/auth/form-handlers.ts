@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { z } from 'zod';
 import { authService } from '../../services/auth';
 import { shopifyService } from '../../services/shopify';
-import { AuthFormData } from '../../../../interfaces/auth';
+import { AuthFormData } from '../../../interfaces/auth';
 import { toastFunc } from '../toasts';
 import { toastErrorHandler } from '../error-handler';
 

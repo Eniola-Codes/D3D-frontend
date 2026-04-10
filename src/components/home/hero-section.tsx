@@ -25,7 +25,6 @@ const HeroSection: React.FC = () => {
           <p>PREDICT.</p>
         </motion.div>
 
-        {/* Info */}
         <motion.div variants={infoVariant} animate="animate" initial="static">
           <div className="info-container mt-4 text-center font-light text-[#222]">
             <p className="m-auto px-5 leading-relaxed sm:px-10 lg:w-3/4 lg:text-lg">
@@ -34,12 +33,10 @@ const HeroSection: React.FC = () => {
             </p>
           </div>
 
-          {/* Buttons */}
-
           <div className="buttons-container mt-8 flex items-center justify-center space-x-3 sm:space-x-5">
             <Link
               className="cursor-pointer"
-              href={`${routes.account.path}?${routes.account.keys.auth}=${routes.account.query.signup}`}
+              href={`${routes.account.path.base}?${routes.account.keys.auth}=${routes.account.query.signup}`}
             >
               <Button type="button" size={'lg'}>
                 <span>Get Started</span>
@@ -56,7 +53,6 @@ const HeroSection: React.FC = () => {
             </Link>
           </div>
 
-          {/* Trusted Sources */}
           <div>
             <p className="slider-container mt-16 text-center text-base font-medium">
               INTEGRATES WITH 10+ DATA SOURCES

@@ -5,7 +5,7 @@ import { toastErrorHandler } from '@/lib/utils/error-handler';
 import { toastFunc } from '@/lib/utils/toasts';
 import { authService } from '@/lib/services/auth';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { LoginSignup } from '../login-signup';
+import { LoginSignup } from '../components/login-signup';
 import { useAuthForm } from '../hooks/login-signup';
 import {
   EMAIL_IS_REQUIRED,

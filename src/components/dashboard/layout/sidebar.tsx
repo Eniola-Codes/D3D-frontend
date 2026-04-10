@@ -13,7 +13,7 @@ import {
 import { NavLinks } from './nav-links';
 import { NavUser } from './nav-user';
 import { SiDatabricks } from 'react-icons/si';
-import type { IUser } from '../../../../interfaces/user';
+import { IUser } from '@/interfaces/user';
 import { sidebarNavData } from '@/lib/data/layout/sidebar';
 
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {

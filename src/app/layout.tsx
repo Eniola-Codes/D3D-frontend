@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/sonner';
-import IsAuth from '@/components/auth/is-auth';
+import IsAuth from '@/components/auth/components/is-auth';
 import { endpoints } from '@/lib/constants/endpoints';
 import { apiServerService } from '@/lib/services/api/server';
-import { UserResponse } from '../../interfaces/user';
+import { UserResponse } from '../interfaces/user';
 import { AUTH_FAILED } from '@/lib/constants/messages';
 
 export const metadata: Metadata = {

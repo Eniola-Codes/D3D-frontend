@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils/class-merge';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input/input-otp';
 import { Button } from '@/components/ui/button';
 import { InputOTPProps } from '../../../interfaces/auth';
-import { useOtpForm } from './hooks/verify-otp';
+import { useOtpForm } from '../hooks/verify-otp';
 import { Loader2 } from 'lucide-react';
 
 export function VerifyOTP({ className, email, ...props }: InputOTPProps) {

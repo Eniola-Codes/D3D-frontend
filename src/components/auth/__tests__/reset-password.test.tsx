@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { useResetPasswordForm } from '../hooks/reset-password';
-import { ResetPassword } from '../reset-password';
+import { ResetPassword } from '../components/reset-password';
 import { toastFunc } from '@/lib/utils/toasts';
 import { submitResetPasswordFormData } from '@/lib/utils/auth/form-handlers';
 import { toastErrorHandler } from '@/lib/utils/error-handler';

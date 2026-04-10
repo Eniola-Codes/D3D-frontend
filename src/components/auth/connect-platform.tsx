@@ -20,7 +20,10 @@ export function ConnectPlatform({ className }: React.ComponentPropsWithoutRef<'f
       </button>
       <div className="text-center text-sm">
         Don&apos;t have a store account yet?{' '}
-        <Link href={routes.dashboard.path} className="cursor-pointer underline underline-offset-4">
+        <Link
+          href={routes.dashboard.path.base}
+          className="cursor-pointer underline underline-offset-4"
+        >
           Skip
         </Link>
       </div>

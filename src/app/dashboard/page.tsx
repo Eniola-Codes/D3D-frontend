@@ -1,8 +1,10 @@
-import DashboardLayout from '@/components/dashboard/layout';
-import React from 'react';
+import DashboardLayout from '@/components/dashboard/layout/components';
 
-const Dashboard = async () => {
-  return <DashboardLayout>Hello</DashboardLayout>;
+export const metadata = {
+  title: 'Home',
+  description: 'Search for products in the store.',
 };
 
-export default Dashboard;
+export default async function SearchPage() {
+  return <DashboardLayout>Home</DashboardLayout>;
+}

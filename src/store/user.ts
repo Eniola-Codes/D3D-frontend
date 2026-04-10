@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { IUserState } from '../../interfaces/user';
+import { IUserState } from '../interfaces/user';
 
 export const userStore = create<IUserState>(set => ({
   user: {

@@ -2,13 +2,18 @@ export const routes = {
   home: '/',
   error: '/error',
   dashboard: {
-    path: '/dashboard',
+    path: {
+      base: '/dashboard',
+      findProducts: '/products',
+    },
     keys: {
       token: 'token',
     },
   },
   account: {
-    path: '/account',
+    path: {
+      base: '/account',
+    },
     keys: {
       auth: 'auth',
       mail: 'email',
