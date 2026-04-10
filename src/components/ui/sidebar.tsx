@@ -66,7 +66,6 @@ function SidebarProvider({
   const [openMobile, setOpenMobile] = React.useState(false);
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
-
   const [_open, _setOpen] = React.useState(defaultOpen);
   const open = openProp ?? _open;
   const setOpen = React.useCallback(
