@@ -8,14 +8,14 @@ export const setCookieHandler = (
   newPageRedirect: (url: string) => NextResponse,
   queryToken: string
 ) => {
-  const res = newPageRedirect(routes.dashboard.path);
+  const res = newPageRedirect(routes.dashboard.path.base);
   res.cookies.set(AUTH_TOKEN, queryToken, cookieOptionsAuth);
   return res;
 };
 
 export const redirectToLoginHandler = (newPageRedirect: (url: string) => NextResponse) => {
   return newPageRedirect(
-    `${routes.account.path}?${routes.account.keys.auth}=${routes.account.query.login}`
+    `${routes.account.path.base}?${routes.account.keys.auth}=${routes.account.query.login}`
   );
 };
 
@@ -29,15 +29,15 @@ export const verifyAuthHandler = (
   }
   if (
     status === 401 &&
-    (pathname.includes(routes.dashboard.path) || pathname.includes(routes.error))
+    (pathname.includes(routes.dashboard.path.base) || pathname.includes(routes.error))
   ) {
     return redirectToLoginHandler(newPageRedirect);
   }
   if (
     status === 200 &&
-    (pathname.includes(routes.account.path) || pathname.includes(routes.error))
+    (pathname.includes(routes.account.path.base) || pathname.includes(routes.error))
   ) {
-    return newPageRedirect(routes.dashboard.path);
+    return newPageRedirect(routes.dashboard.path.base);
   }
   return undefined;
 };

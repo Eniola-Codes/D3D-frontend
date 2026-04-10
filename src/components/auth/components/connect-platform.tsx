@@ -2,10 +2,10 @@
 
 import { cn } from '@/lib/utils/class-merge';
 import { routes } from '@/lib/constants/page-routes';
-import { Card } from '../ui/card';
+import { Card } from '../../ui/card';
 import Image from 'next/image';
-import { shopify_logo } from '../../../public/assets/logo';
-import { useConnectPlatform } from './hooks/connect-platform';
+import { shopify_logo } from '../../../../public/assets/logo';
+import { useConnectPlatform } from '../hooks/connect-platform';
 import Link from 'next/link';
 
 export function ConnectPlatform({ className }: React.ComponentPropsWithoutRef<'form'>) {
@@ -20,7 +20,10 @@ export function ConnectPlatform({ className }: React.ComponentPropsWithoutRef<'f
       </button>
       <div className="text-center text-sm">
         Don&apos;t have a store account yet?{' '}
-        <Link href={routes.dashboard.path} className="cursor-pointer underline underline-offset-4">
+        <Link
+          href={routes.dashboard.path.base}
+          className="cursor-pointer underline underline-offset-4"
+        >
           Skip
         </Link>
       </div>

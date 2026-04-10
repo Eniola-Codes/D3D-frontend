@@ -8,17 +8,11 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { toTitle } from '@/lib/utils/dashboard/layout';
 
-function toTitle(input: string) {
-  return input
-    .replace(/[-_]/g, ' ')
-    .replace(/([a-z])([A-Z])/g, '$1 $2')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .replace(/\b\w/g, c => c.toUpperCase());
-}
-
-export function NavLinks({
+export function SidebarLinks({
   groupName,
   items,
 }: {
@@ -29,17 +23,23 @@ export function NavLinks({
     icon: LucideIcon;
   }[];
 }) {
+  const pathname = usePathname();
+
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>{toTitle(groupName)}</SidebarGroupLabel>
       <SidebarMenu>
         {items.map(item => (
           <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton asChild>
-              <a href={item.url}>
+            <SidebarMenuButton
+              isActive={pathname === item.url}
+              className="data-[active=true]:bg-gray-200"
+              asChild
+            >
+              <Link href={item.url}>
                 <item.icon />
                 <span>{item.name}</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         ))}

@@ -1,4 +1,4 @@
-import { AuthForms } from '@/components/auth';
+import { AuthForms } from '@/components/auth/components';
 import { SiDatabricks } from 'react-icons/si';
 import Image from 'next/image';
 import { authBg } from '../../../public/assets/bg-images';

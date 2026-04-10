@@ -1,15 +1,17 @@
 import { Search } from 'lucide-react';
-import { Label } from '@/components/ui/label';
-import { SidebarInput } from '@/components/ui/sidebar';
+import { Input } from './input/input';
 
-export function SearchForm({ ...props }: React.ComponentProps<'form'>) {
+export function SearchForm({ value, onChange, className }: React.ComponentProps<typeof Input>) {
   return (
-    <form {...props}>
+    <form className={className}>
       <div className="relative">
-        <Label htmlFor="search" className="sr-only">
-          Search
-        </Label>
-        <SidebarInput id="search" placeholder="Type to search..." className="h-8 pl-7" />
+        <Input
+          id="search"
+          placeholder="Enter keywords to search..."
+          className="h-[2.25rem] pl-8"
+          value={value}
+          onChange={onChange}
+        />
         <Search className="pointer-events-none absolute top-1/2 left-2 size-4 -translate-y-1/2 opacity-50 select-none" />
       </div>
     </form>

@@ -6,9 +6,9 @@ import { routes } from '@/lib/constants/page-routes';
 import { logout } from '@/lib/utils/auth/form-handlers';
 import { toastErrorHandler } from '@/lib/utils/error-handler';
 import React from 'react';
-import { IUser } from '../../../../interfaces/user';
+import { IUser } from '../../../interfaces/user';
 import { LOGOUT_SUCCESSFUL } from '@/lib/constants/messages';
-import DashboardLayout from '@/components/dashboard/layout';
+import DashboardLayout from '@/components/dashboard/layout/components';
 
 const mockClearUser = vi.fn();
 const mockRouterReplace = vi.fn();
@@ -39,6 +39,7 @@ vi.mock('next/navigation', () => ({
     replace: mockRouterReplace,
     push: mockRouterPush,
   }),
+  usePathname: vi.fn().mockReturnValue('/dashboard'), // ← add this
 }));
 
 vi.mock('@/store/user', () => ({
@@ -120,7 +121,7 @@ describe('logout()', () => {
 
       await waitFor(() => {
         expect(mockRouterReplace).toHaveBeenCalledWith(
-          `${routes.account.path}?${routes.account.keys.auth}=${routes.account.query.login}`
+          `${routes.account.path.base}?${routes.account.keys.auth}=${routes.account.query.login}`
         );
       });
     });

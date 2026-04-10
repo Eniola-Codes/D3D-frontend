@@ -7,7 +7,7 @@ import {
   createValidationHandler,
   submitLoginOrSignupFormData,
 } from '@/lib/utils/auth/form-handlers';
-import { AuthFormData } from '../../../../interfaces/auth';
+import { AuthFormData } from '../../../interfaces/auth';
 import { toastFunc } from '@/lib/utils/toasts';
 import { AUTH_FAILED } from '@/lib/constants/messages';
 import { userStore } from '@/store/user';
@@ -49,7 +49,7 @@ export function useAuthForm(authParam: string, errorParam?: string) {
     const user = await submitLoginOrSignupFormData(authParam, formData);
     if (user) {
       setUser(user);
-      router.replace(routes.dashboard.path);
+      router.replace(routes.dashboard.path.base);
     }
     setIsLoading(false);
   };

@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils/class-merge';
 import { routes } from '@/lib/constants/page-routes';
-import { useForgetPasswordForm } from './hooks/forget-password';
+import { useForgetPasswordForm } from '../hooks/forget-password';
 
 export function ForgetPassword({ className, ...props }: React.ComponentPropsWithoutRef<'form'>) {
   const router = useRouter();
