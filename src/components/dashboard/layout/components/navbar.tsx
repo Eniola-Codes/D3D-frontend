@@ -56,7 +56,6 @@ export function Navbar({ user }: { user: IUser }) {
 
               return (
                 <div key={href} className="flex items-center gap-2">
-                  ˝
                   <BreadcrumbItem>
                     {isLast ? (
                       <BreadcrumbPage>{label}</BreadcrumbPage>
