@@ -388,11 +388,18 @@ export const categoryOptions = [
   'Other',
 ];
 export const sortOptions = [
-  'Sort by',
   'Relevance',
+  'Trending',
+  'Best Rating',
   'Price: Low to High',
   'Price: High to Low',
-  'Newest',
-  'Best Rating',
 ];
 export const brandOptions = ['All Brands', 'Brand A', 'Brand B', 'Brand C', 'Brand D', 'Brand E'];
+export const priceOptions = [
+  'All Prices',
+  '$1 - $50',
+  '$51 - $100',
+  '$101 - $200',
+  '$201 - $500',
+  'Above $500',
+];
