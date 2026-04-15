@@ -32,8 +32,8 @@ export interface Product {
   options: ProductOption[];
   currencyCode: string;
   priceRange: {
-    maxVariantPrice: string;
-    minVariantPrice: string;
+    maxVariantPrice: number;
+    minVariantPrice: number;
   };
   featuredImage: {
     url: string;
@@ -44,11 +44,14 @@ export interface Product {
   seo: SEO;
   tags: string[];
   updatedAt: string;
-  brandLogo?: string;
-  brandName?: string;
-  discount?: string;
-  shippingCost?: string;
-  rating?: number;
+  brandLogo: string;
+  brandName: string;
+  discount: string;
+  shippingCost: string;
+  rating: number;
+  category: string[];
+  color: string;
+  reviews: string;
 }
 
 export interface ProductVariant {

@@ -10,18 +10,40 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { SearchForm } from '@/components/ui/search-form';
 import { useIsTablet } from '@/components/dashboard/layout/hooks/use-breakpoints';
-import { categoryOptions, sortOptions, brandOptions, priceOptions } from '@/lib/data/product';
+import {
+  categoryOptions,
+  sortOptions,
+  brandOptions,
+  priceOptions,
+  trendingCatgories,
+} from '@/lib/data/product';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import Pill from '@/components/ui/pill';
 
-export function ProductFilter() {
+export function ProductFilter({
+  search,
+  category,
+  brand,
+  price,
+  sort,
+}: {
+  search: string;
+  category: string;
+  brand: string;
+  price: string;
+  sort: string;
+}) {
+  const searchParams = useSearchParams();
   const [filters, setFilters] = useState({
-    search: '',
-    category: 'All Categories',
-    sort: 'Relevance',
-    brand: 'All Brands',
-    price: 'All Prices',
+    search: search,
+    category: category || 'All Categories',
+    sort: sort || 'Relevance',
+    brand: brand || 'All Brands',
+    price: price || 'All Prices',
   });
-  const [filterIsActive, setFilterIsActive] = useState(false);
   const isTablet = useIsTablet();
+  const pathname = usePathname();
+  const router = useRouter();
 
   const handleFilterChange = (filterKey: string, value: string) => {
     setFilters(prev => ({
@@ -29,24 +51,25 @@ export function ProductFilter() {
       [filterKey]: value,
     }));
 
-    if (!filterIsActive) {
-      setFilterIsActive(true);
-    }
-  };
+    const params = new URLSearchParams(searchParams.toString());
 
-  const handleSearchChange = (value: string) => {
-    setFilters(prev => ({
-      ...prev,
-      search: value,
-    }));
-    if (!filterIsActive) {
-      setFilterIsActive(true);
+    if (
+      (filterKey === 'search' && value === '') ||
+      (filterKey !== 'search' &&
+        (value === 'All Categories' ||
+          value === 'All Brands' ||
+          value === 'All Prices' ||
+          value === 'Relevance'))
+    ) {
+      params.delete(filterKey);
+    } else {
+      params.set(filterKey, value);
     }
+
+    router.replace(`${pathname}?${params.toString()}`);
   };
 
   const handleResetFilters = () => {
-    console.log('reset filters');
-
     setFilters({
       search: '',
       category: 'All Categories',
@@ -55,9 +78,7 @@ export function ProductFilter() {
       price: 'All Prices',
     });
 
-    if (filterIsActive) {
-      setFilterIsActive(false);
-    }
+    router.replace(pathname);
   };
 
   return (
@@ -67,28 +88,23 @@ export function ProductFilter() {
           <SearchForm
             className="w-full flex-1"
             value={filters.search}
-            onChange={e => handleSearchChange(e.target.value)}
+            onChange={e => handleFilterChange('search', e.target.value)}
           />
           <Flame className="fill-accent-foreground hidden size-5 sm:flex" />
           <div className="hidden flex-wrap items-center gap-2 sm:flex xl:gap-3">
-            {categoryOptions.slice(0, isTablet ? 3 : 6).map(option => (
-              <button
+            {trendingCatgories.slice(0, isTablet ? 3 : 6).map(option => (
+              <Pill
                 key={option}
-                onClick={() => handleFilterChange('category', option)}
-                className={`cursor-pointer rounded-sm px-3 py-1.5 text-sm font-medium transition-all ${
-                  filters.category === option
-                    ? 'bg-accent text-accent-foreground border-accent border'
-                    : 'bg-card text-foreground border-border hover:bg-accent/10 border'
-                }`}
-              >
-                {option}
-              </button>
+                option={option}
+                handleFilterChange={handleFilterChange}
+                search={filters.search}
+              />
             ))}
           </div>
           <Flame className="fill-accent-foreground hidden size-5 sm:flex" />
           <button
             onClick={handleResetFilters}
-            disabled={!filterIsActive}
+            disabled={!searchParams.toString()}
             className="w-20 min-w-20 cursor-pointer rounded-sm bg-gray-900 py-2 text-sm whitespace-nowrap text-white transition-colors hover:bg-gray-800 disabled:cursor-not-allowed disabled:bg-gray-400 sm:hidden"
           >
             Reset
@@ -188,7 +204,7 @@ export function ProductFilter() {
 
           <button
             onClick={handleResetFilters}
-            disabled={!filterIsActive}
+            disabled={!searchParams.toString()}
             className="ml-2 hidden w-20 min-w-20 cursor-pointer rounded-sm bg-gray-900 py-2 text-sm whitespace-nowrap text-white transition-colors hover:bg-gray-800 disabled:cursor-not-allowed disabled:bg-gray-400 sm:block xl:ml-3"
           >
             Reset
