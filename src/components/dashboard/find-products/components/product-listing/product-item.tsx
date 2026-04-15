@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { ProductItemActions } from './product-item-actions';
 import { ProductBrandBadge } from './product-brand-badge';
 import { getProductCardMeta } from '@/lib/utils/dashboard/product';
+import { defaultProductImage } from '../../../../../../public/assets/default-images';
 
 export function ProductItem({
   title,
@@ -18,8 +19,8 @@ export function ProductItem({
   title: string;
   src: string;
   amount: {
-    maxVariantPrice: string;
-    minVariantPrice: string;
+    maxVariantPrice: number;
+    minVariantPrice: number;
   };
   currencyCode: string;
   discount?: string;
@@ -39,19 +40,16 @@ export function ProductItem({
         'group flex h-full w-full flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-md dark:bg-black'
       )}
     >
-      {src ? (
-        <div className="relative h-50 w-full shrink-0 overflow-hidden bg-white">
-          <ProductItemActions title={title} />
-          <Image
-            className="m-auto h-full w-full object-cover"
-            src={src}
-            alt={title}
-            width={400}
-            height={400}
-          />
-        </div>
-      ) : null}
-
+      <div className="relative h-50 w-full shrink-0 overflow-hidden bg-white">
+        <ProductItemActions />
+        <Image
+          className="m-auto h-full w-full object-cover"
+          src={src || defaultProductImage}
+          alt={title}
+          width={400}
+          height={400}
+        />
+      </div>
       <div className="w-full border-t bg-white p-4 text-sm text-black">
         <h3 className="line-clamp-2 flex items-center gap-2 leading-5 font-medium text-neutral-900">
           <ProductBrandBadge brandLogo={brandLogo} brandName={brandName} />

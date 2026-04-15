@@ -11,8 +11,8 @@ export const dummyProducts: Product[] = [
     options: [],
     currencyCode: 'US$',
     priceRange: {
-      maxVariantPrice: '100',
-      minVariantPrice: '20',
+      maxVariantPrice: 100,
+      minVariantPrice: 20,
     },
     featuredImage: {
       url: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
@@ -31,6 +31,9 @@ export const dummyProducts: Product[] = [
     discount: '-60%',
     shippingCost: '1.99',
     rating: 4.2,
+    category: ['Electronics', 'Gadgets', 'Smartphones'],
+    color: 'Black',
+    reviews: '(123 reviews)',
   },
   {
     id: '2',
@@ -42,8 +45,8 @@ export const dummyProducts: Product[] = [
     options: [],
     currencyCode: 'US$',
     priceRange: {
-      maxVariantPrice: '250',
-      minVariantPrice: '100',
+      maxVariantPrice: 250,
+      minVariantPrice: 100,
     },
     featuredImage: {
       url: 'https://images.unsplash.com/photo-1615397349754-cfa2066a298e?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
@@ -62,6 +65,9 @@ export const dummyProducts: Product[] = [
     discount: '0%',
     shippingCost: '2.19',
     rating: 4.4,
+    category: ['Fashion', 'Clothing', 'Accessories'],
+    color: 'Blue',
+    reviews: '(56 reviews)',
   },
   {
     id: '3',
@@ -73,8 +79,8 @@ export const dummyProducts: Product[] = [
     options: [],
     currencyCode: 'US$',
     priceRange: {
-      maxVariantPrice: '300',
-      minVariantPrice: '120',
+      maxVariantPrice: 300,
+      minVariantPrice: 120,
     },
     featuredImage: {
       url: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
@@ -93,6 +99,9 @@ export const dummyProducts: Product[] = [
     discount: '-66%',
     shippingCost: '2.39',
     rating: 4.5,
+    category: ['Automative', 'Cars', 'Motors'],
+    color: 'Red',
+    reviews: '(12 reviews)',
   },
   {
     id: '4',
@@ -104,8 +113,8 @@ export const dummyProducts: Product[] = [
     options: [],
     currencyCode: 'US$',
     priceRange: {
-      maxVariantPrice: '175',
-      minVariantPrice: '145',
+      maxVariantPrice: 175,
+      minVariantPrice: 145,
     },
     featuredImage: {
       url: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?q=80&w=1160&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
@@ -124,6 +133,9 @@ export const dummyProducts: Product[] = [
     discount: '-69%',
     shippingCost: '2.59',
     rating: 4.7,
+    category: ['Beauty & Personal Care', 'Skincare', 'Makeup'],
+    color: 'Pink',
+    reviews: '(31 reviews)',
   },
   {
     id: '5',
@@ -135,8 +147,8 @@ export const dummyProducts: Product[] = [
     options: [],
     currencyCode: 'US$',
     priceRange: {
-      maxVariantPrice: '210',
-      minVariantPrice: '80',
+      maxVariantPrice: 210,
+      minVariantPrice: 80,
     },
     featuredImage: {
       url: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?q=80&w=928&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
@@ -155,6 +167,9 @@ export const dummyProducts: Product[] = [
     discount: '0%',
     shippingCost: '2.79',
     rating: 4.8,
+    category: ['Health & Wellness', 'Fitness', 'Wellness'],
+    color: 'Green',
+    reviews: '(10 reviews)',
   },
   {
     id: '6',
@@ -166,8 +181,8 @@ export const dummyProducts: Product[] = [
     options: [],
     currencyCode: 'US$',
     priceRange: {
-      maxVariantPrice: '275',
-      minVariantPrice: '60',
+      maxVariantPrice: 275,
+      minVariantPrice: 60,
     },
     featuredImage: {
       url: 'https://images.unsplash.com/photo-1541643600914-78b084683601?q=80&w=808&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
@@ -186,6 +201,9 @@ export const dummyProducts: Product[] = [
     discount: '-60%',
     shippingCost: '2.99',
     rating: 4.2,
+    category: ['Toys & Games', 'Toys', 'Games'],
+    color: 'Yellow',
+    reviews: '(25 reviews)',
   },
   {
     id: '7',
@@ -197,8 +215,8 @@ export const dummyProducts: Product[] = [
     options: [],
     currencyCode: 'US$',
     priceRange: {
-      maxVariantPrice: '230',
-      minVariantPrice: '90',
+      maxVariantPrice: 230,
+      minVariantPrice: 90,
     },
     featuredImage: {
       url: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0',
@@ -217,6 +235,9 @@ export const dummyProducts: Product[] = [
     discount: '-63%',
     shippingCost: '3.19',
     rating: 4.4,
+    category: ['Books', 'Reading', 'Literature'],
+    color: 'Purple',
+    reviews: '(18 reviews)',
   },
   {
     id: '8',
@@ -228,8 +249,8 @@ export const dummyProducts: Product[] = [
     options: [],
     currencyCode: 'US$',
     priceRange: {
-      maxVariantPrice: '290',
-      minVariantPrice: '110',
+      maxVariantPrice: 290,
+      minVariantPrice: 110,
     },
     featuredImage: {
       url: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0',
@@ -248,6 +269,9 @@ export const dummyProducts: Product[] = [
     discount: '0%',
     shippingCost: '3.39',
     rating: 4.5,
+    category: ['Automative', 'Cars', 'Motors'],
+    color: 'Orange',
+    reviews: '(22 reviews)',
   },
   {
     id: '9',
@@ -259,8 +283,8 @@ export const dummyProducts: Product[] = [
     options: [],
     currencyCode: 'US$',
     priceRange: {
-      maxVariantPrice: '310',
-      minVariantPrice: '130',
+      maxVariantPrice: 310,
+      minVariantPrice: 130,
     },
     featuredImage: {
       url: 'https://images.unsplash.com/photo-1491553895911-0055eca6402d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0',
@@ -279,6 +303,9 @@ export const dummyProducts: Product[] = [
     discount: '-69%',
     shippingCost: '3.59',
     rating: 4.7,
+    category: ['Beauty & Personal Care', 'Skincare', 'Makeup'],
+    color: 'Brown',
+    reviews: '(15 reviews)',
   },
   {
     id: '10',
@@ -290,8 +317,8 @@ export const dummyProducts: Product[] = [
     options: [],
     currencyCode: 'US$',
     priceRange: {
-      maxVariantPrice: '350',
-      minVariantPrice: '150',
+      maxVariantPrice: 350,
+      minVariantPrice: 150,
     },
     featuredImage: {
       url: 'https://images.unsplash.com/photo-1484704849700-f032a568e944?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0',
@@ -310,6 +337,9 @@ export const dummyProducts: Product[] = [
     discount: '-72%',
     shippingCost: '3.79',
     rating: 4.8,
+    category: ['Health & Wellness', 'Fitness', 'Wellness'],
+    color: 'Gray',
+    reviews: '(20 reviews)',
   },
   {
     id: '11',
@@ -321,8 +351,8 @@ export const dummyProducts: Product[] = [
     options: [],
     currencyCode: 'US$',
     priceRange: {
-      maxVariantPrice: '390',
-      minVariantPrice: '170',
+      maxVariantPrice: 390,
+      minVariantPrice: 170,
     },
     featuredImage: {
       url: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?q=80&w=1210&auto=format&fit=crop&ixlib=rb-4.1.0',
@@ -341,6 +371,9 @@ export const dummyProducts: Product[] = [
     discount: '0%',
     shippingCost: '3.99',
     rating: 4.2,
+    category: ['Toys & Games', 'Toys', 'Games'],
+    color: 'Black',
+    reviews: '(13 reviews)',
   },
   {
     id: '12',
@@ -352,8 +385,8 @@ export const dummyProducts: Product[] = [
     options: [],
     currencyCode: 'US$',
     priceRange: {
-      maxVariantPrice: '430',
-      minVariantPrice: '190',
+      maxVariantPrice: 430,
+      minVariantPrice: 190,
     },
     featuredImage: {
       url: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0',
@@ -372,10 +405,14 @@ export const dummyProducts: Product[] = [
     discount: '-63%',
     shippingCost: '4.19',
     rating: 4.4,
+    category: ['Books', 'Reading', 'Literature'],
+    color: 'White',
+    reviews: '(17 reviews)',
   },
 ];
 
 export const categoryOptions = [
+  'All Categories',
   'Electronics',
   'Fashion',
   'Home & Garden',
@@ -387,14 +424,24 @@ export const categoryOptions = [
   'Toys & Games',
   'Other',
 ];
-export const sortOptions = [
-  'Relevance',
-  'Trending',
-  'Best Rating',
-  'Price: Low to High',
-  'Price: High to Low',
+
+export const trendingCatgories = [
+  'Electronics',
+  'Fashion',
+  'Home & Garden',
+  'Sports',
+  'Books',
+  'Automative',
+  'Beauty & Personal Care',
+  'Health & Wellness',
+  'Toys & Games',
+  'Other',
 ];
-export const brandOptions = ['All Brands', 'Brand A', 'Brand B', 'Brand C', 'Brand D', 'Brand E'];
+
+export const sortOptions = ['Relevance', 'Best Rating', 'Price: Low to High', 'Price: High to Low'];
+
+export const brandOptions = ['All Brands', 'NBC', 'BBC', 'CNN', 'Reuters', 'Forbes', 'Shopify'];
+
 export const priceOptions = [
   'All Prices',
   '$1 - $50',

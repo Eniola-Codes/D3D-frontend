@@ -2,7 +2,7 @@
 
 import { Download, FolderPlus } from 'lucide-react';
 
-export function ProductItemActions({ title }: { title: string }) {
+export function ProductItemActions() {
   return (
     <div className="absolute right-3 bottom-3 z-10 hidden gap-2 group-hover:flex">
       <button
@@ -12,7 +12,6 @@ export function ProductItemActions({ title }: { title: string }) {
         onClick={event => {
           event.preventDefault();
           event.stopPropagation();
-          console.log(`Added ${title} to My Products`);
         }}
       >
         <FolderPlus className="size-4" />
@@ -24,7 +23,6 @@ export function ProductItemActions({ title }: { title: string }) {
         onClick={event => {
           event.preventDefault();
           event.stopPropagation();
-          console.log(`Added ${title} to Import List`);
         }}
       >
         <Download className="size-4" />
