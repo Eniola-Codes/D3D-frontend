@@ -13,7 +13,8 @@ const EmptyState = () => {
         <div className="space-y-2">
           <h3 className="text-foreground text-xl font-bold sm:text-2xl">No Products Found</h3>
           <p className="text-muted-foreground text-sm sm:text-base">
-            We couldn&apos;t find any products matching your filters. Try adjusting your search criteria.
+            We couldn&apos;t find any products matching your filters. Try adjusting your search
+            criteria.
           </p>
         </div>
       </div>

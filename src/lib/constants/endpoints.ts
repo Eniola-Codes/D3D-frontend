@@ -1,7 +1,7 @@
 export const endpoints = {
   base: '/api',
   auth: {
-    base: '/auth',
+    base: '/v1/auth',
     login: '/login',
     signup: '/signup',
     forgetPassword: '/forget-password',
@@ -10,7 +10,7 @@ export const endpoints = {
     logout: '/logout',
   },
   user: {
-    base: '/user',
+    base: '/v1/user',
     getUser: '/',
   },
   shopify: {
