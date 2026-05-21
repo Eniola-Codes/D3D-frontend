@@ -3,7 +3,7 @@ import { ForgetPassword } from './forget-password';
 import { VerifyOTP } from './verify-otp';
 import { ResetPassword } from './reset-password';
 import { routes } from '@/lib/constants/page-routes';
-import { UrlQueryParams } from '../../../interfaces/auth';
+import { UrlQueryParams } from '../../../../interfaces/auth';
 import {
   RESET_PASSWORD,
   FORGET_PASSWORD,

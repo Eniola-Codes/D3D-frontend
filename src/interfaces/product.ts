@@ -24,34 +24,67 @@ export interface ProductOption {
 
 export interface Product {
   id: string;
+  title: string;
   handle: string;
-  availableForSale: boolean;
+  url: string;
+  description: string;
+  options: IOption[];
+  featuredImage: string;
+  shipping: IShipping;
+  priceRange: IPriceRange;
+  rating: number;
+  reviews: IReview[];
+  seo: ISEO;
+  brand: IBrand;
+  variants?: IVariant[];
+  categories?: string[];
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+export interface IPriceRange {
+  minVariantPrice: number;
+  maxVariantPrice: number;
+}
+export interface IBrand {
+  handle: string;
+  title: string;
+  logo: string;
+  website: string;
+  currency: string;
+  shipping: IShipping;
+  createdAt: Date;
+  updatedAt: Date;
+}
+export interface IVariant {
+  id: string;
+  title: string;
+  price: number;
+  compareAtPrice: number;
+  available: boolean;
+  sku: string;
+  barcode: string;
+  images: string[];
+}
+
+export interface IReview {
+  review: string;
+  rating: number;
+  name: string;
+}
+
+export interface ISEO {
   title: string;
   description: string;
-  descriptionHtml: string;
-  options: ProductOption[];
-  currencyCode: string;
-  priceRange: {
-    maxVariantPrice: number;
-    minVariantPrice: number;
-  };
-  featuredImage: {
-    url: string;
-    altText: string;
-  };
-  images: Image[];
-  variants: ProductVariant[];
-  seo: SEO;
-  tags: string[];
-  updatedAt: string;
-  brandLogo: string;
-  brandName: string;
-  discount: string;
-  shippingCost: string;
-  rating: number;
-  category: string[];
-  color: string;
-  reviews: string;
+}
+
+export interface IShipping {
+  cost?: number;
+  deliveryTime?: string;
+}
+
+export interface IOption {
+  title: string;
+  values: string[];
 }
 
 export interface ProductVariant {
@@ -70,4 +103,17 @@ export interface Image {
   altText: string;
   width: number;
   height: number;
+}
+export interface ProductListItem {
+  _id: string;
+  handle: string;
+  title: string;
+  featuredImage: string;
+  rating: number;
+  description: string;
+  brand: IBrand;
+}
+export interface ProductListResponse {
+  products: ProductListItem[];
+  message: string;
 }

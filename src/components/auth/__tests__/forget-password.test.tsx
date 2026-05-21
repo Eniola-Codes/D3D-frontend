@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { useForgetPasswordForm } from '../hooks/forget-password';
-import { ForgetPassword } from '../components/forget-password';
+import { ForgetPassword } from '../components/user-auth/forget-password';
 import { toastFunc } from '@/lib/utils/toasts';
 import { routes } from '@/lib/constants/page-routes';
 import { submitForgetPasswordFormData } from '@/lib/utils/auth/form-handlers';

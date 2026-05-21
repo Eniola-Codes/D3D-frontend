@@ -8,8 +8,8 @@ import { Label } from '@/components/ui/label';
 import { FcGoogle } from 'react-icons/fc';
 import { Loader2 } from 'lucide-react';
 import { routes } from '@/lib/constants/page-routes';
-import { LoginSignupProps } from '../../../interfaces/auth';
-import { useAuthForm } from '../hooks/login-signup';
+import { LoginSignupProps } from '@/interfaces/auth';
+import { useAuthForm } from '../../hooks/login-signup';
 import { useRouter } from 'next/navigation';
 
 export function LoginSignup({ className, authParam, errorParam, ...props }: LoginSignupProps) {
