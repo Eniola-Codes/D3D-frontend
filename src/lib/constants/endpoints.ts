@@ -13,6 +13,10 @@ export const endpoints = {
     base: '/v1/user',
     getUser: '/',
   },
+  products: {
+    base: '/v1/products',
+    getProducts: '/',
+  },
   shopify: {
     base: '/shopify',
     init: '/init',

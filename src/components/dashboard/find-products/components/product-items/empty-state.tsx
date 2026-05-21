@@ -2,7 +2,7 @@ import { Search } from 'lucide-react';
 
 const EmptyState = () => {
   return (
-    <div className="absolute top-1/2 flex w-full -translate-y-1/2 items-center justify-center px-4">
+    <div className="absolute top-3/5 flex w-full -translate-y-1/2 items-center justify-center px-4">
       <div className="max-w-md space-y-6 text-center">
         <div className="flex justify-center">
           <div className="bg-muted flex h-20 w-20 items-center justify-center rounded-full">

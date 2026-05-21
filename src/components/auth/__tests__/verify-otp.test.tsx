@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { useOtpForm } from '../hooks/verify-otp';
-import { VerifyOTP } from '../components/verify-otp';
+import { VerifyOTP } from '../components/user-auth/verify-otp';
 import { toastFunc } from '@/lib/utils/toasts';
 import { submitVerifyOtpFormData } from '@/lib/utils/auth/form-handlers';
 import { toastErrorHandler } from '@/lib/utils/error-handler';

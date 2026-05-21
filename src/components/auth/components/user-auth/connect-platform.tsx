@@ -2,10 +2,10 @@
 
 import { cn } from '@/lib/utils/class-merge';
 import { routes } from '@/lib/constants/page-routes';
-import { Card } from '../../ui/card';
+import { Card } from '../../../ui/card';
 import Image from 'next/image';
-import { shopify_logo } from '../../../../public/assets/logo';
-import { useConnectPlatform } from '../hooks/connect-platform';
+import { shopify_logo } from '../../../../../public/assets/logo';
+import { useConnectPlatform } from '../../hooks/connect-platform';
 import Link from 'next/link';
 
 export function ConnectPlatform({ className }: React.ComponentPropsWithoutRef<'form'>) {

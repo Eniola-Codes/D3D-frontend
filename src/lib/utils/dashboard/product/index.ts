@@ -1,10 +1,7 @@
-export const getProductCardMeta = ({ discount, rating }: { discount: string; rating: number }) => {
-  const discountValue = Number(String(discount).replace(/[^0-9.]/g, '')) || 0;
-  const showDiscount = discountValue > 0;
+export const getRating = ({ rating }: { rating: number }) => {
   const ratingText = `${'★'.repeat(Math.round(rating))} ${rating.toFixed(1)}`;
 
   return {
-    showDiscount,
     ratingText,
   };
 };
