@@ -113,7 +113,17 @@ export interface ProductListItem {
   description: string;
   brand: IBrand;
 }
+
+export interface ProductListPagination {
+  currentPage: number;
+  nextPage: number;
+  prevPage: number;
+  totalCount: number;
+  totalPages: number;
+}
+
 export interface ProductListResponse {
   products: ProductListItem[];
+  pagination: ProductListPagination;
   message: string;
 }
