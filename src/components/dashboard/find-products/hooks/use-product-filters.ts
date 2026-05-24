@@ -18,7 +18,7 @@ export function useProductFilters({
   const [filters, setFilters] = useState({
     search: search,
     category: category || 'Categories',
-    sort: sort || 'Default',
+    sort: sort || 'Latest',
     brand: brand || 'Brands',
     price: price || 'Prices',
   });
@@ -36,12 +36,14 @@ export function useProductFilters({
     if (
       (filterKey === 'search' && value === '') ||
       (filterKey !== 'search' &&
-        (value === 'Categories' || value === 'Brands' || value === 'Prices' || value === 'Default'))
+        (value === 'Categories' || value === 'Brands' || value === 'Prices' || value === 'Latest'))
     ) {
       params.delete(filterKey);
     } else {
       params.set(filterKey, value);
     }
+
+    params.delete('page');
 
     router.replace(`${pathname}?${params.toString()}`);
   };
@@ -50,7 +52,7 @@ export function useProductFilters({
     setFilters({
       search: '',
       category: 'Categories',
-      sort: 'Default',
+      sort: 'Latest',
       brand: 'Brands',
       price: 'Prices',
     });
@@ -58,9 +60,17 @@ export function useProductFilters({
     router.replace(pathname);
   };
 
+  const hasActiveFilters =
+    filters.search !== '' ||
+    filters.category !== 'Categories' ||
+    filters.brand !== 'Brands' ||
+    filters.price !== 'Prices' ||
+    filters.sort !== 'Latest';
+
   return {
     filters,
     searchParams,
+    hasActiveFilters,
     handleFilterChange,
     handleResetFilters,
   };

@@ -24,7 +24,7 @@ export function ProductFilter({
   price: string;
   sort: string;
 }) {
-  const { filters, searchParams, handleFilterChange, handleResetFilters } = useProductFilters({
+  const { filters, hasActiveFilters, handleFilterChange, handleResetFilters } = useProductFilters({
     search,
     category,
     brand,
@@ -43,7 +43,7 @@ export function ProductFilter({
           />
           <button
             onClick={handleResetFilters}
-            disabled={!searchParams.toString()}
+            disabled={!hasActiveFilters}
             className="w-20 min-w-20 cursor-pointer rounded-sm bg-gray-900 py-2 text-sm whitespace-nowrap text-white transition-colors hover:bg-gray-800 disabled:cursor-not-allowed disabled:bg-gray-400 sm:hidden"
           >
             Reset
@@ -143,7 +143,7 @@ export function ProductFilter({
 
           <button
             onClick={handleResetFilters}
-            disabled={!searchParams.toString()}
+            disabled={!hasActiveFilters}
             className="ml-2 hidden w-20 min-w-20 cursor-pointer rounded-sm bg-gray-900 py-2 text-sm whitespace-nowrap text-white transition-colors hover:bg-gray-800 disabled:cursor-not-allowed disabled:bg-gray-400 sm:block xl:ml-3"
           >
             Reset
