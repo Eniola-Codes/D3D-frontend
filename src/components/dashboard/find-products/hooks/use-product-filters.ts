@@ -36,7 +36,7 @@ export function useProductFilters({
     if (
       (filterKey === 'search' && value === '') ||
       (filterKey !== 'search' &&
-        (value === 'Categories' || value === 'Brands' || value === 'Prices' || value === 'Latest'))
+      (value === 'Categories' || value === 'Brands' || value === 'Prices' || value === 'Latest'))
     ) {
       params.delete(filterKey);
     } else {
@@ -44,7 +44,6 @@ export function useProductFilters({
     }
 
     params.delete('page');
-
     router.replace(`${pathname}?${params.toString()}`);
   };
 
