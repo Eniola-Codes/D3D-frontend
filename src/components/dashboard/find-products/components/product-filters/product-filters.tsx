@@ -9,7 +9,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { SearchForm } from '@/components/ui/search-form';
 import { useProductFilters } from '@/components/dashboard/find-products/hooks/use-product-filters';
-import { categoryOptions, sortOptions, brandOptions, priceOptions } from '@/lib/data/product';
+import { sortOptions, priceOptions } from '@/lib/data/product';
+import { ProductListFilter } from '@/interfaces/product';
 
 export function ProductFilter({
   search,
@@ -17,19 +18,33 @@ export function ProductFilter({
   brand,
   price,
   sort,
+  filterOptions,
 }: {
   search: string;
   category: string;
   brand: string;
   price: string;
   sort: string;
+  filterOptions: ProductListFilter;
 }) {
-  const { filters, hasActiveFilters, handleFilterChange, handleResetFilters } = useProductFilters({
+  const {
+    filters,
+    categoryQuery,
+    setCategoryQuery,
+    categoryMatches,
+    brandQuery,
+    setBrandQuery,
+    brandMatches,
+    hasActiveFilters,
+    handleFilterChange,
+    handleResetFilters,
+  } = useProductFilters({
     search,
     category,
     brand,
     price,
     sort,
+    filterOptions,
   });
 
   return (
@@ -62,15 +77,33 @@ export function ProductFilter({
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
-                {categoryOptions.map(option => (
+                <div className="p-1">
+                  <input
+                    value={categoryQuery}
+                    onChange={e => setCategoryQuery(e.target.value)}
+                    onKeyDown={e => e.stopPropagation()}
+                    placeholder="Search categories..."
+                    className="border-border bg-background text-foreground focus:ring-ring w-full rounded-sm border px-3 py-2 text-sm outline-none focus:ring-1"
+                  />
+                </div>
+                <DropdownMenuItem
+                  onClick={() => handleFilterChange('category', 'All Categories')}
+                  className={`cursor-pointer ${filters.category === 'All Categories' ? 'bg-accent' : ''}`}
+                >
+                  All Categories
+                </DropdownMenuItem>
+                {categoryMatches.map(option => (
                   <DropdownMenuItem
-                    key={option}
-                    onClick={() => handleFilterChange('category', option)}
-                    className={filters.category === option ? 'bg-accent' : ''}
+                    key={option._id}
+                    onClick={() => handleFilterChange('category', option.title)}
+                    className={`cursor-pointer ${filters.category === option.title ? 'bg-accent' : ''}`}
                   >
-                    {option}
+                    {option.title}
                   </DropdownMenuItem>
                 ))}
+                {categoryMatches.length === 0 && (
+                  <div className="text-muted-foreground px-3 py-2 text-sm">No matching categories</div>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
 
@@ -84,15 +117,43 @@ export function ProductFilter({
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
-                {brandOptions.map(option => (
+                <div className="p-1">
+                  <input
+                    value={brandQuery}
+                    onChange={e => setBrandQuery(e.target.value)}
+                    onKeyDown={e => e.stopPropagation()}
+                    placeholder="Search brands..."
+                    className="border-border bg-background text-foreground focus:ring-ring w-full rounded-sm border px-3 py-2 text-sm outline-none focus:ring-1"
+                  />
+                </div>
+                <DropdownMenuItem
+                  onClick={() => handleFilterChange('brand', 'All Brands')}
+                  className={`cursor-pointer ${filters.brand === 'All Brands' ? 'bg-accent' : ''}`}
+                >
+                  All Brands
+                </DropdownMenuItem>
+                {filterOptions.brands.map(option => (
                   <DropdownMenuItem
-                    key={option}
-                    onClick={() => handleFilterChange('brand', option)}
-                    className={filters.brand === option ? 'bg-accent' : ''}
+                    key={option._id}
+                    onClick={() => handleFilterChange('brand', option.title)}
+                    className={`cursor-pointer ${filters.brand === option.title ? 'bg-accent' : ''}`}
                   >
-                    {option}
+                    <div className="flex items-center gap-2">
+                      {option.logo ? (
+                        // eslint-disable-next-line @next/next/no-img-element -- external brand logos from backend
+                        <img
+                          className="h-4 w-4 rounded-sm object-contain"
+                          src={option.logo}
+                          alt={option.title}
+                        />
+                      ) : null}
+                      <span>{option.title}</span>
+                    </div>
                   </DropdownMenuItem>
                 ))}
+                {brandMatches.length === 0 && (
+                  <div className="text-muted-foreground px-3 py-2 text-sm">No matching brands</div>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
 
