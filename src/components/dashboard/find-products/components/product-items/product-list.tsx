@@ -17,6 +17,7 @@ export default function ProductList({ products }: { products: ProductListItem[] 
               src={product.featuredImage}
               rating={product.rating}
               brand={product.brand}
+              price={product.priceRange}
             />
           </Link>
         </div>

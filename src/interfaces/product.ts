@@ -112,8 +112,8 @@ export interface ProductListItem {
   rating: number;
   description: string;
   brand: IBrand;
+  priceRange: IPriceRange;
 }
-
 export interface ProductListPagination {
   currentPage: number;
   nextPage: number;
@@ -122,8 +122,27 @@ export interface ProductListPagination {
   totalPages: number;
 }
 
+export interface ProductListFilterBrand {
+  _id: string;
+  handle: string;
+  title: string;
+  logo: string;
+}
+
+export interface ProductListFilterCategory {
+  _id: string;
+  handle: string;
+  title: string;
+}
+
+export interface ProductListFilter {
+  brands: ProductListFilterBrand[];
+  categories: ProductListFilterCategory[];
+}
+
 export interface ProductListResponse {
   products: ProductListItem[];
   pagination: ProductListPagination;
+  filter: ProductListFilter;
   message: string;
 }
