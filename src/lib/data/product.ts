@@ -1,4 +1,10 @@
-export const sortOptions = ['Newest', 'Popular', 'Top Rated', 'Price: Low to High', 'Price: High to Low'];
+export const sortOptions = [
+  'Newest',
+  'Popular',
+  'Top Rated',
+  'Price: Low to High',
+  'Price: High to Low',
+];
 
 export const priceOptions = [
   'All Prices',

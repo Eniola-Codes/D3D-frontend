@@ -41,7 +41,10 @@ export function useProductFilters({
     if (
       (filterKey === 'search' && value === '') ||
       (filterKey !== 'search' &&
-        (value === 'All Categories' || value === 'All Brands' || value === 'All Prices' || value === 'Newest'))
+        (value === 'All Categories' ||
+          value === 'All Brands' ||
+          value === 'All Prices' ||
+          value === 'Newest'))
     ) {
       params.delete(filterKey);
     } else {
@@ -76,14 +79,18 @@ export function useProductFilters({
     if (!brandQuery) {
       return filterOptions.brands.slice(0, 12);
     }
-    return filterOptions.brands.filter(option => option.title.toLowerCase().includes(brandQuery.toLowerCase().trim()));
+    return filterOptions.brands.filter(option =>
+      option.title.toLowerCase().includes(brandQuery.toLowerCase().trim())
+    );
   }, [filterOptions.brands, brandQuery]);
 
   const categoryMatches = useMemo(() => {
     if (!categoryQuery) {
       return filterOptions.categories.slice(0, 12);
     }
-    return filterOptions.categories.filter(option => option.title.toLowerCase().includes(categoryQuery.toLowerCase().trim()));
+    return filterOptions.categories.filter(option =>
+      option.title.toLowerCase().includes(categoryQuery.toLowerCase().trim())
+    );
   }, [filterOptions.categories, categoryQuery]);
 
   return {

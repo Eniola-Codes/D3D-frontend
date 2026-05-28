@@ -11,7 +11,7 @@ export function ProductItem({
   src,
   rating,
   brand,
-  price
+  price,
 }: {
   title: string;
   src: string;
@@ -47,7 +47,9 @@ export function ProductItem({
           <ProductItemCopy title={title} />
         </div>
         <div className="mt-4 flex items-center justify-between">
-          <p className="text-base font-semibold">US$ {price?.minVariantPrice} - {price?.maxVariantPrice}</p>
+          <p className="text-base font-semibold">
+            US$ {price?.minVariantPrice} - {price?.maxVariantPrice}
+          </p>
         </div>
         <div className="mt-2 flex items-center justify-between text-xs text-neutral-600">
           <p>Rating</p>

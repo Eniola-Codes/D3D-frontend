@@ -102,7 +102,9 @@ export function ProductFilter({
                   </DropdownMenuItem>
                 ))}
                 {categoryMatches.length === 0 && (
-                  <div className="text-muted-foreground px-3 py-2 text-sm">No matching categories</div>
+                  <div className="text-muted-foreground px-3 py-2 text-sm">
+                    No matching categories
+                  </div>
                 )}
               </DropdownMenuContent>
             </DropdownMenu>
