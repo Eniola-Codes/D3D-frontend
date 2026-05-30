@@ -7,10 +7,10 @@ export const sortOptions = [
 ];
 
 export const priceOptions = [
-  'Prices',
-  '$1 - $50',
-  '$51 - $100',
-  '$101 - $200',
-  '$201 - $500',
+  'All Prices',
+  'Under $50',
+  '$50 - $100',
+  '$100 - $200',
+  '$200 - $500',
   'Above $500',
 ];
