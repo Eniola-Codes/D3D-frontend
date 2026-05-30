@@ -134,7 +134,7 @@ export function ProductFilter({
                 >
                   All Brands
                 </DropdownMenuItem>
-                {filterOptions.brands.map(option => (
+                {brandMatches.map(option => (
                   <DropdownMenuItem
                     key={option._id}
                     onClick={() => handleFilterChange('brand', option.title)}
@@ -173,7 +173,7 @@ export function ProductFilter({
                   <DropdownMenuItem
                     key={option}
                     onClick={() => handleFilterChange('price', option)}
-                    className={filters.price === option ? 'bg-accent' : ''}
+                    className={`cursor-pointer ${filters.price === option ? 'bg-accent' : ''}`}
                   >
                     {option}
                   </DropdownMenuItem>
@@ -195,7 +195,7 @@ export function ProductFilter({
                   <DropdownMenuItem
                     key={option}
                     onClick={() => handleFilterChange('sort', option)}
-                    className={filters.sort === option ? 'bg-accent' : ''}
+                    className={`cursor-pointer ${filters.sort === option ? 'bg-accent' : ''}`}
                   >
                     {option}
                   </DropdownMenuItem>

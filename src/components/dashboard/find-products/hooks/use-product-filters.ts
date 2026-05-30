@@ -21,7 +21,7 @@ export function useProductFilters({
   const [categoryQuery, setCategoryQuery] = useState('');
   const [brandQuery, setBrandQuery] = useState('');
   const [filters, setFilters] = useState({
-    search: search,
+    search: search ?? '',
     category: category || 'All Categories',
     sort: sort || 'Newest',
     brand: brand || 'All Brands',
@@ -69,7 +69,7 @@ export function useProductFilters({
   };
 
   const hasActiveFilters =
-    filters.search !== '' ||
+    (filters.search ?? '') !== '' ||
     filters.category !== 'All Categories' ||
     filters.brand !== 'All Brands' ||
     filters.price !== 'All Prices' ||
