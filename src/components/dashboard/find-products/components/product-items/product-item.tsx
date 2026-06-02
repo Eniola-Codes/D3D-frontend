@@ -2,9 +2,10 @@ import clsx from 'clsx';
 import { ProductItemActions } from '../product-actions/product-item-actions';
 import { ProductBrandBadge } from '../product-actions/product-brand-badge';
 import { getRating } from '@/lib/utils/dashboard/product';
-import { defaultProductImage } from '../../../../../../public/assets/default-images';
 import { IBrand, IPriceRange } from '@/interfaces/product';
 import { ProductItemCopy } from '../product-actions/product-item-copy';
+import Image from 'next/image';
+import { shimmer, toBase64 } from '@/lib/utils/image-shimmer';
 
 export function ProductItem({
   title,
@@ -12,12 +13,14 @@ export function ProductItem({
   rating,
   brand,
   price,
+  priority,
 }: {
   title: string;
   src: string;
   rating: number;
   brand: IBrand;
   price: IPriceRange;
+  priority: boolean;
 }) {
   const { ratingText } = getRating({
     rating,
@@ -31,11 +34,17 @@ export function ProductItem({
     >
       <div className="relative h-50 w-full shrink-0 overflow-hidden bg-white">
         <ProductItemActions />
-        {/* eslint-disable-next-line @next/next/no-img-element -- external product images; migrate to next/image later */}
-        <img
+        <Image
           className="m-auto h-full w-full object-cover"
-          src={src || defaultProductImage.src}
+          src={src}
           alt={title}
+          width={500}
+          height={500}
+          placeholder= {`data:image/svg+xml;base64,${toBase64
+            (
+            shimmer(700, 475)
+          )}`}
+          priority={priority}
         />
       </div>
       <div className="w-full border-t bg-white p-4 text-sm text-black">
