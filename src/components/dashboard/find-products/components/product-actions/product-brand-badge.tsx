@@ -1,8 +1,9 @@
-'use client';
-
+import Link from 'next/link';
+import Image from 'next/image';
 import { routes } from '@/lib/constants/page-routes';
 import { getBrandInitials } from '@/lib/utils/dashboard/brand';
-import { useRouter } from 'next/navigation';
+
+const productsPath = `${routes.dashboard.path.base}${routes.dashboard.path.findProducts}`;
 
 export function ProductBrandBadge({
   brandLogo,
@@ -12,29 +13,21 @@ export function ProductBrandBadge({
   brandName: string;
 }) {
   const initials = getBrandInitials(brandName);
-  const router = useRouter();
+  const href = `${productsPath}?brand=${encodeURIComponent(brandName)}`;
+
   return (
-    <button
-      aria-label={`Open brand ${brandName}`}
-      className="inline-flex h-5 min-w-5 items-center justify-center rounded bg-neutral-100 px-1 text-[10px] font-semibold text-neutral-700"
-      onClick={() => {
-        router.push(
-          `${routes.dashboard.path.base}/dashboard?brand=${encodeURIComponent(brandName)}`
-        );
-      }}
+    <Link
+      href={href}
+      aria-label={`Filter by ${brandName}`}
+      className="relative z-1 shrink-0 transition hover:scale-110"
     >
       {brandLogo ? (
-        // eslint-disable-next-line @next/next/no-img-element -- external brand logos; migrate to next/image later
-        <img
-          src={brandLogo}
-          alt={brandName}
-          width={16}
-          height={16}
-          className="h-4 w-4 object-contain"
-        />
+        <Image src={brandLogo} alt="" width={20} height={20} />
       ) : (
-        initials
+        <span className="inline-block rounded-full bg-gray-200 px-1.5 py-[1px] text-sm font-semibold text-neutral-700">
+          {initials}
+        </span>
       )}
-    </button>
+    </Link>
   );
 }

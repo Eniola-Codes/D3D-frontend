@@ -11,6 +11,8 @@ import { SearchForm } from '@/components/ui/search-form';
 import { useProductFilters } from '@/components/dashboard/find-products/hooks/use-product-filters';
 import { sortOptions, priceOptions } from '@/lib/data/product';
 import { ProductListFilter } from '@/interfaces/product';
+import Image from 'next/image';
+import { getBrandInitials } from '@/lib/utils/dashboard/brand';
 
 export function ProductFilter({
   search,
@@ -134,25 +136,33 @@ export function ProductFilter({
                 >
                   All Brands
                 </DropdownMenuItem>
-                {brandMatches.map(option => (
-                  <DropdownMenuItem
-                    key={option._id}
-                    onClick={() => handleFilterChange('brand', option.title)}
-                    className={`cursor-pointer ${filters.brand === option.title ? 'bg-accent' : ''}`}
-                  >
-                    <div className="flex items-center gap-2">
-                      {option.logo ? (
-                        // eslint-disable-next-line @next/next/no-img-element -- external brand logos from backend
-                        <img
-                          className="h-4 w-4 rounded-sm object-contain"
-                          src={option.logo}
-                          alt={option.title}
-                        />
-                      ) : null}
-                      <span>{option.title}</span>
-                    </div>
-                  </DropdownMenuItem>
-                ))}
+                {brandMatches.map(option => {
+                  const initials = getBrandInitials(option.title);
+                  return (
+                    <DropdownMenuItem
+                      key={option._id}
+                      onClick={() => handleFilterChange('brand', option.title)}
+                      className={`cursor-pointer ${filters.brand === option.title ? 'bg-accent' : ''}`}
+                    >
+                      <div className="flex items-center gap-2">
+                        {option.logo ? (
+                          <Image
+                            className="rounded-sm object-contain"
+                            src={option.logo}
+                            alt={option.title}
+                            width={20}
+                            height={20}
+                          />
+                        ) : (
+                          <span className="inline-block rounded-full bg-gray-200 px-1.5 py-[1px] text-sm font-semibold text-neutral-700">
+                            {initials}
+                          </span>
+                        )}
+                        <span>{option.title}</span>
+                      </div>
+                    </DropdownMenuItem>
+                  );
+                })}
                 {brandMatches.length === 0 && (
                   <div className="text-muted-foreground px-3 py-2 text-sm">No matching brands</div>
                 )}
