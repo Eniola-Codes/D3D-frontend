@@ -19,17 +19,14 @@ export function ProductBrandBadge({
     <Link
       href={href}
       aria-label={`Filter by ${brandName}`}
-      className="relative z-10 shrink-0 transition hover:scale-110"
+      className="relative z-1 shrink-0 transition hover:scale-110"
     >
       {brandLogo ? (
-        <Image
-          src={brandLogo}
-          alt=""
-          width={20}
-          height={20}
-        />
+        <Image src={brandLogo} alt="" width={20} height={20} />
       ) : (
-        <span className='inline-block bg-gray-200 rounded-full py-[1px] px-1.5 text-sm font-semibold text-neutral-700'>{initials}</span>
+        <span className="inline-block rounded-full bg-gray-200 px-1.5 py-[1px] text-sm font-semibold text-neutral-700">
+          {initials}
+        </span>
       )}
     </Link>
   );

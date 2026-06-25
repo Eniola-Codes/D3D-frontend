@@ -4,7 +4,7 @@ import { Download, FolderPlus } from 'lucide-react';
 
 export function ProductItemActions() {
   return (
-    <div className="absolute right-3 bottom-3 z-1 hidden gap-2 group-hover:flex">
+    <div className="pointer-events-auto absolute right-3 bottom-3 z-10 hidden gap-2 group-hover:flex">
       <button
         type="button"
         aria-label="Add to my products"

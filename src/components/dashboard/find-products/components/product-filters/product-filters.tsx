@@ -136,7 +136,7 @@ export function ProductFilter({
                 >
                   All Brands
                 </DropdownMenuItem>
-                {brandMatches.map((option) => {
+                {brandMatches.map(option => {
                   const initials = getBrandInitials(option.title);
                   return (
                     <DropdownMenuItem
@@ -153,12 +153,15 @@ export function ProductFilter({
                             width={20}
                             height={20}
                           />
-                        ) : <span className='inline-block bg-gray-200 rounded-full py-[1px] px-1.5 text-sm font-semibold text-neutral-700'>{initials}</span>
-                        }
+                        ) : (
+                          <span className="inline-block rounded-full bg-gray-200 px-1.5 py-[1px] text-sm font-semibold text-neutral-700">
+                            {initials}
+                          </span>
+                        )}
                         <span>{option.title}</span>
                       </div>
                     </DropdownMenuItem>
-                  )
+                  );
                 })}
                 {brandMatches.length === 0 && (
                   <div className="text-muted-foreground px-3 py-2 text-sm">No matching brands</div>

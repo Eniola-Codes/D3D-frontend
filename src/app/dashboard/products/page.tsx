@@ -32,7 +32,7 @@ export default async function SearchPage(props: {
       message: 'Failed to fetch products',
     };
   }
-    
+
   return (
     <DashboardLayout>
       <ProductFilter
