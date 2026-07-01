@@ -8,6 +8,14 @@ jobs:
   auth-tests:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    environment: ${{ github.event_name == 'push' && 'Production' || 'Preview' }}
+    env:
+      BASE_URL: ${{ vars.BASE_URL || 'http://localhost:3000' }}
+      TEST_EMAIL: ${{ vars.TEST_EMAIL }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      IMAGE_HOSTNAME: ${{ vars.IMAGE_HOSTNAME }}
+      NEXT_PUBLIC_API_URL: ${{ vars.NEXT_PUBLIC_API_URL }}
+      NEXT_PUBLIC_GOOGLE_CALLBACK_URL: ${{ vars.NEXT_PUBLIC_GOOGLE_CALLBACK_URL }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -20,7 +28,7 @@ jobs:
       - name: Build app
         run: npm run build
       - name: Run Playwright tests
-        run: npx playwright test
+        run: npm run e2e
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
