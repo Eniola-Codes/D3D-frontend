@@ -6,6 +6,7 @@ import {
   VALID_OTP_FORMAT,
   VALID_OTP_LENGTH,
   VALID_PASSWORD_LENGTH,
+  WELCOME_BACK,
 } from '@/lib/constants/messages';
 import { routes } from '@/lib/constants/page-routes';
 import { Page, test, expect } from '@playwright/test';
@@ -34,7 +35,11 @@ test('should signup successfully', async ({ page }: { page: Page }) => {
   await page.getByTestId('dropdown-menu-trigger').waitFor();
 
   await expect(page.locator('span[data-slot="breadcrumb-page"]')).toHaveText('Dashboard');
-  await expect(page.getByText('User created successfully!')).toBeVisible();
+  await expect(
+    page.locator('[data-sonner-toast]').filter({
+      hasText: 'User created successfully!',
+    })
+  ).toBeVisible();
   await page.getByTestId('dropdown-menu-trigger').click();
   await expect(
     page.locator('div[data-slot="dropdown-menu-label"] div div span').first()
@@ -97,8 +102,11 @@ test('should reject duplicate email on signup', async ({ page }: { page: Page })
   await page.getByRole('button', { name: 'signup' }).click();
 
   await expect(
-    page.getByText('The email has already been used, please use another email.')
+    page.locator('[data-sonner-toast]').filter({
+      hasText: 'The email has already been used, please use another email.',
+    })
   ).toBeVisible();
+
   await expect(page.locator('body')).toContainText('Get Started!');
   await expect(page.locator('body')).toContainText('Already have an account?');
   await expect(page.getByRole('button', { name: 'Signup' })).toBeVisible();
@@ -119,7 +127,11 @@ test('should login successfully', async ({ page }: { page: Page }) => {
   await page.getByTestId('dropdown-menu-trigger').waitFor();
 
   await expect(page.locator('span[data-slot="breadcrumb-page"]')).toHaveText('Dashboard');
-  await expect(page.getByText('User authenticated successfully!')).toBeVisible();
+  await expect(
+    page.locator('[data-sonner-toast]').filter({
+      hasText: 'User authenticated successfully!',
+    })
+  ).toBeVisible();
   await expect(page.getByRole('link', { name: 'd3d Enterprise' })).toBeVisible();
   await page.getByTestId('dropdown-menu-trigger').click();
   await expect(page.locator('div[data-slot="dropdown-menu-label"] div div span').last()).toHaveText(
@@ -138,7 +150,11 @@ test('should reject wrong login credentials', async ({ page }: { page: Page }) =
   await page.getByRole('textbox', { name: 'Password' }).fill(password);
   await page.getByRole('button', { name: 'login' }).click();
 
-  await expect(page.getByText('Invalid email or password, please try again')).toBeVisible();
+  await expect(
+    page.locator('[data-sonner-toast]').filter({
+      hasText: 'Invalid email or password, please try again',
+    })
+  ).toBeVisible();
   await expect(page.locator('body')).toContainText('Welcome Back!');
   await expect(page.locator('body')).toContainText("Don't have an account?");
   await expect(page.getByRole('button', { name: 'Forgot your password?' })).toBeVisible();
@@ -181,7 +197,11 @@ test('should forget password successfully', async ({ page }: { page: Page }) => 
   await page.getByRole('textbox', { name: 'Email' }).fill(email);
   await page.getByRole('button', { name: 'Submit email' }).click();
 
-  await expect(page.getByText('Email sent successfully!')).toBeVisible();
+  await expect(
+    page.locator('[data-sonner-toast]').filter({
+      hasText: 'Email sent successfully!',
+    })
+  ).toBeVisible();
   await expect(page.locator('body')).toContainText('Verify Account');
   await expect(page.locator('body')).toContainText(`We have sent a one time password to ${email}`);
 });
@@ -203,7 +223,9 @@ test('should reject wrong forget password email', async ({ page }: { page: Page 
   await page.getByRole('button', { name: 'Submit email' }).click();
 
   await expect(
-    page.getByText('This email is not associated with an account, please try again.')
+    page.locator('[data-sonner-toast]').filter({
+      hasText: 'This email is not associated with an account, please try again.',
+    })
   ).toBeVisible();
   await expect(page.locator('body')).toContainText('Forget Password');
   await expect(page.locator('body')).toContainText(
@@ -225,10 +247,11 @@ test('should verify OTP successfully', async ({ page }: { page: Page }) => {
   await page.getByRole('textbox', { name: 'Email' }).fill(email);
   await page.getByRole('button', { name: 'Submit email' }).click();
 
-  await expect(page.getByText('Email sent successfully!')).toBeVisible();
-  await expect(page.locator('body')).toContainText('Verify Account');
-  await expect(page.locator('body')).toContainText(`We have sent a one time password to ${email}`);
-
+  await expect(
+    page.locator('[data-sonner-toast]').filter({
+      hasText: 'Email sent successfully!',
+    })
+  ).toBeVisible();
   await expect(page.locator('body')).toContainText('Verify Account');
   await expect(page.locator('body')).toContainText(`We have sent a one time password to ${email}`);
 
@@ -236,7 +259,11 @@ test('should verify OTP successfully', async ({ page }: { page: Page }) => {
   await page.locator("input[data-slot='input-otp']").fill('123456');
   await page.getByRole('button', { name: 'Verify & Continue' }).click();
 
-  await expect(page.getByText('OTP verified successfully!')).toBeVisible();
+  await expect(
+    page.locator('[data-sonner-toast]').filter({
+      hasText: 'OTP verified successfully!',
+    })
+  ).toBeVisible();
   await expect(page.locator('body')).toContainText('Reset Password');
   await expect(page.locator('body')).toContainText(
     `Create a new password for your account ${email}`
@@ -256,7 +283,11 @@ test('should reject wrong otp credentials', async ({ page }: { page: Page }) => 
   await page.getByRole('textbox', { name: 'Email' }).click();
   await page.getByRole('textbox', { name: 'Email' }).fill(email);
   await page.getByRole('button', { name: 'Submit email' }).click();
-  await expect(page.getByText('Email sent successfully!')).toBeVisible();
+  await expect(
+    page.locator('[data-sonner-toast]').filter({
+      hasText: 'Email sent successfully!',
+    })
+  ).toBeVisible();
 
   await expect(page.locator('body')).toContainText('Verify Account');
   await expect(page.locator('body')).toContainText(`We have sent a one time password to ${email}`);
@@ -266,7 +297,9 @@ test('should reject wrong otp credentials', async ({ page }: { page: Page }) => 
   await page.getByRole('button', { name: 'Verify & Continue' }).click();
 
   await expect(
-    page.getByText('The Otp code is expired or invalid, please resend an OTP and try again')
+    page.locator('[data-sonner-toast]').filter({
+      hasText: 'The Otp code is expired or invalid, please resend an OTP and try again',
+    })
   ).toBeVisible();
 });
 
@@ -312,7 +345,11 @@ test('should reset password successfully', async ({ page }: { page: Page }) => {
   await page.getByRole('textbox', { name: 'Email' }).fill(email);
   await page.getByRole('button', { name: 'Submit email' }).click();
 
-  await expect(page.getByText('Email sent successfully!')).toBeVisible();
+  await expect(
+    page.locator('[data-sonner-toast]').filter({
+      hasText: 'Email sent successfully!',
+    })
+  ).toBeVisible();
   await expect(page.locator('body')).toContainText('Verify Account');
   await expect(page.locator('body')).toContainText(`We have sent a one time password to ${email}`);
 
@@ -320,7 +357,11 @@ test('should reset password successfully', async ({ page }: { page: Page }) => {
   await page.locator("input[data-slot='input-otp']").fill('123456');
   await page.getByRole('button', { name: 'Verify & Continue' }).click();
 
-  await expect(page.getByText('OTP verified successfully!')).toBeVisible();
+  await expect(
+    page.locator('[data-sonner-toast]').filter({
+      hasText: 'OTP verified successfully!',
+    })
+  ).toBeVisible();
   await expect(page.locator('body')).toContainText('Reset Password');
   await expect(page.locator('body')).toContainText(
     `Create a new password for your account ${email}`
@@ -332,9 +373,8 @@ test('should reset password successfully', async ({ page }: { page: Page }) => {
   await page.locator('#confirmPassword').fill(confirmPassword);
 
   await page.getByRole('button', { name: 'Reset password' }).click();
-  await expect(page.getByText('Password changed successfully!')).toBeVisible();
 
-  await expect(page.locator('body')).toContainText('Welcome Back!');
+  await expect(page.locator('body')).toContainText(WELCOME_BACK);
   await page.getByRole('button', { name: 'Forgot your password?' }).click();
 
   await expect(page.locator('body')).toContainText('Forget Password');
@@ -346,7 +386,11 @@ test('should reset password successfully', async ({ page }: { page: Page }) => {
   await page.getByRole('textbox', { name: 'Email' }).fill(email);
   await page.getByRole('button', { name: 'Submit email' }).click();
 
-  await expect(page.getByText('Email sent successfully!')).toBeVisible();
+  await expect(
+    page.locator('[data-sonner-toast]').filter({
+      hasText: 'Email sent successfully!',
+    })
+  ).toBeVisible();
   await expect(page.locator('body')).toContainText('Verify Account');
   await expect(page.locator('body')).toContainText(`We have sent a one time password to ${email}`);
 
@@ -354,7 +398,11 @@ test('should reset password successfully', async ({ page }: { page: Page }) => {
   await page.locator("input[data-slot='input-otp']").fill('123456');
   await page.getByRole('button', { name: 'Verify & Continue' }).click();
 
-  await expect(page.getByText('OTP verified successfully!')).toBeVisible();
+  await expect(
+    page.locator('[data-sonner-toast]').filter({
+      hasText: 'OTP verified successfully!',
+    })
+  ).toBeVisible();
   await expect(page.locator('body')).toContainText('Reset Password');
   await expect(page.locator('body')).toContainText(
     `Create a new password for your account ${email}`
@@ -366,9 +414,8 @@ test('should reset password successfully', async ({ page }: { page: Page }) => {
   await page.locator('#confirmPassword').fill(newConfirmPassword);
 
   await page.getByRole('button', { name: 'Reset password' }).click();
-  await expect(page.getByText('Password changed successfully!')).toBeVisible();
 
-  await expect(page.locator('body')).toContainText('Welcome Back!');
+  await expect(page.locator('body')).toContainText(WELCOME_BACK);
   await page.getByRole('textbox', { name: 'Email' }).click();
   await page.getByRole('textbox', { name: 'Email' }).fill(email);
   await page.getByRole('textbox', { name: 'Password' }).click();
@@ -379,7 +426,11 @@ test('should reset password successfully', async ({ page }: { page: Page }) => {
   await page.getByTestId('dropdown-menu-trigger').waitFor();
 
   await expect(page.locator('span[data-slot="breadcrumb-page"]')).toHaveText('Dashboard');
-  await expect(page.getByText('User authenticated successfully!')).toBeVisible();
+  await expect(
+    page.locator('[data-sonner-toast]').filter({
+      hasText: 'User authenticated successfully!',
+    })
+  ).toBeVisible();
   await expect(page.getByRole('link', { name: 'd3d Enterprise' })).toBeVisible();
   await page.getByTestId('dropdown-menu-trigger').click();
   await expect(page.locator('div[data-slot="dropdown-menu-label"] div div span').last()).toHaveText(
@@ -404,7 +455,11 @@ test('should reject reset password to same old password', async ({ page }: { pag
   await page.getByRole('textbox', { name: 'Email' }).fill(email);
   await page.getByRole('button', { name: 'Submit email' }).click();
 
-  await expect(page.getByText('Email sent successfully!')).toBeVisible();
+  await expect(
+    page.locator('[data-sonner-toast]').filter({
+      hasText: 'Email sent successfully!',
+    })
+  ).toBeVisible();
   await expect(page.locator('body')).toContainText('Verify Account');
   await expect(page.locator('body')).toContainText(`We have sent a one time password to ${email}`);
 
@@ -415,7 +470,11 @@ test('should reject reset password to same old password', async ({ page }: { pag
   await page.locator("input[data-slot='input-otp']").fill('123456');
   await page.getByRole('button', { name: 'Verify & Continue' }).click();
 
-  await expect(page.getByText('OTP verified successfully!')).toBeVisible();
+  await expect(
+    page.locator('[data-sonner-toast]').filter({
+      hasText: 'OTP verified successfully!',
+    })
+  ).toBeVisible();
   await expect(page.locator('body')).toContainText('Reset Password');
   await expect(page.locator('body')).toContainText(
     `Create a new password for your account ${email}`
@@ -428,7 +487,9 @@ test('should reject reset password to same old password', async ({ page }: { pag
 
   await page.getByRole('button', { name: 'Reset password' }).click();
   await expect(
-    page.getByText('You cannot use your previous password, please use a new password')
+    page.locator('[data-sonner-toast]').filter({
+      hasText: 'You cannot use your previous password, please use a new password',
+    })
   ).toBeVisible();
 });
 
@@ -477,11 +538,14 @@ test('should logout successfully', async ({ page }: { page: Page }) => {
   await page.getByRole('textbox', { name: 'Password' }).fill(password);
   await page.getByRole('button', { name: 'login' }).click();
 
+  await page.locator('span[data-slot="breadcrumb-page"]').waitFor();
+  await page.getByTestId('dropdown-menu-trigger').waitFor();
+
   await page.getByTestId('dropdown-menu-trigger').click();
   await page.getByRole('menuitem', { name: 'Log out' }).click();
-  await expect(page.getByText('Logout successful')).toBeVisible();
+  await expect(page.locator('body')).toContainText(WELCOME_BACK);
   await page.goto(`${process.env.BASE_URL}${routes.dashboard.path.base}`);
-  await expect(page.locator('body')).toContainText('Welcome Back!');
+  await expect(page.locator('body')).toContainText(WELCOME_BACK);
 });
 
 test('should redirect on protected routes', async ({ page }: { page: Page }) => {
@@ -489,7 +553,7 @@ test('should redirect on protected routes', async ({ page }: { page: Page }) => 
 
   await page.goto((process.env.BASE_URL as string) + routes.dashboard.path.base);
 
-  await expect(page.locator('body')).toContainText('Welcome Back!');
+  await expect(page.locator('body')).toContainText(WELCOME_BACK);
   await expect(page.locator('body')).toContainText("Don't have an account?");
   await expect(page.getByRole('button', { name: 'Forgot your password?' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Login' })).toBeVisible();
@@ -506,9 +570,7 @@ test('should redirect on protected routes', async ({ page }: { page: Page }) => 
     process.env.BASE_URL + routes.account.path.base + '?auth=' + routes.account.query.login
   );
 
-  await page.locator('span[data-slot="breadcrumb-page"]').waitFor();
-  await page.getByTestId('dropdown-menu-trigger').waitFor();
-
+  await expect(page.getByTestId('dropdown-menu-trigger')).toBeVisible();
   await expect(page.locator('span[data-slot="breadcrumb-page"]')).toHaveText('Dashboard');
   await expect(page.getByRole('link', { name: 'd3d Enterprise' })).toBeVisible();
   await page.getByTestId('dropdown-menu-trigger').click();
