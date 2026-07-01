@@ -36,7 +36,7 @@ const HeroSection: React.FC = () => {
           <div className="buttons-container mt-8 flex items-center justify-center space-x-3 sm:space-x-5">
             <Link
               className="cursor-pointer"
-              href={`${routes.account.path.base}?${routes.account.keys.auth}=${routes.account.query.signup}`}
+              href={`${routes.account.path.base}?${routes.account.keys.auth}=${routes.account.query.login}`}
             >
               <Button type="button" size={'lg'}>
                 <span>Get Started</span>

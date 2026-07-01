@@ -11,6 +11,7 @@ import { routes } from '@/lib/constants/page-routes';
 import { LoginSignupProps } from '@/interfaces/auth';
 import { useAuthForm } from '../../hooks/login-signup';
 import { useRouter } from 'next/navigation';
+import { ALREADY_HAVE_AN_ACCOUNT, DONT_HAVE_AN_ACCOUNT } from '@/lib/constants/messages';
 
 export function LoginSignup({ className, authParam, errorParam, ...props }: LoginSignupProps) {
   const router = useRouter();
@@ -102,7 +103,7 @@ export function LoginSignup({ className, authParam, errorParam, ...props }: Logi
         </Button>
       </div>
       <div className="text-center text-sm">
-        Don&apos;t have an account?{' '}
+        {authParam === routes.account.query.login ? DONT_HAVE_AN_ACCOUNT : ALREADY_HAVE_AN_ACCOUNT}{' '}
         <button
           type="button"
           onClick={() =>
