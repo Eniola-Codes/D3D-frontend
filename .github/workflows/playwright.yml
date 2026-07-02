@@ -27,6 +27,8 @@ jobs:
         run: npx playwright install --with-deps
       - name: Build app
         run: npm run build
+      - name: Warm up backend
+        run: curl -s -o /dev/null -w "%{http_code}\n" "${{ vars.NEXT_PUBLIC_API_URL }}" || true
       - name: Run Playwright tests
         run: npm run e2e
       - uses: actions/upload-artifact@v4

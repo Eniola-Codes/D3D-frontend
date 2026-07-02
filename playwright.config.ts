@@ -7,12 +7,12 @@ export default defineConfig({
   testDir: './e2e',
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
-  retries: 0,
+  retries: process.env.CI ? 2 : 0,
   workers: 1,
   reporter: 'html',
-  timeout: 30 * 1000,
+  timeout: process.env.CI ? 60_000 : 30_000,
   expect: {
-    timeout: 15_000,
+    timeout: process.env.CI ? 15_000 : 5000,
   },
   use: {
     baseURL: process.env.BASE_URL,
@@ -30,5 +30,6 @@ export default defineConfig({
     command: 'npm run start',
     url: process.env.BASE_URL,
     reuseExistingServer: !process.env.CI,
+    timeout: 60_000,
   },
 });
