@@ -37,7 +37,7 @@ export const OTP_VERIFIED_SUCCESSFULLY = 'Otp verified successfully';
 export const OTP_IS_REQUIRED = 'OTP is required';
 export const INVALID_OTP_FORMAT = 'Invalid OTP format';
 export const DONT_HAVE_AN_ACCOUNT = "Don't have an account?";
-export const ALREADY_HAVE_AN_ACCOUNT = 'Already have an account?';
+export const ALREADY_HAVE_AN_ACCOUNT = "Already have an account?";
 
 //COMMON MESSAGES
 export const UNEXPECTED_ERROR = 'An unexpected error occurred, please try again.';
