@@ -9,8 +9,11 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     environment: ${{ github.event_name == 'push' && 'Production' || 'Preview' }}
+    permissions:
+      contents: read
+      deployments: read
+      pull-requests: read
     env:
-      BASE_URL: ${{ vars.BASE_URL || 'http://localhost:3000' }}
       TEST_EMAIL: ${{ vars.TEST_EMAIL }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
       IMAGE_HOSTNAME: ${{ vars.IMAGE_HOSTNAME }}
@@ -18,19 +21,32 @@ jobs:
       NEXT_PUBLIC_GOOGLE_CALLBACK_URL: ${{ vars.NEXT_PUBLIC_GOOGLE_CALLBACK_URL }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Wait for Vercel preview deployment
+        uses: patrickedqvist/wait-for-vercel-preview@master
+        id: wait-for-vercel
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          max_timeout: 300
+
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
+
       - name: Install dependencies
         run: npm ci
+
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
-      - name: Build app
-        run: npm run build
+
       - name: Warm up backend
         run: curl -s -o /dev/null -w "%{http_code}\n" "${{ vars.NEXT_PUBLIC_API_URL }}" || true
+
       - name: Run Playwright tests
+        env:
+          BASE_URL: ${{ steps.wait-for-vercel.outputs.url }}
         run: npm run e2e
+
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:

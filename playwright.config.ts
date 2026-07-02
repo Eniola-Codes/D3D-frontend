@@ -1,6 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
 import path from 'path';
+
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 export default defineConfig({
@@ -15,7 +16,7 @@ export default defineConfig({
     timeout: process.env.CI ? 15_000 : 5000,
   },
   use: {
-    baseURL: process.env.BASE_URL,
+    baseURL: process.env.BASE_URL ?? 'http://localhost:3000',
     headless: !!process.env.CI,
     screenshot: 'on',
     trace: 'retain-on-failure',
@@ -23,13 +24,20 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'], baseURL: process.env.BASE_URL },
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: process.env.BASE_URL ?? 'http://localhost:3000',
+      },
     },
   ],
-  webServer: {
-    command: 'npm run start',
-    url: process.env.BASE_URL,
-    reuseExistingServer: !process.env.CI,
-    timeout: 60_000,
-  },
+  ...(!process.env.CI
+    ? {
+        webServer: {
+          command: 'npm run start',
+          url: process.env.BASE_URL ?? 'http://localhost:3000',
+          reuseExistingServer: true,
+          timeout: 60_000,
+        },
+      }
+    : {}),
 });
