@@ -31,14 +31,10 @@ test('should signup successfully', async ({ page }: { page: Page }) => {
   await page.goto(process.env.BASE_URL as string);
   await page.getByRole('button', { name: 'Get Started' }).click();
   await page.getByRole('button', { name: 'Signup' }).click();
-  await page.getByRole('textbox', { name: 'Name' }).waitFor();
-  await page.getByRole('textbox', { name: 'Name' }).click();
+  await page.getByRole('textbox', { name: 'Name' }).waitFor({ state: 'visible' });
   await page.getByRole('textbox', { name: 'Name' }).fill(name);
-  await page.getByRole('textbox', { name: 'Email' }).click();
   await page.getByRole('textbox', { name: 'Email' }).fill(email);
-  await page.getByRole('textbox', { name: 'Password', exact: true }).click();
   await page.getByRole('textbox', { name: 'Password', exact: true }).fill(password);
-  await page.getByRole('textbox', { name: 'Confirm password' }).click();
   await page.getByRole('textbox', { name: 'Confirm password' }).fill(password);
   await page.getByRole('button', { name: 'signup' }).click();
 
@@ -200,9 +196,7 @@ test('should forget password successfully', async ({ page }: { page: Page }) => 
   await page.getByRole('button', { name: 'Forgot your password?' }).click();
 
   await expect(page.locator('body')).toContainText(FORGET_PASSWORD);
-  await expect(page.locator('body')).toContainText(
-    ENTER_ASSOCIATED_EMAIL
-  );
+  await expect(page.locator('body')).toContainText(ENTER_ASSOCIATED_EMAIL);
 
   await page.getByRole('textbox', { name: 'Email' }).click();
   await page.getByRole('textbox', { name: 'Email' }).fill(email);
@@ -225,9 +219,7 @@ test('should reject wrong forget password email', async ({ page }: { page: Page 
   await page.getByRole('button', { name: 'Forgot your password?' }).click();
 
   await expect(page.locator('body')).toContainText(FORGET_PASSWORD);
-  await expect(page.locator('body')).toContainText(
-    ENTER_ASSOCIATED_EMAIL
-  );
+  await expect(page.locator('body')).toContainText(ENTER_ASSOCIATED_EMAIL);
 
   await page.getByRole('textbox', { name: 'Email' }).click();
   await page.getByRole('textbox', { name: 'Email' }).fill(email);
@@ -239,9 +231,7 @@ test('should reject wrong forget password email', async ({ page }: { page: Page 
     })
   ).toBeVisible();
   await expect(page.locator('body')).toContainText(FORGET_PASSWORD);
-  await expect(page.locator('body')).toContainText(
-    ENTER_ASSOCIATED_EMAIL
-  );
+  await expect(page.locator('body')).toContainText(ENTER_ASSOCIATED_EMAIL);
 });
 
 test('should verify OTP successfully', async ({ page }: { page: Page }) => {
@@ -250,9 +240,7 @@ test('should verify OTP successfully', async ({ page }: { page: Page }) => {
   await page.getByRole('button', { name: 'Forgot your password?' }).click();
 
   await expect(page.locator('body')).toContainText(FORGET_PASSWORD);
-  await expect(page.locator('body')).toContainText(
-    ENTER_ASSOCIATED_EMAIL
-  );
+  await expect(page.locator('body')).toContainText(ENTER_ASSOCIATED_EMAIL);
 
   await page.getByRole('textbox', { name: 'Email' }).click();
   await page.getByRole('textbox', { name: 'Email' }).fill(email);
@@ -287,9 +275,7 @@ test('should reject wrong otp credentials', async ({ page }: { page: Page }) => 
   await page.getByRole('button', { name: 'Forgot your password?' }).click();
 
   await expect(page.locator('body')).toContainText(FORGET_PASSWORD);
-  await expect(page.locator('body')).toContainText(
-    ENTER_ASSOCIATED_EMAIL
-  );
+  await expect(page.locator('body')).toContainText(ENTER_ASSOCIATED_EMAIL);
 
   await page.getByRole('textbox', { name: 'Email' }).click();
   await page.getByRole('textbox', { name: 'Email' }).fill(email);
@@ -348,9 +334,7 @@ test('should reset password successfully', async ({ page }: { page: Page }) => {
   await page.getByRole('button', { name: 'Forgot your password?' }).click();
 
   await expect(page.locator('body')).toContainText(FORGET_PASSWORD);
-  await expect(page.locator('body')).toContainText(
-    ENTER_ASSOCIATED_EMAIL
-  );
+  await expect(page.locator('body')).toContainText(ENTER_ASSOCIATED_EMAIL);
 
   await page.getByRole('textbox', { name: 'Email' }).click();
   await page.getByRole('textbox', { name: 'Email' }).fill(email);
@@ -389,9 +373,7 @@ test('should reset password successfully', async ({ page }: { page: Page }) => {
   await page.getByRole('button', { name: 'Forgot your password?' }).click();
 
   await expect(page.locator('body')).toContainText(FORGET_PASSWORD);
-  await expect(page.locator('body')).toContainText(
-    ENTER_ASSOCIATED_EMAIL
-  );
+  await expect(page.locator('body')).toContainText(ENTER_ASSOCIATED_EMAIL);
 
   await page.getByRole('textbox', { name: 'Email' }).click();
   await page.getByRole('textbox', { name: 'Email' }).fill(email);
@@ -458,9 +440,7 @@ test('should reject reset password to same old password', async ({ page }: { pag
   await page.getByRole('button', { name: 'Forgot your password?' }).click();
 
   await expect(page.locator('body')).toContainText(FORGET_PASSWORD);
-  await expect(page.locator('body')).toContainText(
-    ENTER_ASSOCIATED_EMAIL
-  );
+  await expect(page.locator('body')).toContainText(ENTER_ASSOCIATED_EMAIL);
 
   await page.getByRole('textbox', { name: 'Email' }).click();
   await page.getByRole('textbox', { name: 'Email' }).fill(email);
