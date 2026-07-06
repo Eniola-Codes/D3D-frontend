@@ -18,7 +18,6 @@ jobs:
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-      VERCEL_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
     steps:
       - uses: actions/checkout@v4
 
@@ -57,7 +56,8 @@ jobs:
           echo "Deploying prebuilt artifacts to Vercel..."
           url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --yes | tail -n 1)
           if [ -z "$url" ]; then
-            echo "ERROR: Deployment URL is empty. Deploy step likely failed."
+            echo "ERROR: Could not extract deployment URL from vercel deploy output:"
+            cat deploy.log
             exit 1
           fi
           echo "Deployment succeeded."
@@ -94,9 +94,21 @@ jobs:
             exit 1
           fi
 
-      - name: Verify protection bypass works
+      - name: Warm up preview deployment
         run: |
-          curl -s -H "x-vercel-protection-bypass: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}" \ "${{ steps.deploy.outputs.preview_url }}" | grep -o "<title>.*</title>" || echo "Could not find title tag"
+          preview_url="${{ steps.deploy.outputs.preview_url }}"
+          for i in 1 2 3 4 5 6; do
+            html=$(curl -sL "$preview_url" || true)
+            if echo "$html" | grep -q "Get Started"; then
+              echo "Preview is serving the app (attempt $i)"
+              exit 0
+            fi
+            echo "Preview not ready yet (attempt $i) — waiting..."
+            sleep 10
+          done
+          echo "ERROR: Preview never served the homepage. Last response snippet:"
+          echo "$html" | head -c 500
+          exit 1
 
       - name: Run E2E tests against preview
         run: npx playwright test

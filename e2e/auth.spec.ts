@@ -23,10 +23,12 @@ import { Page, test, expect } from '@playwright/test';
 
 const email = process.env.TEST_EMAIL as string;
 
-test('should signup successfully', async ({ page }: { page: Page }) => {
+test.only('should signup successfully', async ({ page }: { page: Page }) => {
   const name = 'Eniola odunmbaku';
   const email = `${Math.floor(Math.random() * 1000000)}@gmail.com`;
   const password = '12345678';
+
+  console.log(process.env.BASE_URL);
 
   await page.goto(process.env.BASE_URL as string);
   await page.getByRole('button', { name: 'Get Started' }).click();

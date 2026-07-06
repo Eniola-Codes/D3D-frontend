@@ -8,7 +8,7 @@ export default defineConfig({
   testDir: './e2e',
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
-  retries: 1,
+  retries: 0,
   workers: 1,
   reporter: 'html',
   timeout: 30_000,
@@ -17,9 +17,6 @@ export default defineConfig({
   },
   use: {
     baseURL: process.env.BASE_URL,
-    extraHTTPHeaders: {
-      'x-vercel-bypass-secret': process.env.VERCEL_BYPASS_SECRET as string,
-    },
     headless: !!process.env.CI,
     screenshot: 'on',
     trace: 'retain-on-failure',
