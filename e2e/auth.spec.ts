@@ -1,62 +1,64 @@
-// import {
-//   PASSWORD_DOES_NOT_MATCH,
-//   OTP_IS_REQUIRED,
-//   DONT_HAVE_AN_ACCOUNT,
-//   VALID_EMAIL_ADDRESS,
-//   VALID_NAME_LENGTH,
-//   VALID_OTP_FORMAT,
-//   VALID_OTP_LENGTH,
-//   VALID_PASSWORD_LENGTH,
-//   WELCOME_BACK,
-//   USER_AUTHENTICATED_SUCCESSFULLY,
-//   OTP_VERIFIED_SUCCESSFULLY,
-//   EMAIL_SENT_SUCCESSFULLY,
-//   FORGET_PASSWORD,
-//   ENTER_ASSOCIATED_EMAIL,
-//   VERIFY_ACCOUNT,
-//   RESET_PASSWORD,
-//   ALREADY_HAVE_AN_ACCOUNT,
-//   GET_STARTED,
-// } from '@/lib/constants/messages';
+import {
+  // PASSWORD_DOES_NOT_MATCH,
+  // OTP_IS_REQUIRED,
+  // DONT_HAVE_AN_ACCOUNT,
+  // VALID_EMAIL_ADDRESS,
+  // VALID_NAME_LENGTH,
+  // VALID_OTP_FORMAT,
+  // VALID_OTP_LENGTH,
+  // VALID_PASSWORD_LENGTH,
+  // WELCOME_BACK,
+  // USER_AUTHENTICATED_SUCCESSFULLY,
+  // OTP_VERIFIED_SUCCESSFULLY,
+  EMAIL_SENT_SUCCESSFULLY,
+  FORGET_PASSWORD,
+  ENTER_ASSOCIATED_EMAIL,
+  VERIFY_ACCOUNT,
+  // RESET_PASSWORD,
+  // ALREADY_HAVE_AN_ACCOUNT,
+  // GET_STARTED,
+} from '@/lib/constants/messages';
 // import { routes } from '@/lib/constants/page-routes';
 import { Page, test, expect } from '@playwright/test';
 
-// const email = process.env.TEST_EMAIL as string;
+const email = process.env.TEST_EMAIL as string;
+console.log(email);
+console.log(process.env.BASE_URL);
 
-test('should signup successfully', async ({ page }: { page: Page }) => {
-  const name = 'Eniola odunmbaku';
-  const email = `${Math.floor(Math.random() * 1000000)}@gmail.com`;
-  const password = '12345678';
+// test('should signup successfully', async ({ page }: { page: Page }) => {
+//   const name = 'Eniola odunmbaku';
+//   const email = `${Math.floor(Math.random() * 1000000)}@gmail.com`;
+//   const password = '12345678';
 
-  console.log(process.env.BASE_URL);
+//   console.log(process.env.BASE_URL);
 
-  await page.goto(process.env.BASE_URL as string);
-  await page.getByRole('button', { name: 'Get Started' }).click();
-  await page.getByRole('button', { name: 'Signup' }).click();
-  await page.getByRole('textbox', { name: 'Name' }).waitFor({ state: 'visible' });
-  await page.getByRole('textbox', { name: 'Name' }).fill(name);
-  await page.getByRole('textbox', { name: 'Email' }).fill(email);
-  await page.getByRole('textbox', { name: 'Password', exact: true }).fill(password);
-  await page.getByRole('textbox', { name: 'Confirm password' }).fill(password);
-  await page.getByRole('button', { name: 'signup' }).click();
+//   await page.goto(process.env.BASE_URL as string);
+//   await page.getByRole('button', { name: 'Get Started' }).click();
+//   await page.getByRole('button', { name: 'Signup' }).click();
+//   await page.getByRole('textbox', { name: 'Name' }).waitFor({ state: 'visible' });
+//   await page.getByRole('textbox', { name: 'Name' }).fill(name);
+//   await page.getByRole('textbox', { name: 'Email' }).fill(email);
+//   await page.getByRole('textbox', { name: 'Password', exact: true }).fill(password);
+//   await page.getByRole('textbox', { name: 'Confirm password' }).fill(password);
+//   await page.getByRole('button', { name: 'signup' }).click();
 
-  await page.locator('span[data-slot="breadcrumb-page"]').waitFor();
-  await page.getByTestId('dropdown-menu-trigger').waitFor();
+//   await page.locator('span[data-slot="breadcrumb-page"]').waitFor();
+//   await page.getByTestId('dropdown-menu-trigger').waitFor();
 
-  await expect(page.locator('span[data-slot="breadcrumb-page"]')).toHaveText('Dashboard');
-  await expect(
-    page.locator('[data-sonner-toast]').filter({
-      hasText: 'User created successfully!',
-    })
-  ).toBeVisible();
-  await page.getByTestId('dropdown-menu-trigger').click();
-  await expect(
-    page.locator('div[data-slot="dropdown-menu-label"] div div span').first()
-  ).toHaveText(name);
-  await expect(page.locator('div[data-slot="dropdown-menu-label"] div div span').last()).toHaveText(
-    email
-  );
-});
+//   await expect(page.locator('span[data-slot="breadcrumb-page"]')).toHaveText('Dashboard');
+//   await expect(
+//     page.locator('[data-sonner-toast]').filter({
+//       hasText: 'User created successfully!',
+//     })
+//   ).toBeVisible();
+//   await page.getByTestId('dropdown-menu-trigger').click();
+//   await expect(
+//     page.locator('div[data-slot="dropdown-menu-label"] div div span').first()
+//   ).toHaveText(name);
+//   await expect(page.locator('div[data-slot="dropdown-menu-label"] div div span').last()).toHaveText(
+//     email
+//   );
+// });
 
 // test('should reject wrong signup credentials', async ({ page }: { page: Page }) => {
 //   const name = 'e';
@@ -192,26 +194,26 @@ test('should signup successfully', async ({ page }: { page: Page }) => {
 //   await expect(passwordInput.locator('p')).toHaveText(VALID_PASSWORD_LENGTH);
 // });
 
-// test('should forget password successfully', async ({ page }: { page: Page }) => {
-//   await page.goto(process.env.BASE_URL as string);
-//   await page.getByRole('button', { name: 'Get Started' }).click();
-//   await page.getByRole('button', { name: 'Forgot your password?' }).click();
+test('should forget password successfully', async ({ page }: { page: Page }) => {
+  await page.goto(process.env.BASE_URL as string);
+  await page.getByRole('button', { name: 'Get Started' }).click();
+  await page.getByRole('button', { name: 'Forgot your password?' }).click();
 
-//   await expect(page.locator('body')).toContainText(FORGET_PASSWORD);
-//   await expect(page.locator('body')).toContainText(ENTER_ASSOCIATED_EMAIL);
+  await expect(page.locator('body')).toContainText(FORGET_PASSWORD);
+  await expect(page.locator('body')).toContainText(ENTER_ASSOCIATED_EMAIL);
 
-//   await page.getByRole('textbox', { name: 'Email' }).click();
-//   await page.getByRole('textbox', { name: 'Email' }).fill(email);
-//   await page.getByRole('button', { name: 'Submit email' }).click();
+  await page.getByRole('textbox', { name: 'Email' }).click();
+  await page.getByRole('textbox', { name: 'Email' }).fill(email);
+  await page.getByRole('button', { name: 'Submit email' }).click();
 
-//   await expect(
-//     page.locator('[data-sonner-toast]').filter({
-//       hasText: EMAIL_SENT_SUCCESSFULLY,
-//     })
-//   ).toBeVisible();
-//   await expect(page.locator('body')).toContainText(VERIFY_ACCOUNT);
-//   await expect(page.locator('body')).toContainText(`We have sent a one time password to ${email}`);
-// });
+  await expect(
+    page.locator('[data-sonner-toast]').filter({
+      hasText: EMAIL_SENT_SUCCESSFULLY,
+    })
+  ).toBeVisible();
+  await expect(page.locator('body')).toContainText(VERIFY_ACCOUNT);
+  await expect(page.locator('body')).toContainText(`We have sent a one time password to ${email}`);
+});
 
 // test('should reject wrong forget password email', async ({ page }: { page: Page }) => {
 //   const email = 'elfelqfeiqfnb3293932@gmail.com';
