@@ -490,7 +490,7 @@ test('should reject invalid reset password credentials client-side', async ({
   page: Page;
 }) => {
   await page.goto(
-    `${process.env.BASE_URL}${routes.account.path.base}?${routes.account.keys.auth}=${routes.account.query.resetPassword}&${routes.account.keys.mail}=${encodeURIComponent(email)}&otp=123456`
+    `${process.env.BASE_URL}${routes.account.path.base}?${routes.account.keys.auth}=${routes.account.query.resetPassword}&${routes.account.keys.mail}=${email}&otp=123456`
   );
 
   await expect(page.locator('body')).toContainText(RESET_PASSWORD);
@@ -531,10 +531,11 @@ test('should logout successfully', async ({ page }: { page: Page }) => {
 
   await page.locator('span[data-slot="breadcrumb-page"]').waitFor();
   await page.getByTestId('dropdown-menu-trigger').waitFor();
-
   await page.getByTestId('dropdown-menu-trigger').click();
-  await page.getByRole('menuitem', { name: 'Log out' }).waitFor();
-  await page.getByRole('menuitem', { name: 'Log out' }).click();
+
+  await page.getByText('Log out', { exact: true }).waitFor();
+  await page.getByText('Log out', { exact: true }).click();
+
   await page.getByText(WELCOME_BACK).waitFor();
   await expect(page.locator('body')).toContainText(WELCOME_BACK);
   await page.goto(`${process.env.BASE_URL}${routes.dashboard.path.base}`);
@@ -560,9 +561,7 @@ test('should redirect on protected routes', async ({ page }: { page: Page }) => 
   await page.locator('span[data-slot="breadcrumb-page"]').waitFor();
   await page.getByTestId('dropdown-menu-trigger').waitFor();
 
-  await page.goto(
-    process.env.BASE_URL + routes.account.path.base + '?auth=' + routes.account.query.login
-  );
+  await page.goto(process.env.BASE_URL + routes.account.path.base + '?auth=' + routes.account.query.login);
 
   await page.locator('span[data-slot="breadcrumb-page"]').waitFor();
   await page.getByTestId('dropdown-menu-trigger').waitFor();
