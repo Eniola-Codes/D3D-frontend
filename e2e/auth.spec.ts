@@ -532,6 +532,14 @@ test('should logout successfully', async ({ page }: { page: Page }) => {
   await page.getByTestId('dropdown-menu-trigger').waitFor();
   await page.getByTestId('dropdown-menu-trigger').click();
 
+  await page.getByText('Log out', { exact: true }).waitFor();
+  await page.getByText('Log out', { exact: true }).click();
+
+
+console.log('URL:', page.url());
+console.log(await page.locator('body').innerText());
+await page.screenshot({ path: 'test-results/debug-after-logout.png', fullPage: true });
+
   await expect(
     page.locator('div[data-slot="dropdown-menu-label"] div div span').first()
   ).toHaveText(name);
@@ -539,8 +547,6 @@ test('should logout successfully', async ({ page }: { page: Page }) => {
     email
   );
 
-  // await page.getByText('Log out', { exact: true }).waitFor();
-  // await page.getByText('Log out', { exact: true }).click();
 
   // await page.getByText(WELCOME_BACK).waitFor();
   // await expect(page.locator('body')).toContainText(WELCOME_BACK);
