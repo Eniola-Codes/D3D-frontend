@@ -22,7 +22,7 @@ import { routes } from '@/lib/constants/page-routes';
 import { Page, test, expect } from '@playwright/test';
 
 const email = process.env.TEST_EMAIL as string;
-const name = 'Eniola odunmbaku';
+const name = 'Eniola Odunmbaku';
 
 test('should signup successfully', async ({ page }: { page: Page }) => {
   const email = `${Math.floor(Math.random() * 1000000)}@gmail.com`;
