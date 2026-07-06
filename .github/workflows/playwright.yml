@@ -36,12 +36,12 @@ jobs:
           npm install --global vercel
           echo "Vercel CLI version: $(vercel --version)"
 
-      - name: Pull Vercel Environment Information
+      - name: Pull Vercel Environment and Project Information
         run: |
-          echo "Pulling preview env vars from Vercel..."
-          vercel env pull --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-          echo "Env pull complete. Contents of .env (keys only):"
-          cut -d '=' -f1 .env.local 2>/dev/null || cut -d '=' -f1 .vercel/.env.preview.local 2>/dev/null || echo "Could not locate pulled env file to list keys"
+          echo "Pulling preview env vars and project settings from Vercel..."
+          vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }} --cwd .vercel
+          echo "Pull complete. .vercel directory contents:"
+          ls -la .vercel || echo "No .vercel directory found — pull may have failed"
 
       - name: Build Project Artifacts
         run: |
