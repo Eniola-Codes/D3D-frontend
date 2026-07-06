@@ -119,32 +119,32 @@ test('should reject duplicate email on signup', async ({ page }: { page: Page })
   await expect(page.getByRole('button', { name: 'Signup' })).toBeVisible();
 });
 
-// test('should login successfully', async ({ page }: { page: Page }) => {
-//   const password = '12345678';
+test('should login successfully', async ({ page }: { page: Page }) => {
+  const password = '12345678';
 
-//   await page.goto(process.env.BASE_URL as string);
-//   await page.getByRole('button', { name: 'Get Started' }).click();
-//   await page.getByRole('textbox', { name: 'Email' }).click();
-//   await page.getByRole('textbox', { name: 'Email' }).fill(email);
-//   await page.getByRole('textbox', { name: 'Password' }).click();
-//   await page.getByRole('textbox', { name: 'Password' }).fill(password);
-//   await page.getByRole('button', { name: 'login' }).click();
+  await page.goto(process.env.BASE_URL as string);
+  await page.getByRole('button', { name: 'Get Started' }).click();
+  await page.getByRole('textbox', { name: 'Email' }).click();
+  await page.getByRole('textbox', { name: 'Email' }).fill(email);
+  await page.getByRole('textbox', { name: 'Password' }).click();
+  await page.getByRole('textbox', { name: 'Password' }).fill(password);
+  await page.getByRole('button', { name: 'login' }).click();
 
-//   await page.locator('span[data-slot="breadcrumb-page"]').waitFor();
-//   await page.getByTestId('dropdown-menu-trigger').waitFor();
+  await page.locator('span[data-slot="breadcrumb-page"]').waitFor();
+  await page.getByTestId('dropdown-menu-trigger').waitFor();
 
-//   await expect(page.locator('span[data-slot="breadcrumb-page"]')).toHaveText('Dashboard');
-//   await expect(
-//     page.locator('[data-sonner-toast]').filter({
-//       hasText: 'User authenticated successfully!',
-//     })
-//   ).toBeVisible();
-//   await expect(page.getByRole('link', { name: 'd3d Enterprise' })).toBeVisible();
-//   await page.getByTestId('dropdown-menu-trigger').click();
-//   await expect(page.locator('div[data-slot="dropdown-menu-label"] div div span').last()).toHaveText(
-//     email
-//   );
-// });
+  await expect(page.locator('span[data-slot="breadcrumb-page"]')).toHaveText('Dashboard');
+  await expect(
+    page.locator('[data-sonner-toast]').filter({
+      hasText: 'User authenticated successfully!',
+    })
+  ).toBeVisible();
+  await expect(page.getByRole('link', { name: 'd3d Enterprise' })).toBeVisible();
+  await page.getByTestId('dropdown-menu-trigger').click();
+  await expect(page.locator('div[data-slot="dropdown-menu-label"] div div span').last()).toHaveText(
+    email
+  );
+});
 
 test('should reject wrong login credentials', async ({ page }: { page: Page }) => {
   const password = 'wrongpassword123';
@@ -517,61 +517,61 @@ test('should reject invalid reset password credentials client-side', async ({
   await expect(page.locator('body')).not.toContainText(WELCOME_BACK);
 });
 
-// test('should logout successfully', async ({ page }: { page: Page }) => {
-//   const password = '12345678';
+test('should logout successfully', async ({ page }: { page: Page }) => {
+  const password = '12345678';
 
-//   await page.goto(process.env.BASE_URL as string);
-//   await page.getByRole('button', { name: 'Get Started' }).click();
-//   await page.getByRole('button', { name: 'login' }).click();
-//   await page.getByRole('textbox', { name: 'Email' }).click();
-//   await page.getByRole('textbox', { name: 'Email' }).fill(email);
-//   await page.getByRole('textbox', { name: 'Password' }).click();
-//   await page.getByRole('textbox', { name: 'Password' }).fill(password);
-//   await page.getByRole('button', { name: 'login' }).click();
+  await page.goto(process.env.BASE_URL as string);
+  await page.getByRole('button', { name: 'Get Started' }).click();
+  await page.getByRole('button', { name: 'login' }).click();
+  await page.getByRole('textbox', { name: 'Email' }).click();
+  await page.getByRole('textbox', { name: 'Email' }).fill(email);
+  await page.getByRole('textbox', { name: 'Password' }).click();
+  await page.getByRole('textbox', { name: 'Password' }).fill(password);
+  await page.getByRole('button', { name: 'login' }).click();
 
-//   await page.locator('span[data-slot="breadcrumb-page"]').waitFor();
-//   await page.getByTestId('dropdown-menu-trigger').waitFor();
+  await page.locator('span[data-slot="breadcrumb-page"]').waitFor();
+  await page.getByTestId('dropdown-menu-trigger').waitFor();
 
-//   await page.getByTestId('dropdown-menu-trigger').click();
-//   await page.getByRole('menuitem', { name: 'Log out' }).waitFor();
-//   await page.getByRole('menuitem', { name: 'Log out' }).click();
-//   await page.getByText(WELCOME_BACK).waitFor();
-//   await expect(page.locator('body')).toContainText(WELCOME_BACK);
-//   await page.goto(`${process.env.BASE_URL}${routes.dashboard.path.base}`);
-//   await page.getByText(WELCOME_BACK).waitFor();
-//   await expect(page.locator('body')).toContainText(WELCOME_BACK);
-// });
+  await page.getByTestId('dropdown-menu-trigger').click();
+  await page.getByRole('menuitem', { name: 'Log out' }).waitFor();
+  await page.getByRole('menuitem', { name: 'Log out' }).click();
+  await page.getByText(WELCOME_BACK).waitFor();
+  await expect(page.locator('body')).toContainText(WELCOME_BACK);
+  await page.goto(`${process.env.BASE_URL}${routes.dashboard.path.base}`);
+  await page.getByText(WELCOME_BACK).waitFor();
+  await expect(page.locator('body')).toContainText(WELCOME_BACK);
+});
 
-// test('should redirect on protected routes', async ({ page }: { page: Page }) => {
-//   const password = '12345678';
+test('should redirect on protected routes', async ({ page }: { page: Page }) => {
+  const password = '12345678';
 
-//   await page.goto((process.env.BASE_URL as string) + routes.dashboard.path.base);
+  await page.goto((process.env.BASE_URL as string) + routes.dashboard.path.base);
 
-//   await expect(page.locator('body')).toContainText(WELCOME_BACK);
-//   await expect(page.locator('body')).toContainText(DONT_HAVE_AN_ACCOUNT);
-//   await expect(page.getByRole('button', { name: 'Forgot your password?' })).toBeVisible();
-//   await expect(page.getByRole('button', { name: 'Login' })).toBeVisible();
-//   await page.getByRole('textbox', { name: 'Email' }).click();
-//   await page.getByRole('textbox', { name: 'Email' }).fill(email);
-//   await page.getByRole('textbox', { name: 'Password' }).click();
-//   await page.getByRole('textbox', { name: 'Password' }).fill(password);
-//   await page.getByRole('button', { name: 'login' }).click();
+  await expect(page.locator('body')).toContainText(WELCOME_BACK);
+  await expect(page.locator('body')).toContainText(DONT_HAVE_AN_ACCOUNT);
+  await expect(page.getByRole('button', { name: 'Forgot your password?' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Login' })).toBeVisible();
+  await page.getByRole('textbox', { name: 'Email' }).click();
+  await page.getByRole('textbox', { name: 'Email' }).fill(email);
+  await page.getByRole('textbox', { name: 'Password' }).click();
+  await page.getByRole('textbox', { name: 'Password' }).fill(password);
+  await page.getByRole('button', { name: 'login' }).click();
 
-//   await page.locator('span[data-slot="breadcrumb-page"]').waitFor();
-//   await page.getByTestId('dropdown-menu-trigger').waitFor();
+  await page.locator('span[data-slot="breadcrumb-page"]').waitFor();
+  await page.getByTestId('dropdown-menu-trigger').waitFor();
 
-//   await page.goto(
-//     process.env.BASE_URL + routes.account.path.base + '?auth=' + routes.account.query.login
-//   );
+  await page.goto(
+    process.env.BASE_URL + routes.account.path.base + '?auth=' + routes.account.query.login
+  );
 
-//   await page.locator('span[data-slot="breadcrumb-page"]').waitFor();
-//   await page.getByTestId('dropdown-menu-trigger').waitFor();
+  await page.locator('span[data-slot="breadcrumb-page"]').waitFor();
+  await page.getByTestId('dropdown-menu-trigger').waitFor();
 
-//   await expect(page.getByTestId('dropdown-menu-trigger')).toBeVisible();
-//   await expect(page.locator('span[data-slot="breadcrumb-page"]')).toHaveText('Dashboard');
-//   await expect(page.getByRole('link', { name: 'd3d Enterprise' })).toBeVisible();
-//   await page.getByTestId('dropdown-menu-trigger').click();
-//   await expect(page.locator('div[data-slot="dropdown-menu-label"] div div span').last()).toHaveText(
-//     email
-//   );
-// });
+  await expect(page.getByTestId('dropdown-menu-trigger')).toBeVisible();
+  await expect(page.locator('span[data-slot="breadcrumb-page"]')).toHaveText('Dashboard');
+  await expect(page.getByRole('link', { name: 'd3d Enterprise' })).toBeVisible();
+  await page.getByTestId('dropdown-menu-trigger').click();
+  await expect(page.locator('div[data-slot="dropdown-menu-label"] div div span').last()).toHaveText(
+    email
+  );
+});
