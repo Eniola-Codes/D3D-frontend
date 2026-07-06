@@ -1,55 +1,106 @@
 name: Playwright Tests
+
 on:
   push:
-    branches: [main, master]
-  pull_request:
-    branches: [main, master]
+    branches-ignore: 
+      - main
+
 jobs:
   auth-tests:
-    timeout-minutes: 60
     runs-on: ubuntu-latest
     environment: Preview
     env:
       TEST_EMAIL: ${{ vars.TEST_EMAIL }}
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
       IMAGE_HOSTNAME: ${{ vars.IMAGE_HOSTNAME }}
       NEXT_PUBLIC_API_URL: ${{ vars.NEXT_PUBLIC_API_URL }}
       NEXT_PUBLIC_GOOGLE_CALLBACK_URL: ${{ vars.NEXT_PUBLIC_GOOGLE_CALLBACK_URL }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_TEAM_ID }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: Wait for Vercel deployment
-        uses: tj-actions/vercel-wait@v1
-        id: vercel
-        with:
-          token: ${{ secrets.VERCEL_TOKEN }}
-          project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          team-id: ${{ secrets.VERCEL_TEAM_ID }}
-          sha: ${{ github.event.pull_request.head.sha || github.sha }}
-          timeout: '600'
+      - name: Log workflow context
+        run: |
+          echo "Branch: $GITHUB_REF_NAME"
+          echo "Commit: $GITHUB_SHA"
+          echo "Triggered by: $GITHUB_ACTOR"
+          echo "NEXT_PUBLIC_API_URL: $NEXT_PUBLIC_API_URL"
+          echo "IMAGE_HOSTNAME: $IMAGE_HOSTNAME"
+          echo "VERCEL_PROJECT_ID is set: $([ -n "$VERCEL_PROJECT_ID" ] && echo yes || echo no)"
+          echo "VERCEL_ORG_ID is set: $([ -n "$VERCEL_ORG_ID" ] && echo yes || echo no)"
+
+      - name: Install Vercel CLI
+        run: |
+          npm install --global vercel
+          echo "Vercel CLI version: $(vercel --version)"
+
+      - name: Pull Vercel Environment Information
+        run: |
+          echo "Pulling preview env vars from Vercel..."
+          vercel env pull --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+          echo "Env pull complete. Contents of .env (keys only):"
+          cut -d '=' -f1 .env.local 2>/dev/null || cut -d '=' -f1 .vercel/.env.preview.local 2>/dev/null || echo "Could not locate pulled env file to list keys"
+
+      - name: Build Project Artifacts
+        run: |
+          echo "Starting Vercel build..."
+          vercel build --token=${{ secrets.VERCEL_TOKEN }}
+          echo "Build finished. Output directory contents:"
+          ls -la .vercel/output || echo "No .vercel/output found — build may have failed silently"
+
+      - name: Deploy Project Artifacts
+        id: deploy
+        run: |
+          echo "Deploying prebuilt artifacts to Vercel..."
+          url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --yes | tail -n 1)
+          if [ -z "$url" ]; then
+            echo "ERROR: Deployment URL is empty. Deploy step likely failed."
+            exit 1
+          fi
+          echo "Deployment succeeded."
+          echo "Preview URL: $url"
+          echo "preview_url=$url" >> "$GITHUB_OUTPUT"
 
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
-          cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          echo "Installing npm dependencies..."
+          npm ci
+          echo "Dependency install complete."
 
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        run: |
+          echo "Installing Playwright browsers..."
+          npx playwright install --with-deps
+          echo "Playwright browser install complete."
 
       - name: Warm up backend
-        run: curl -s -o /dev/null -w "%{http_code}\n" "${{ vars.NEXT_PUBLIC_API_URL }}" || true
+        run: |
+          echo "Pinging backend at $NEXT_PUBLIC_API_URL ..."
+          status=$(curl -s -o /dev/null -w "%{http_code}" "${{ vars.NEXT_PUBLIC_API_URL }}" || echo "curl_failed")
+          echo "Backend responded with status: $status"
 
-      - name: Run Playwright tests
+      - name: Confirm preview URL before running tests
+        run: |
+          echo "Running E2E tests against: ${{ steps.deploy.outputs.preview_url }}"
+          if [ -z "${{ steps.deploy.outputs.preview_url }}" ]; then
+            echo "ERROR: preview_url output is empty. Cannot proceed with tests."
+            exit 1
+          fi
+
+      - name: Run E2E tests against preview
+        run: npx playwright test
         env:
-          BASE_URL: ${{ steps.vercel.outputs.deployment-url }}
-        run: npm run e2e
+          BASE_URL: ${{ steps.deploy.outputs.preview_url }}
 
-      - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: playwright-report
           path: playwright-report/
-          retention-days: 30
+          retention-days: 14
