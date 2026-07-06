@@ -94,6 +94,10 @@ jobs:
             exit 1
           fi
 
+      - name: Verify protection bypass works
+        run: |
+          curl -s -H "x-vercel-protection-bypass: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}" \ "${{ steps.deploy.outputs.preview_url }}" | grep -o "<title>.*</title>" || echo "Could not find title tag"
+
       - name: Run E2E tests against preview
         run: npx playwright test
         env:

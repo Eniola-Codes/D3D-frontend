@@ -34,12 +34,12 @@ export default defineConfig({
   ],
   ...(!process.env.CI
     ? {
-      webServer: {
-        command: 'npm run start',
-        url: process.env.BASE_URL,
-        reuseExistingServer: true,
-        timeout: 60_000,
-      },
-    }
+        webServer: {
+          command: 'npm run start',
+          url: process.env.BASE_URL,
+          reuseExistingServer: true,
+          timeout: 30_000,
+        },
+      }
     : {}),
 });
