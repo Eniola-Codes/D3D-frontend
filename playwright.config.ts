@@ -8,15 +8,18 @@ export default defineConfig({
   testDir: './e2e',
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
+  retries: 1,
   workers: 1,
   reporter: 'html',
-  timeout: process.env.CI ? 60_000 : 30_000,
+  timeout: 30_000,
   expect: {
-    timeout: process.env.CI ? 15_000 : 5000,
+    timeout: 10_000,
   },
   use: {
-    baseURL: process.env.BASE_URL ?? 'http://localhost:3000',
+    baseURL: process.env.BASE_URL,
+    extraHTTPHeaders: {
+      'x-vercel-bypass-secret': process.env.VERCEL_BYPASS_SECRET as string,
+    },
     headless: !!process.env.CI,
     screenshot: 'on',
     trace: 'retain-on-failure',
@@ -26,18 +29,17 @@ export default defineConfig({
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
-        baseURL: process.env.BASE_URL ?? 'http://localhost:3000',
       },
     },
   ],
   ...(!process.env.CI
     ? {
-        webServer: {
-          command: 'npm run start',
-          url: process.env.BASE_URL ?? 'http://localhost:3000',
-          reuseExistingServer: true,
-          timeout: 60_000,
-        },
-      }
+      webServer: {
+        command: 'npm run start',
+        url: process.env.BASE_URL,
+        reuseExistingServer: true,
+        timeout: 60_000,
+      },
+    }
     : {}),
 });
