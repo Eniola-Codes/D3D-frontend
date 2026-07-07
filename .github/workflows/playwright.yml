@@ -1,4 +1,4 @@
-name: Playwright Tests
+name: Preview Tests
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  auth-tests:
+  e2e-tests:
     runs-on: ubuntu-latest
     environment: Preview
     env:
@@ -21,96 +21,40 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Log workflow context
-        run: |
-          echo "Branch: $GITHUB_REF_NAME"
-          echo "Commit: $GITHUB_SHA"
-          echo "Triggered by: $GITHUB_ACTOR"
-          echo "NEXT_PUBLIC_API_URL: $NEXT_PUBLIC_API_URL"
-          echo "IMAGE_HOSTNAME: $IMAGE_HOSTNAME"
-          echo "VERCEL_PROJECT_ID is set: $([ -n "$VERCEL_PROJECT_ID" ] && echo yes || echo no)"
-          echo "VERCEL_ORG_ID is set: $([ -n "$VERCEL_ORG_ID" ] && echo yes || echo no)"
-
       - name: Install Vercel CLI
-        run: |
-          npm install --global vercel
-          echo "Vercel CLI version: $(vercel --version)"
+        run: npm install --global vercel
 
       - name: Pull Vercel Environment and Project Information
-        run: |
-          echo "Pulling preview env vars and project settings from Vercel..."
-          vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-          echo "Pull complete. .vercel directory contents:"
-          ls -la .vercel || echo "No .vercel directory found — pull may have failed"
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Build Project Artifacts
-        run: |
-          echo "Starting Vercel build..."
-          vercel build --token=${{ secrets.VERCEL_TOKEN }}
-          echo "Build finished. Output directory contents:"
-          ls -la .vercel/output || echo "No .vercel/output found — build may have failed silently"
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy Project Artifacts
         id: deploy
         run: |
-          echo "Deploying prebuilt artifacts to Vercel..."
           url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --yes | tail -n 1)
-          if [ -z "$url" ]; then
-            echo "ERROR: Could not extract deployment URL from vercel deploy output:"
-            cat deploy.log
+          echo "preview_url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Confirm preview URL
+        run: |
+          echo "Running e2e tests on ${{ steps.deploy.outputs.preview_url }}"
+          if [ -z "${{ steps.deploy.outputs.preview_url }}" ]; then
+            echo "ERROR: preview_url output is empty. Cannot proceed with tests."
             exit 1
           fi
-          echo "Deployment succeeded."
-          echo "Preview URL: $url"
-          echo "preview_url=$url" >> "$GITHUB_OUTPUT"
 
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
 
       - name: Install dependencies
-        run: |
-          echo "Installing npm dependencies..."
-          npm ci
-          echo "Dependency install complete."
+        run: npm ci
 
       - name: Install Playwright Browsers
-        run: |
-          echo "Installing Playwright browsers..."
-          npx playwright install --with-deps
-          echo "Playwright browser install complete."
+        run: npx playwright install --with-deps
 
-      - name: Warm up backend
-        run: |
-          echo "Pinging backend at $NEXT_PUBLIC_API_URL ..."
-          status=$(curl -s -o /dev/null -w "%{http_code}" "${{ vars.NEXT_PUBLIC_API_URL }}" || echo "curl_failed")
-          echo "Backend responded with status: $status"
-
-      - name: Confirm preview URL before running tests
-        run: |
-          echo "Running E2E tests against: ${{ steps.deploy.outputs.preview_url }}"
-          if [ -z "${{ steps.deploy.outputs.preview_url }}" ]; then
-            echo "ERROR: preview_url output is empty. Cannot proceed with tests."
-            exit 1
-          fi
-
-      - name: Warm up preview deployment
-        run: |
-          preview_url="${{ steps.deploy.outputs.preview_url }}"
-          for i in 1 2 3 4 5 6; do
-            html=$(curl -sL "$preview_url" || true)
-            if echo "$html" | grep -q "Get Started"; then
-              echo "Preview is serving the app (attempt $i)"
-              exit 0
-            fi
-            echo "Preview not ready yet (attempt $i) — waiting..."
-            sleep 10
-          done
-          echo "ERROR: Preview never served the homepage. Last response snippet:"
-          echo "$html" | head -c 500
-          exit 1
-
-      - name: Run E2E tests against preview
+      - name: Run E2E tests
         run: npx playwright test
         env:
           BASE_URL: ${{ steps.deploy.outputs.preview_url }}
