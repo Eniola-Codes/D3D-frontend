@@ -535,7 +535,6 @@ test('should reject invalid reset password credentials client-side', async ({
 //   await page.getByText('Log out', { exact: true }).waitFor();
 //   await page.getByText('Log out', { exact: true }).click();
 
-
 // console.log('URL:', page.url());
 // console.log(await page.locator('body').innerText());
 // await page.screenshot({ path: 'test-results/debug-after-logout.png', fullPage: true });
@@ -546,8 +545,6 @@ test('should reject invalid reset password credentials client-side', async ({
 //   await expect(page.locator('div[data-slot="dropdown-menu-label"] div div span').last()).toHaveText(
 //     email
 //   );
-
-
 //   // await page.getByText(WELCOME_BACK).waitFor();
 //   // await expect(page.locator('body')).toContainText(WELCOME_BACK);
 //   // await page.goto(`${process.env.BASE_URL}${routes.dashboard.path.base}`);
@@ -571,6 +568,11 @@ test('should redirect on protected routes', async ({ page }: { page: Page }) => 
   await page.getByRole('button', { name: 'login' }).click();
 
   await page.locator('span[data-slot="breadcrumb-page"]').waitFor();
+
+  console.log('URL:', page.url());
+  console.log(await page.locator('body').innerText());
+  await page.screenshot({ path: 'test-results/debug-after-logout.png', fullPage: true });
+
   await page.getByTestId('dropdown-menu-trigger').waitFor();
 
   await page.goto(process.env.BASE_URL + routes.account.path.base + '?auth=' + routes.account.query.login);
