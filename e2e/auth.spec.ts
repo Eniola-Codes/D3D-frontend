@@ -535,10 +535,6 @@ test('should redirect on protected routes', async ({ page }: { page: Page }) => 
 
   await page.goto(process.env.BASE_URL + routes.account.path.base + '?auth=' + routes.account.query.login);
 
-  console.log('URL:', page.url());
-  console.log(await page.locator('body').innerText());
-  await page.screenshot({ path: 'test-results/debug-after-logout.png', fullPage: true });
-
   await page.locator('span[data-slot="breadcrumb-page"]').waitFor();
   await expect(page.locator('span[data-slot="breadcrumb-page"]')).toHaveText('Dashboard');
   await expect(page.getByRole('link', { name: 'd3d Enterprise' })).toBeVisible();
