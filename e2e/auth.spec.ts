@@ -21,6 +21,7 @@ import {
 import { routes } from '@/lib/constants/page-routes';
 import { Page, test, expect } from '@playwright/test';
 
+const baseUrl = process.env.BASE_URL as string;
 const email = process.env.TEST_EMAIL as string;
 const name = 'Eniola Odunmbaku';
 
@@ -28,7 +29,7 @@ test('should signup successfully', async ({ page }: { page: Page }) => {
   const email = `${Math.floor(Math.random() * 1000000)}@gmail.com`;
   const password = '12345678';
 
-  await page.goto(process.env.BASE_URL as string);
+  await page.goto(baseUrl);
   await page.getByRole('button', { name: 'Get Started' }).click();
   await page.getByRole('button', { name: 'Signup' }).click();
   await page.getByRole('textbox', { name: 'Name' }).waitFor({ state: 'visible' });
@@ -62,7 +63,7 @@ test('should reject wrong signup credentials', async ({ page }: { page: Page }) 
   const password = '12345';
   const confirmPassword = '';
 
-  await page.goto(process.env.BASE_URL as string);
+  await page.goto(baseUrl);
   await page.getByRole('button', { name: 'Get Started' }).click();
   await page.getByRole('button', { name: 'signup' }).click();
   await page.getByRole('textbox', { name: 'Name' }).click();
@@ -94,7 +95,7 @@ test('should reject wrong signup credentials', async ({ page }: { page: Page }) 
 test('should reject duplicate email on signup', async ({ page }: { page: Page }) => {
   const password = '12345678';
 
-  await page.goto(process.env.BASE_URL as string);
+  await page.goto(baseUrl);
   await page.getByRole('button', { name: 'Get Started' }).click();
   await page.getByRole('button', { name: 'signup' }).click();
   await page.getByRole('textbox', { name: 'Name' }).click();
@@ -121,7 +122,7 @@ test('should reject duplicate email on signup', async ({ page }: { page: Page })
 test('should login successfully', async ({ page }: { page: Page }) => {
   const password = '12345678';
 
-  await page.goto(process.env.BASE_URL as string);
+  await page.goto(baseUrl);
   await page.getByRole('button', { name: 'Get Started' }).click();
   await page.getByRole('textbox', { name: 'Email' }).click();
   await page.getByRole('textbox', { name: 'Email' }).fill(email);
@@ -148,7 +149,7 @@ test('should login successfully', async ({ page }: { page: Page }) => {
 test('should reject wrong login credentials', async ({ page }: { page: Page }) => {
   const password = 'wrongpassword123';
 
-  await page.goto(process.env.BASE_URL as string);
+  await page.goto(baseUrl);
   await page.getByRole('button', { name: 'Get Started' }).click();
   await page.getByRole('textbox', { name: 'Email' }).click();
   await page.getByRole('textbox', { name: 'Email' }).fill(email);
@@ -171,7 +172,7 @@ test('should reject wrong login credentials client-side', async ({ page }: { pag
   const wrongEmail = 'eniola';
   const wrongPassword = '12345';
 
-  await page.goto(process.env.BASE_URL as string);
+  await page.goto(baseUrl);
   await page.getByRole('button', { name: 'Get Started' }).click();
   await page.getByRole('textbox', { name: 'Email' }).click();
   await page.getByRole('textbox', { name: 'Email' }).fill(wrongEmail);
@@ -190,7 +191,7 @@ test('should reject wrong login credentials client-side', async ({ page }: { pag
 });
 
 test('should forget password successfully', async ({ page }: { page: Page }) => {
-  await page.goto(process.env.BASE_URL as string);
+  await page.goto(baseUrl);
   await page.getByRole('button', { name: 'Get Started' }).click();
   await page.getByRole('button', { name: 'Forgot your password?' }).click();
 
@@ -213,7 +214,7 @@ test('should forget password successfully', async ({ page }: { page: Page }) => 
 test('should reject wrong forget password email', async ({ page }: { page: Page }) => {
   const email = 'elfelqfeiqfnb3293932@gmail.com';
 
-  await page.goto(process.env.BASE_URL as string);
+  await page.goto(baseUrl);
   await page.getByRole('button', { name: 'Get Started' }).click();
   await page.getByRole('button', { name: 'Forgot your password?' }).click();
 
@@ -234,7 +235,7 @@ test('should reject wrong forget password email', async ({ page }: { page: Page 
 });
 
 test('should verify OTP successfully', async ({ page }: { page: Page }) => {
-  await page.goto(process.env.BASE_URL as string);
+  await page.goto(baseUrl);
   await page.getByRole('button', { name: 'Get Started' }).click();
   await page.getByRole('button', { name: 'Forgot your password?' }).click();
 
@@ -269,7 +270,7 @@ test('should verify OTP successfully', async ({ page }: { page: Page }) => {
 });
 
 test('should reject wrong otp credentials', async ({ page }: { page: Page }) => {
-  await page.goto(process.env.BASE_URL as string);
+  await page.goto(baseUrl);
   await page.getByRole('button', { name: 'Get Started' }).click();
   await page.getByRole('button', { name: 'Forgot your password?' }).click();
 
@@ -301,7 +302,7 @@ test('should reject wrong otp credentials', async ({ page }: { page: Page }) => 
 
 test('should reject invalid OTP credentials client-side', async ({ page }: { page: Page }) => {
   await page.goto(
-    `${process.env.BASE_URL}${routes.account.path.base}?${routes.account.keys.auth}=${routes.account.query.inputOTP}&${routes.account.keys.mail}=${encodeURIComponent(email)}`
+    `${baseUrl}${routes.account.path.base}?${routes.account.keys.auth}=${routes.account.query.inputOTP}&${routes.account.keys.mail}=${email}`
   );
 
   await expect(page.locator('body')).toContainText(VERIFY_ACCOUNT);
@@ -328,7 +329,7 @@ test('should reset password successfully', async ({ page }: { page: Page }) => {
   const newPassword = '12345678';
   const newConfirmPassword = '12345678';
 
-  await page.goto(process.env.BASE_URL as string);
+  await page.goto(baseUrl);
   await page.getByRole('button', { name: 'Get Started' }).click();
   await page.getByRole('button', { name: 'Forgot your password?' }).click();
 
@@ -434,7 +435,7 @@ test('should reject reset password to same old password', async ({ page }: { pag
   const password = '12345678';
   const confirmPassword = '12345678';
 
-  await page.goto(process.env.BASE_URL as string);
+  await page.goto(baseUrl);
   await page.getByRole('button', { name: 'Get Started' }).click();
   await page.getByRole('button', { name: 'Forgot your password?' }).click();
 
@@ -489,7 +490,7 @@ test('should reject invalid reset password credentials client-side', async ({
   page: Page;
 }) => {
   await page.goto(
-    `${process.env.BASE_URL}${routes.account.path.base}?${routes.account.keys.auth}=${routes.account.query.resetPassword}&${routes.account.keys.mail}=${email}&otp=123456`
+    `${baseUrl}${routes.account.path.base}?${routes.account.keys.auth}=${routes.account.query.resetPassword}&${routes.account.keys.mail}=${email}&otp=123456`
   );
 
   await expect(page.locator('body')).toContainText(RESET_PASSWORD);
@@ -519,7 +520,7 @@ test('should reject invalid reset password credentials client-side', async ({
 test('should redirect on protected routes', async ({ page }: { page: Page }) => {
   const password = '12345678';
 
-  await page.goto((process.env.BASE_URL as string) + routes.dashboard.path.base);
+  await page.goto(baseUrl + routes.dashboard.path.base);
 
   await expect(page.locator('body')).toContainText(WELCOME_BACK);
   await expect(page.locator('body')).toContainText(DONT_HAVE_AN_ACCOUNT);
@@ -533,7 +534,7 @@ test('should redirect on protected routes', async ({ page }: { page: Page }) => 
 
   await page.locator('span[data-slot="breadcrumb-page"]').waitFor();
 
-  await page.goto(process.env.BASE_URL + routes.account.path.base + '?auth=' + routes.account.query.login);
+  await page.goto(baseUrl + routes.account.path.base + '?auth=' + routes.account.query.login);
 
   await page.locator('span[data-slot="breadcrumb-page"]').waitFor();
   await expect(page.locator('span[data-slot="breadcrumb-page"]')).toHaveText('Dashboard');
