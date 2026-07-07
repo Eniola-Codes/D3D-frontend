@@ -5,11 +5,11 @@ echo "Running pre-commit checks..."
 
 # Run build
 echo "🔨 Running build..."
-# npm run build
-# if [ $? -ne 0 ]; then
-#   echo "❌ Build failed. Commit aborted."
-#   exit 1
-# fi
+npm run build
+if [ $? -ne 0 ]; then
+  echo "❌ Build failed. Commit aborted."
+  exit 1
+fi
 
 # Run tests (non-watch mode)
 echo "🧪 Running unit tests..."
