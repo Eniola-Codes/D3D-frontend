@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import {
   CONFIRM_PASSWORD_FIELD,
+  OTP_IS_REQUIRED,
   PASSWORD_DOES_NOT_MATCH,
   VALID_EMAIL_ADDRESS,
   VALID_NAME_LENGTH,
@@ -47,7 +48,11 @@ export const resetPasswordSchema = z
   });
 
 export const otpSchema = z.object({
-  otp: z.string().length(6, VALID_OTP_LENGTH).regex(/^\d+$/, VALID_OTP_FORMAT),
+  otp: z
+    .string()
+    .pipe(z.string().min(1, OTP_IS_REQUIRED))
+    .pipe(z.string().length(6, VALID_OTP_LENGTH))
+    .pipe(z.string().regex(/^\d+$/, VALID_OTP_FORMAT)),
 });
 
 export type LoginFormData = z.infer<typeof loginSchema>;

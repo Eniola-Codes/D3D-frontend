@@ -7,7 +7,7 @@ import {
   loginSchema,
   signupSchema,
 } from '../validations';
-import { EMAIL_IS_REQUIRED } from '@/lib/constants/messages';
+import { EMAIL_IS_REQUIRED, OTP_IS_REQUIRED } from '@/lib/constants/messages';
 
 vi.mock('@/lib/services/auth', () => ({
   authService: {
@@ -182,7 +182,7 @@ describe('createValidationHandler', () => {
       expect(setErrors).toHaveBeenCalledTimes(1);
       expect(setErrors).toHaveBeenCalledWith(
         expect.objectContaining({
-          otp: expect.any(String),
+          otp: OTP_IS_REQUIRED,
         })
       );
     });

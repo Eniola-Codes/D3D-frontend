@@ -11,11 +11,19 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-# Run tests (non-watch mode)
-echo "🧪 Running tests..."
+# Run tests
+echo "🧪 Running unit tests..."
 npm run test -- --run
 if [ $? -ne 0 ]; then
   echo "❌ Tests failed. Commit aborted."
+  exit 1
+fi
+
+# Run e2e
+echo "🧪 Running E2E tests..."
+npm run e2e
+if [ $? -ne 0 ]; then
+  echo "❌ E2E tests failed. Commit aborted."
   exit 1
 fi
 
