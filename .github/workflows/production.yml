@@ -50,6 +50,9 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
+      - name: Warm up backend
+        run: curl -s -o /dev/null -w "%{http_code}\n" "${{ vars.NEXT_PUBLIC_API_URL }}" || true
+
       - name: Run E2E tests
         run: npx playwright test
         env:
