@@ -517,6 +517,39 @@ test('should reject invalid reset password credentials client-side', async ({
   await expect(page.locator('body')).not.toContainText(WELCOME_BACK);
 });
 
+test('should logout successfully', async ({ page }: { page: Page }) => {
+  const password = '12345678';
+
+  await page.goto(process.env.BASE_URL as string);
+  await page.getByRole('button', { name: 'Get Started' }).click();
+  await page.getByRole('button', { name: 'login' }).click();
+  await page.getByRole('textbox', { name: 'Email' }).click();
+  await page.getByRole('textbox', { name: 'Email' }).fill(email);
+  await page.getByRole('textbox', { name: 'Password' }).click();
+  await page.getByRole('textbox', { name: 'Password' }).fill(password);
+  await page.getByRole('button', { name: 'login' }).click();
+
+  await page.locator('span[data-slot="breadcrumb-page"]').waitFor();
+  await page.getByTestId('dropdown-menu-trigger').waitFor();
+  await page.getByTestId('dropdown-menu-trigger').click();
+
+  await expect(
+    page.locator('div[data-slot="dropdown-menu-label"] div div span').first()
+  ).toHaveText(name);
+  await expect(page.locator('div[data-slot="dropdown-menu-label"] div div span').last()).toHaveText(
+    email
+  );
+
+  await page.getByText('Log out', { exact: true }).waitFor();
+  await page.getByText('Log out', { exact: true }).click();
+
+  await page.getByText(WELCOME_BACK).waitFor();
+  await expect(page.locator('body')).toContainText(WELCOME_BACK);
+  await page.goto(`${baseUrl}${routes.dashboard.path.base}`);
+  await page.getByText(WELCOME_BACK).waitFor();
+  await expect(page.locator('body')).toContainText(WELCOME_BACK);
+});
+
 test('should redirect on protected routes', async ({ page }: { page: Page }) => {
   const password = '12345678';
 
@@ -533,6 +566,8 @@ test('should redirect on protected routes', async ({ page }: { page: Page }) => 
   await page.getByRole('button', { name: 'login' }).click();
 
   await page.locator('span[data-slot="breadcrumb-page"]').waitFor();
+  await expect(page.locator('span[data-slot="breadcrumb-page"]')).toHaveText('Dashboard');
+
 
   await page.goto(baseUrl + routes.account.path.base + '?auth=' + routes.account.query.login);
 
