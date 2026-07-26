@@ -23,19 +23,26 @@ export default defineConfig({
   },
   projects: [
     {
-      name: 'chromium',
+      name: 'setup',
+      testMatch: /.*\.setup\.ts/,
+    },
+    {
+      name: 'auth',
+      testMatch: /auth\.spec\.ts/,
       use: {
         ...devices['Desktop Chrome'],
       },
     },
-    // {
-    //   name: 'firefox',
-    //   use: { ...devices['Desktop Firefox'] },
-    // },
-    // {
-    //   name: 'webkit',
-    //   use: { ...devices['Desktop Safari'] },
-    // },
+    {
+      name: 'authenticated',
+      testMatch: /.*\.spec\.ts/,
+      testIgnore: /auth\.spec\.ts/,
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: path.join(__dirname, 'playwright/.auth/user.json'),
+      },
+      dependencies: ['setup'],
+    },
   ],
   ...(!process.env.CI
     ? {
