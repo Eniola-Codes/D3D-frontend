@@ -51,13 +51,8 @@ test.describe('Find Products', () => {
   test('should paginate correctly', async ({ page }) => {
     await gotoFindProducts(page);
 
-    const pageOne = page.locator('a:has-text("1")');
-    const pageTwo = page.locator('a:has-text("2")');
-
-    if (!(await pageTwo.isVisible().catch(() => false))) {
-      test.skip();
-      return;
-    }
+    const pageOne = page.getByRole('link', { name: '1', exact: true });
+    const pageTwo = page.getByRole('link', { name: '2', exact: true });
 
     await pageTwo.click();
     await expect(page).toHaveURL(/page=2/);
@@ -240,11 +235,6 @@ test.describe('Find Products', () => {
     await expect(page).toHaveURL(/category=/);
 
     const pageTwo = page.getByRole('link', { name: '2', exact: true });
-    if (!(await pageTwo.isVisible().catch(() => false))) {
-      test.skip();
-      return;
-    }
-
     await pageTwo.click();
 
     await expect(page).toHaveURL(/page=2/);
@@ -256,11 +246,6 @@ test.describe('Find Products', () => {
     await gotoFindProducts(page);
 
     const pageTwo = page.getByRole('link', { name: '2', exact: true });
-    if (!(await pageTwo.isVisible().catch(() => false))) {
-      test.skip();
-      return;
-    }
-
     await pageTwo.click();
     await expect(page).toHaveURL(/page=2/);
 
@@ -288,10 +273,6 @@ test.describe('Find Products', () => {
 
     await page.getByRole('button', { name: 'All Categories' }).click();
     const categoryOption = page.getByRole('menuitem').nth(1);
-    if (!(await categoryOption.isVisible().catch(() => false))) {
-      test.skip();
-      return;
-    }
 
     const categoryName = (await categoryOption.innerText()).trim();
 
