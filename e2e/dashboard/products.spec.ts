@@ -96,7 +96,7 @@ test.describe('Find Products', () => {
 
     await page.getByRole('button', { name: 'All Brands' }).click();
     const brandOption = page.getByRole('menuitem').nth(1);
-    const brandName = (await brandOption.innerText()).trim();
+    const brandName = (await brandOption.locator('span').last().innerText()).trim();
     await brandOption.click();
 
     await expect(page).toHaveURL(new RegExp(`brand=${brandName.replace(/ /g, '\\+')}`));
@@ -167,7 +167,7 @@ test.describe('Find Products', () => {
 
     await page.getByRole('button', { name: 'All Brands' }).click();
     const brandOption = page.getByRole('menuitem').nth(1);
-    const brandName = (await brandOption.innerText()).trim();
+    const brandName = (await brandOption.locator('span').last().innerText()).trim();
     await brandOption.click();
     await expect(page).toHaveURL(new RegExp(`brand=${brandName.replace(/ /g, '\\+')}`));
 
@@ -317,31 +317,32 @@ test.describe('Find Products', () => {
     const searchInput = page.getByPlaceholder('Enter keywords to search...');
     await searchInput.fill('Nike');
     await expect(page).toHaveURL(/search=Nike/);
+    await expect(searchInput).toHaveValue('Nike');
 
     await page.getByRole('button', { name: 'All Prices' }).click();
     const priceOption = page.getByRole('menuitem').nth(1);
     const priceName = (await priceOption.innerText()).trim();
     await priceOption.click();
+    await expect(page).toHaveURL(/price=/);
 
     await page.getByRole('button', { name: /Sort:/ }).click();
     const sortOption = page.getByRole('menuitem').nth(1);
     const sortName = (await sortOption.innerText()).trim();
     await sortOption.click();
+    await expect(page).toHaveURL(/sort=/);
 
     await page.getByRole('button', { name: 'All Brands' }).click();
     const brandOption = page.getByRole('menuitem').nth(1);
-    const brandName = (await brandOption.innerText()).trim();
+    const brandName = (await brandOption.locator('span').last().innerText()).trim();
     await brandOption.click();
+    await expect(page).toHaveURL(/brand=/);
 
     await page.getByRole('button', { name: 'All Categories' }).click();
     const categoryOption = page.getByRole('menuitem').nth(1);
     const categoryName = (await categoryOption.innerText()).trim();
     await categoryOption.click();
-
-    await expect(page).toHaveURL(/search=Nike/);
     await expect(page).toHaveURL(/category=/);
-    await expect(page).toHaveURL(/price=/);
-    await expect(searchInput).toHaveValue('Nike');
+
     await expect(page.getByRole('button', { name: categoryName })).toBeVisible();
     await expect(page.getByRole('button', { name: priceName })).toBeVisible();
     await expect(page.getByRole('button', { name: sortName })).toBeVisible();
