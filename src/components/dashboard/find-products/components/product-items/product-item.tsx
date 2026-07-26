@@ -54,7 +54,7 @@ export function ProductItem({
         </Link>
         <ProductItemActions />
       </div>
-      <div className="w-full border-t bg-white p-4 text-sm text-black">
+      <div className="w-full border-t bg-white p-4 text-sm text-black" id="product-details">
         <div className="flex items-center justify-between gap-2">
           <h3 className="flex min-w-0 flex-1 items-center gap-2 leading-5 font-medium text-neutral-900">
             <ProductBrandBadge brandLogo={brand.logo} brandName={brand.title} />
