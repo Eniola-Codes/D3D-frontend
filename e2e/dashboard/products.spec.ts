@@ -223,22 +223,27 @@ test.describe('Find Products', () => {
     expect(clipboardText).toBe(title);
   });
 
-  test('should preserve category filter when paginating', async ({ page }) => {
+  test('should preserve filter when paginating', async ({ page }) => {
     await gotoFindProducts(page);
 
     await page.getByRole('button', { name: 'All Categories' }).click();
-    const categoryOption = page.getByRole('menuitem').nth(1);
-    const categoryName = (await categoryOption.innerText()).trim();
-    await categoryOption.click();
+    await page.getByRole('menuitem', { name: 'Electronics' }).click();
 
-    await expect(page).toHaveURL(new RegExp(`category=${categoryName.replace(/ /g, '\\+')}`));
-    await expect(page).toHaveURL(/category=/);
+    await expect(page).toHaveURL(/category=Electronics/);
 
+    const pageOne = page.getByRole('link', { name: '1', exact: true });
     const pageTwo = page.getByRole('link', { name: '2', exact: true });
+
     await pageTwo.click();
 
     await expect(page).toHaveURL(/page=2/);
-    await expect(page).toHaveURL(/category=/);
+    await expect(page).toHaveURL(/category=Electronics/);
+
+    await pageOne.click();
+
+    await expect(page).not.toHaveURL(/page=/);
+    await expect(page).toHaveURL(/category=Electronics/);
+
     await expect(page.locator('#product-list').locator('div').first()).toBeVisible();
   });
 

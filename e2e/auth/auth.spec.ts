@@ -465,7 +465,6 @@ test('should logout successfully', async ({ page }: { page: Page }) => {
   );
 
   await page.getByText('Log out', { exact: true }).click();
-
   await page.getByText(WELCOME_BACK).waitFor();
   await expect(page.locator('body')).toContainText(WELCOME_BACK);
   await page.goto(routes.dashboard.path.base);
