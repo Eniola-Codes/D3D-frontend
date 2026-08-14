@@ -1,6 +1,6 @@
 import axios, { isAxiosError } from 'axios';
 import { toastFunc } from './toasts';
-import { AUTH_FAILED, UNEXPECTED_ERROR } from '../constants/messages';
+import { AUTH_FAILED, UNEXPECTED_ERROR } from '../../constants/messages';
 import { NextResponse } from 'next/server';
 
 export const toastErrorHandler = (error: unknown) => {

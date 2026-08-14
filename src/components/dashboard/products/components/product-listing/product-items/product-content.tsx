@@ -1,6 +1,6 @@
-import EmptyState from '@/components/dashboard/find-products/components/product-items/empty-state';
-import { ProductPagination } from '@/components/dashboard/find-products/components/product-items/product-pagination';
-import ProductList from '@/components/dashboard/find-products/components/product-items/product-list';
+import EmptyState from '@/components/dashboard/products/components/product-listing/product-items/empty-state';
+import { ProductPagination } from '@/components/dashboard/products/components/product-listing/product-items/product-pagination';
+import ProductList from '@/components/dashboard/products/components/product-listing/product-items/product-list';
 import { ProductListResponse } from '@/interfaces/product';
 
 export function ProductContent({

@@ -7,8 +7,8 @@ import {
   redirectToLoginHandler,
   verifyAuthHandler,
   verifyAuthToken,
-} from '../lib/utils/middleware';
-import { cookieOptionsAuth } from '@/lib/utils/cookie';
+} from '../lib/utils/shared/middleware';
+import { cookieOptionsAuth } from '@/lib/utils/shared/cookie';
 import { jwtVerify } from 'jose';
 
 vi.mock('jose', () => ({

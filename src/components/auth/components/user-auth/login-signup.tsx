@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/utils/class-merge';
+import { cn } from '@/lib/utils/shared/class-merge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input/input';
 import { PasswordInput } from '@/components/ui/input/password-input';

@@ -7,7 +7,7 @@ import {
   setCookieHandler,
   verifyAuthHandler,
   verifyAuthToken,
-} from './lib/utils/middleware';
+} from './lib/utils/shared/middleware';
 
 export const config = {
   matcher: ['/account', '/dashboard/:path*'],

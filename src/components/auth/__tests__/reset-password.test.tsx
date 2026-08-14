@@ -2,9 +2,9 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { useResetPasswordForm } from '../hooks/reset-password';
 import { ResetPassword } from '../components/user-auth/reset-password';
-import { toastFunc } from '@/lib/utils/toasts';
+import { toastFunc } from '@/lib/utils/shared/toasts';
 import { submitResetPasswordFormData } from '@/lib/utils/auth/form-handlers';
-import { toastErrorHandler } from '@/lib/utils/error-handler';
+import { toastErrorHandler } from '@/lib/utils/shared/error-handler';
 import {
   PASSWORD_CHANGED_SUCCESSFULLY,
   PASSWORD_DOES_NOT_MATCH,
@@ -32,11 +32,11 @@ describe('submitResetPasswordFormData()', () => {
     },
   }));
 
-  vi.mock('@/lib/utils/error-handler', () => ({
+  vi.mock('@/lib/utils/shared/error-handler', () => ({
     toastErrorHandler: vi.fn(),
   }));
 
-  vi.mock('@/lib/utils/toasts', () => ({
+  vi.mock('@/lib/utils/shared/toasts', () => ({
     toastFunc: vi.fn(),
   }));
 

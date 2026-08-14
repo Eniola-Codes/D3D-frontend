@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
-import { gotoFindProducts, gotoFindProductsWithParams, productsPath } from '../helpers/products';
+import { gotoMyProducts, gotoMyProductsWithParams, productsPath } from '../helpers/products';
 
 test.describe('Find Products', () => {
   test('should open Find Products page when authenticated', async ({ page }) => {
-    await gotoFindProducts(page);
+    await gotoMyProducts(page);
 
     await expect(page.getByPlaceholder('Enter keywords to search...')).toBeVisible();
     await expect(page.getByRole('button', { name: 'All Categories' })).toBeVisible();
@@ -13,7 +13,7 @@ test.describe('Find Products', () => {
   });
 
   test('should load product grid from API', async ({ page }) => {
-    await gotoFindProducts(page);
+    await gotoMyProducts(page);
 
     const firstCard = page.locator('#product-list').locator('div').first();
 
@@ -35,7 +35,7 @@ test.describe('Find Products', () => {
   });
 
   test('should search and update URL', async ({ page }) => {
-    await gotoFindProducts(page);
+    await gotoMyProducts(page);
 
     const searchInput = page.getByPlaceholder('Enter keywords to search...');
     await searchInput.fill('Nike');
@@ -49,7 +49,7 @@ test.describe('Find Products', () => {
   });
 
   test('should paginate correctly', async ({ page }) => {
-    await gotoFindProducts(page);
+    await gotoMyProducts(page);
 
     const pageOne = page.getByRole('link', { name: '1', exact: true });
     const pageTwo = page.getByRole('link', { name: '2', exact: true });
@@ -72,7 +72,7 @@ test.describe('Find Products', () => {
   });
 
   test('should filter by category and update URL', async ({ page }) => {
-    await gotoFindProducts(page);
+    await gotoMyProducts(page);
 
     await page.getByRole('button', { name: 'All Categories' }).click();
     const categoryOption = page.getByRole('menuitem').nth(1);
@@ -87,7 +87,7 @@ test.describe('Find Products', () => {
   });
 
   test('should filter by brand and update URL', async ({ page }) => {
-    await gotoFindProducts(page);
+    await gotoMyProducts(page);
 
     await page.getByRole('button', { name: 'All Brands' }).click();
     const brandOption = page.getByRole('menuitem').nth(1);
@@ -102,7 +102,7 @@ test.describe('Find Products', () => {
   });
 
   test('should filter by price and update URL', async ({ page }) => {
-    await gotoFindProducts(page);
+    await gotoMyProducts(page);
 
     await page.getByRole('button', { name: 'All Prices' }).click();
     const priceOption = page.getByRole('menuitem').nth(1);
@@ -119,7 +119,7 @@ test.describe('Find Products', () => {
   });
 
   test('should sort by Top Rated and update URL', async ({ page }) => {
-    await gotoFindProducts(page);
+    await gotoMyProducts(page);
 
     await page.getByRole('button', { name: /Sort:/ }).click();
     const sortOption = page.getByRole('menuitem').nth(1);
@@ -134,7 +134,7 @@ test.describe('Find Products', () => {
   });
 
   test('should reset all filters', async ({ page }) => {
-    await gotoFindProducts(page);
+    await gotoMyProducts(page);
 
     const searchInput = page.getByPlaceholder('Enter keywords to search...');
     await searchInput.fill('Nike');
@@ -179,7 +179,7 @@ test.describe('Find Products', () => {
   });
 
   test('should show empty state for no matches', async ({ page }) => {
-    await gotoFindProducts(page);
+    await gotoMyProducts(page);
 
     const searchInput = page.getByPlaceholder('Enter keywords to search...');
     await searchInput.fill('zzzz-no-products-xyz');
@@ -194,14 +194,14 @@ test.describe('Find Products', () => {
   });
 
   test('should open product detail from product card', async ({ page }) => {
-    await gotoFindProducts(page);
+    await gotoMyProducts(page);
 
     const firstCard = page.locator('#product-list').locator('div').first();
     await expect(firstCard).toBeVisible();
 
-    const productLink = firstCard.locator('[href^="/product/"]').first();
+    const productLink = firstCard.locator(`[href^="${productsPath}/"]`).first();
     const href = await productLink.getAttribute('href');
-    expect(href).toMatch(/^\/product\/.+/);
+    expect(href).toMatch(new RegExp(`^${productsPath}/.+`));
 
     await firstCard.click();
     await expect(page).toHaveURL(href!);
@@ -209,7 +209,7 @@ test.describe('Find Products', () => {
 
   test('should copy product title to clipboard', async ({ page, context }) => {
     await context.grantPermissions(['clipboard-read', 'clipboard-write']);
-    await gotoFindProducts(page);
+    await gotoMyProducts(page);
 
     const firstCard = page.locator('#product-list').locator('div').first();
     await expect(firstCard).toBeVisible();
@@ -224,7 +224,7 @@ test.describe('Find Products', () => {
   });
 
   test('should preserve filter when paginating', async ({ page }) => {
-    await gotoFindProducts(page);
+    await gotoMyProducts(page);
 
     await page.getByRole('button', { name: 'All Categories' }).click();
     await page.getByRole('menuitem', { name: 'Electronics' }).click();
@@ -248,7 +248,7 @@ test.describe('Find Products', () => {
   });
 
   test('should reset page to 1 when filter changes', async ({ page }) => {
-    await gotoFindProducts(page);
+    await gotoMyProducts(page);
 
     const pageTwo = page.getByRole('link', { name: '2', exact: true });
     await pageTwo.click();
@@ -267,21 +267,21 @@ test.describe('Find Products', () => {
   });
 
   test('should disable Reset when no filters are active', async ({ page }) => {
-    await gotoFindProducts(page);
+    await gotoMyProducts(page);
 
     const resetButton = page.getByRole('button', { name: 'Reset' }).last();
     await expect(resetButton).toBeDisabled();
   });
 
   test('should load Find Products from deep-link URL params', async ({ page }) => {
-    await gotoFindProducts(page);
+    await gotoMyProducts(page);
 
     await page.getByRole('button', { name: 'All Categories' }).click();
     const categoryOption = page.getByRole('menuitem').nth(1);
 
     const categoryName = (await categoryOption.innerText()).trim();
 
-    await gotoFindProductsWithParams(page, {
+    await gotoMyProductsWithParams(page, {
       search: 'Nike',
       category: categoryName,
       page: '2',
@@ -298,7 +298,7 @@ test.describe('Find Products', () => {
   });
 
   test('should keep combined filters in sync in the URL', async ({ page }) => {
-    await gotoFindProducts(page);
+    await gotoMyProducts(page);
 
     const searchInput = page.getByPlaceholder('Enter keywords to search...');
     await searchInput.fill('Nike');

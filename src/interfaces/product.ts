@@ -28,7 +28,7 @@ export interface Product {
   handle: string;
   url: string;
   description: string;
-  options: IOption[];
+  options: ProductOptionCombo[];
   featuredImage: string;
   shipping: IShipping;
   priceRange: IPriceRange;
@@ -64,6 +64,33 @@ export interface IVariant {
   sku: string;
   barcode: string;
   images: string[];
+}
+
+export interface VariantOption {
+  title: string;
+  value: string;
+  _id?: string;
+}
+
+export type ProductOptionCombo = VariantOption[];
+
+export interface Variant {
+  _id: string;
+  handle: string;
+  sku: string;
+  url: string;
+  price: number;
+  inStock: boolean;
+  images: string[];
+  options: VariantOption[];
+  product: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface VariantResponse {
+  variant: Variant;
+  message: string;
 }
 
 export interface IReview {
@@ -140,9 +167,57 @@ export interface ProductListFilter {
   categories: ProductListFilterCategory[];
 }
 
+export interface ProductResponse {
+  product: Product;
+  message: string;
+}
+
 export interface ProductListResponse {
   products: ProductListItem[];
   pagination: ProductListPagination;
   filter: ProductListFilter;
   message: string;
+}
+
+export interface ProductPageProps {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export interface BookMarkButtonProps {
+  productId: string;
+  className?: string;
+  variant?: 'default' | 'outline' | 'ghost';
+  size?: 'default' | 'sm' | 'lg' | 'icon';
+}
+
+export interface ImportProductButtonProps {
+  product: Product;
+  quantity?: number;
+  className?: string;
+}
+
+export interface ProductVariantOptionsProps {
+  options: ProductOptionCombo[];
+  selection: Record<string, string>;
+}
+
+export interface ProductVariantSectionProps {
+  product: Product;
+  selection: Record<string, string>;
+  variant: Variant;
+}
+
+export interface ProductTabsProps {
+  product: Product;
+}
+
+export interface ProductImageSliderProps {
+  images: string[];
+  title: string;
+  featuredImage: string;
+}
+
+export interface RelatedProductsProps {
+  products: Product[];
 }

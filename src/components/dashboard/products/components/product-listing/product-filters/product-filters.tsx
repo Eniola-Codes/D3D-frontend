@@ -8,11 +8,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { SearchForm } from '@/components/ui/search-form';
-import { useProductFilters } from '@/components/dashboard/find-products/hooks/use-product-filters';
+import { useProductFilters } from '@/components/dashboard/products/hooks/use-product-filters';
 import { sortOptions, priceOptions } from '@/lib/data/product';
 import { ProductListFilter } from '@/interfaces/product';
 import Image from 'next/image';
 import { getBrandInitials } from '@/lib/utils/dashboard/brand';
+import { cn } from '@/lib/utils/shared/class-merge';
 
 export function ProductFilter({
   search,
@@ -38,6 +39,7 @@ export function ProductFilter({
     setBrandQuery,
     brandMatches,
     hasActiveFilters,
+    isPending,
     handleFilterChange,
     handleResetFilters,
   } = useProductFilters({
@@ -51,7 +53,7 @@ export function ProductFilter({
 
   return (
     <div className="bg-background border-border sticky top-0 z-10 w-full border-b">
-      <div className="mx-auto max-w-[100rem] px-4 py-3 sm:py-4 lg:px-6">
+      <div className="mx-auto max-w-400 px-4 py-3 sm:py-4 lg:px-6">
         <div className="flex flex-row items-center gap-2">
           <SearchForm
             className="w-full flex-1"
@@ -60,14 +62,19 @@ export function ProductFilter({
           />
           <button
             onClick={handleResetFilters}
-            disabled={!hasActiveFilters}
+            disabled={!hasActiveFilters || isPending}
             className="w-20 min-w-20 cursor-pointer rounded-sm bg-gray-900 py-2 text-sm whitespace-nowrap text-white transition-colors hover:bg-gray-800 disabled:cursor-not-allowed disabled:bg-gray-400 sm:hidden"
           >
             Reset
           </button>
         </div>
 
-        <div className="mt-3 flex items-center justify-between sm:mt-4 sm:flex-row">
+        <div
+          className={cn(
+            'mt-3 flex items-center justify-between sm:mt-4 sm:flex-row',
+            isPending && 'pointer-events-none opacity-60'
+          )}
+        >
           <div className="flex w-full items-center gap-2 xl:gap-3">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -75,7 +82,7 @@ export function ProductFilter({
                   <span className="text-foreground truncate text-sm font-medium">
                     {filters.category}
                   </span>
-                  <ChevronDown className="text-muted-foreground ml-2 h-4 w-4 flex-shrink-0" />
+                  <ChevronDown className="text-muted-foreground ml-2 h-4 w-4 shrink-0" />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
@@ -117,7 +124,7 @@ export function ProductFilter({
                   <span className="text-foreground truncate text-sm font-medium">
                     {filters.brand}
                   </span>
-                  <ChevronDown className="text-muted-foreground ml-2 h-4 w-4 flex-shrink-0" />
+                  <ChevronDown className="text-muted-foreground ml-2 h-4 w-4 shrink-0" />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
@@ -154,7 +161,7 @@ export function ProductFilter({
                             height={20}
                           />
                         ) : (
-                          <span className="inline-block rounded-full bg-gray-200 px-1.5 py-[1px] text-sm font-semibold text-neutral-700">
+                          <span className="inline-block rounded-full bg-gray-200 px-1.5 py-px text-sm font-semibold text-neutral-700">
                             {initials}
                           </span>
                         )}
@@ -175,7 +182,7 @@ export function ProductFilter({
                   <span className="text-foreground truncate text-sm font-medium">
                     {filters.price}
                   </span>
-                  <ChevronDown className="text-muted-foreground ml-2 h-4 w-4 flex-shrink-0" />
+                  <ChevronDown className="text-muted-foreground ml-2 h-4 w-4 shrink-0" />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
@@ -197,7 +204,7 @@ export function ProductFilter({
                   <span className="text-foreground truncate text-sm font-medium">
                     Sort: {filters.sort}
                   </span>
-                  <ChevronDown className="text-muted-foreground ml-2 h-4 w-4 flex-shrink-0" />
+                  <ChevronDown className="text-muted-foreground ml-2 h-4 w-4 shrink-0" />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
@@ -216,7 +223,7 @@ export function ProductFilter({
 
           <button
             onClick={handleResetFilters}
-            disabled={!hasActiveFilters}
+            disabled={!hasActiveFilters || isPending}
             className="ml-2 hidden w-20 min-w-20 cursor-pointer rounded-sm bg-gray-900 py-2 text-sm whitespace-nowrap text-white transition-colors hover:bg-gray-800 disabled:cursor-not-allowed disabled:bg-gray-400 sm:block xl:ml-3"
           >
             Reset

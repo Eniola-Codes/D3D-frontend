@@ -17,6 +17,9 @@ export const endpoints = {
     base: '/v1/products',
     getProducts: '/',
   },
+  variants: {
+    base: '/v1/variants',
+  },
   shopify: {
     base: '/shopify',
     init: '/init',

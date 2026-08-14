@@ -19,7 +19,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Bell, LogOut, Sparkles } from 'lucide-react';
+import { LogOut, Sparkles } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { getUserInitials } from '@/lib/utils/dashboard/user';
 import { useRouter } from 'next/navigation';
@@ -71,10 +71,6 @@ export function Navbar({ user }: { user: IUser }) {
         </Breadcrumb>
       </div>
       <div className="flex items-center gap-4 sm:gap-6">
-        <div>
-          <Bell className="size-5" />
-        </div>
-        <Separator orientation="vertical" className="data-[orientation=vertical]:h-4" />
         <DropdownMenu>
           <DropdownMenuTrigger data-testid="dropdown-menu-trigger" asChild>
             {user.name && user.email && (

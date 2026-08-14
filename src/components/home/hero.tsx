@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { BsArrowRight, BsYoutube } from 'react-icons/bs';
-import { arrowVariant, headerVariant, infoVariant } from '@/lib/utils/framer-variants';
+import { arrowVariant, headerVariant, infoVariant } from '@/lib/utils/shared/framer-variants';
 import AutoplaySlider from '@/components/ui/autoplay-slider';
 import { Logos } from '@/lib/data/logos';
 import { Button } from '@/components/ui/button';

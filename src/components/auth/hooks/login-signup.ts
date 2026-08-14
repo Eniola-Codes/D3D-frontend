@@ -8,7 +8,7 @@ import {
   submitLoginOrSignupFormData,
 } from '@/lib/utils/auth/form-handlers';
 import { AuthFormData } from '../../../interfaces/auth';
-import { toastFunc } from '@/lib/utils/toasts';
+import { toastFunc } from '@/lib/utils/shared/toasts';
 import { AUTH_FAILED } from '@/lib/constants/messages';
 import { userStore } from '@/store/user';
 

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useTransition } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ProductListFilter } from '@/interfaces/product';
 
@@ -20,6 +20,7 @@ export function useProductFilters({
   const searchParams = useSearchParams();
   const [categoryQuery, setCategoryQuery] = useState('');
   const [brandQuery, setBrandQuery] = useState('');
+  const [isPending, startTransition] = useTransition();
   const [filters, setFilters] = useState({
     search: search ?? '',
     category: category || 'All Categories',
@@ -31,6 +32,8 @@ export function useProductFilters({
   const router = useRouter();
 
   const handleFilterChange = (filterKey: string, value: string) => {
+    if (filters[filterKey as keyof typeof filters] === value) return;
+
     setFilters(prev => ({
       ...prev,
       [filterKey]: value,
@@ -53,10 +56,23 @@ export function useProductFilters({
 
     params.delete('page');
 
-    router.replace(`${pathname}?${params.toString()}`);
+    const url = `${pathname}?${params.toString()}`;
+
+    if (filterKey === 'search') {
+      router.replace(url, { scroll: false });
+      return;
+    }
+
+    if (isPending) return;
+
+    startTransition(() => {
+      router.replace(url, { scroll: false });
+    });
   };
 
   const handleResetFilters = () => {
+    if (isPending) return;
+
     setFilters({
       search: '',
       category: 'All Categories',
@@ -65,7 +81,9 @@ export function useProductFilters({
       price: 'All Prices',
     });
 
-    router.replace(pathname);
+    startTransition(() => {
+      router.replace(pathname, { scroll: false });
+    });
   };
 
   const hasActiveFilters =
@@ -103,6 +121,7 @@ export function useProductFilters({
     setBrandQuery,
     brandMatches,
     hasActiveFilters,
+    isPending,
     handleFilterChange,
     handleResetFilters,
   };

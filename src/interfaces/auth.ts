@@ -39,3 +39,7 @@ export interface UrlQueryParams {
   otp?: string;
   error?: string;
 }
+
+export interface PasswordInputProps extends React.ComponentProps<'input'> {
+  className?: string;
+}

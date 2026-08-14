@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { toastFunc } from '@/lib/utils/toasts';
+import { toastFunc } from '@/lib/utils/shared/toasts';
 import { routes } from '@/lib/constants/page-routes';
 import { logout } from '@/lib/utils/auth/form-handlers';
-import { toastErrorHandler } from '@/lib/utils/error-handler';
+import { toastErrorHandler } from '@/lib/utils/shared/error-handler';
 import React from 'react';
 import { IUser } from '../../../interfaces/user';
 import { LOGOUT_SUCCESSFUL } from '@/lib/constants/messages';
@@ -26,11 +26,11 @@ vi.mock('@/lib/services/auth', () => ({
   },
 }));
 
-vi.mock('@/lib/utils/error-handler', () => ({
+vi.mock('@/lib/utils/shared/error-handler', () => ({
   toastErrorHandler: vi.fn(),
 }));
 
-vi.mock('@/lib/utils/toasts', () => ({
+vi.mock('@/lib/utils/shared/toasts', () => ({
   toastFunc: vi.fn(),
 }));
 
