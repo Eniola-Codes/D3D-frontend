@@ -1,5 +1,5 @@
-import { SEVENDAYS, LAX } from '../constants';
-import { routes } from '../constants/page-routes';
+import { SEVENDAYS, LAX } from '../../constants';
+import { routes } from '../../constants/page-routes';
 
 export const cookieOptionsAuth = {
   httpOnly: true,

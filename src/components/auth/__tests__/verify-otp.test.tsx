@@ -2,9 +2,9 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { useOtpForm } from '../hooks/verify-otp';
 import { VerifyOTP } from '../components/user-auth/verify-otp';
-import { toastFunc } from '@/lib/utils/toasts';
+import { toastFunc } from '@/lib/utils/shared/toasts';
 import { submitVerifyOtpFormData } from '@/lib/utils/auth/form-handlers';
-import { toastErrorHandler } from '@/lib/utils/error-handler';
+import { toastErrorHandler } from '@/lib/utils/shared/error-handler';
 import {
   INVALID_INPUT,
   INVALID_OTP_FORMAT,
@@ -32,11 +32,11 @@ describe('submitVerifyOtpFormData()', () => {
     },
   }));
 
-  vi.mock('@/lib/utils/error-handler', () => ({
+  vi.mock('@/lib/utils/shared/error-handler', () => ({
     toastErrorHandler: vi.fn(),
   }));
 
-  vi.mock('@/lib/utils/toasts', () => ({
+  vi.mock('@/lib/utils/shared/toasts', () => ({
     toastFunc: vi.fn(),
   }));
 

@@ -3,8 +3,8 @@ import { z } from 'zod';
 import { authService } from '../../services/auth';
 import { shopifyService } from '../../services/shopify';
 import { AuthFormData } from '../../../interfaces/auth';
-import { toastFunc } from '../toasts';
-import { toastErrorHandler } from '../error-handler';
+import { toastFunc } from '../shared/toasts';
+import { toastErrorHandler } from '../shared/error-handler';
 
 export const createFormHandler = <T extends object>(
   setFormData: Dispatch<SetStateAction<T>>,

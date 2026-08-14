@@ -34,7 +34,7 @@ export default defineConfig({
       },
     },
     {
-      name: 'authenticated',
+      name: 'dashboard',
       testMatch: /.*\.spec\.ts/,
       testIgnore: /auth\.spec\.ts/,
       use: {

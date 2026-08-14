@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils/class-merge';
+import { cn } from '@/lib/utils/shared/class-merge';
 
 function Skeleton({ className, ...props }: React.ComponentProps<'div'>) {
   return (

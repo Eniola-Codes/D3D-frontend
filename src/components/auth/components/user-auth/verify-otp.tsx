@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/utils/class-merge';
+import { cn } from '@/lib/utils/shared/class-merge';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input/input-otp';
 import { Button } from '@/components/ui/button';
 import { InputOTPProps } from '@/interfaces/auth';

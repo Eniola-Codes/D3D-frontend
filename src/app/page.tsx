@@ -1,4 +1,4 @@
-import HeroSection from '@/components/home/hero-section';
+import HeroSection from '@/components/home/hero';
 import Navbar from '@/components/home/layout/nav-bar';
 
 const Home: React.FC = () => {

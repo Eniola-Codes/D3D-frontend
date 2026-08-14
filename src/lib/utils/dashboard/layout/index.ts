@@ -1,3 +1,4 @@
+import { routes } from '@/lib/constants/page-routes';
 import { labelMap } from '@/lib/data/layout';
 
 export const toTitle = (input: string) => {
@@ -14,4 +15,11 @@ export const getBreadcrumbLabel = (segments: string[], segment: string, index: n
   const isLast = index === segments.length - 1;
   const label = labelMap[segment] ?? segment.charAt(0).toUpperCase() + segment.slice(1);
   return { href, isLast, label };
+};
+
+export const isActive = (url: string, pathname: string) => {
+  if (url === routes.dashboard.path.base) {
+    return pathname === url;
+  }
+  return pathname === url || pathname.startsWith(`${url}/`);
 };

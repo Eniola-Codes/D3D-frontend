@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/utils/class-merge';
+import { cn } from '@/lib/utils/shared/class-merge';
 import { routes } from '@/lib/constants/page-routes';
 import { Card } from '../../../ui/card';
 import Image from 'next/image';

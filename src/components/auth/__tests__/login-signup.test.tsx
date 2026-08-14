@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { routes } from '@/lib/constants/page-routes';
 import { submitLoginOrSignupFormData } from '@/lib/utils/auth/form-handlers';
-import { toastErrorHandler } from '@/lib/utils/error-handler';
-import { toastFunc } from '@/lib/utils/toasts';
+import { toastErrorHandler } from '@/lib/utils/shared/error-handler';
+import { toastFunc } from '@/lib/utils/shared/toasts';
 import { authService } from '@/lib/services/auth';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { LoginSignup } from '../components/user-auth/login-signup';
@@ -39,11 +39,11 @@ describe('submitLoginOrSignupFormData()', () => {
     },
   }));
 
-  vi.mock('@/lib/utils/error-handler', () => ({
+  vi.mock('@/lib/utils/shared/error-handler', () => ({
     toastErrorHandler: vi.fn(),
   }));
 
-  vi.mock('@/lib/utils/toasts', () => ({
+  vi.mock('@/lib/utils/shared/toasts', () => ({
     toastFunc: vi.fn(),
   }));
 

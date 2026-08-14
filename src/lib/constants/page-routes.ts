@@ -4,7 +4,7 @@ export const routes = {
   dashboard: {
     path: {
       base: '/dashboard',
-      findProducts: '/products',
+      myProducts: '/products',
     },
     keys: {
       token: 'token',

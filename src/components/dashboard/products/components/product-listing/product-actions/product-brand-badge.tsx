@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { routes } from '@/lib/constants/page-routes';
 import { getBrandInitials } from '@/lib/utils/dashboard/brand';
 
-const productsPath = `${routes.dashboard.path.base}${routes.dashboard.path.findProducts}`;
+const productsPath = `${routes.dashboard.path.base}${routes.dashboard.path.myProducts}`;
 
 export function ProductBrandBadge({
   brandLogo,
@@ -24,7 +24,7 @@ export function ProductBrandBadge({
       {brandLogo ? (
         <Image src={brandLogo} alt="" width={20} height={20} />
       ) : (
-        <span className="inline-block rounded-full bg-gray-200 px-1.5 py-[1px] text-sm font-semibold text-neutral-700">
+        <span className="inline-block rounded-full bg-gray-200 px-1.5 py-px text-sm font-semibold text-neutral-700">
           {initials}
         </span>
       )}

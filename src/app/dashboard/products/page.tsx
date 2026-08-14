@@ -1,10 +1,12 @@
-import { ProductFilter } from '@/components/dashboard/find-products/components/product-filters/product-filters';
-import { ProductContent } from '@/components/dashboard/find-products/components/product-items/product-content';
+import { ProductFilter } from '@/components/dashboard/products/components/product-listing/product-filters/product-filters';
+import { ProductContent } from '@/components/dashboard/products/components/product-listing/product-items/product-content';
 import DashboardLayout from '@/components/dashboard/layout/components';
 import { ProductListResponse } from '@/interfaces/product';
-import { endpoints } from '@/lib/constants/endpoints';
-import { apiServerService } from '@/lib/services/api/server';
+import { FAILED_TO_FETCH_PRODUCTS } from '@/lib/constants/messages';
+import { routes } from '@/lib/constants/page-routes';
+import { productServerService } from '@/lib/services/product/server';
 import { buildProductSearchParams } from '@/lib/utils/dashboard/product';
+import { redirect } from 'next/navigation';
 
 export default async function SearchPage(props: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -15,10 +17,11 @@ export default async function SearchPage(props: {
   let response: ProductListResponse;
 
   try {
-    response = await apiServerService.get<ProductListResponse>(
-      `${endpoints.products.base}${endpoints.products.getProducts}?${params.toString()}`
-    );
-  } catch {
+    response = await productServerService.getProducts(params);
+  } catch (err: unknown) {
+    if ((err as { status?: number }).status === 500) {
+      redirect(routes.error);
+    }
     response = {
       products: [],
       pagination: {
@@ -29,7 +32,7 @@ export default async function SearchPage(props: {
         totalPages: 1,
       },
       filter: { brands: [], categories: [] },
-      message: 'Failed to fetch products',
+      message: FAILED_TO_FETCH_PRODUCTS,
     };
   }
 

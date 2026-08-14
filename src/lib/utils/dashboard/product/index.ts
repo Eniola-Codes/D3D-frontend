@@ -1,5 +1,7 @@
 import { routes } from '@/lib/constants/page-routes';
 
+export * from './variants';
+
 export const getRating = ({ rating }: { rating: number }) => {
   const ratingText = `${'★'.repeat(Math.round(rating))} ${rating.toFixed(1)}`;
 
@@ -21,7 +23,7 @@ export function buildProductSearchParams(searchParams: {
   return params;
 }
 
-const productsPath = `${routes.dashboard.path.base}${routes.dashboard.path.findProducts}`;
+const productsPath = `${routes.dashboard.path.base}${routes.dashboard.path.myProducts}`;
 
 export function buildProductsPageUrl(searchParams: URLSearchParams, page: number): string {
   const params = new URLSearchParams(searchParams);

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { routes } from '../constants/page-routes';
-import { AUTH_TOKEN, JWT_ALGORITHM } from '../constants';
+import { routes } from '../../constants/page-routes';
+import { AUTH_TOKEN, JWT_ALGORITHM } from '../../constants';
 import { cookieOptionsAuth } from './cookie';
 import { jwtVerify } from 'jose';
 

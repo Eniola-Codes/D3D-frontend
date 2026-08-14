@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input/input';
 import { Label } from '@/components/ui/label';
 import { Loader2 } from 'lucide-react';
-import { cn } from '@/lib/utils/class-merge';
+import { cn } from '@/lib/utils/shared/class-merge';
 import { routes } from '@/lib/constants/page-routes';
 import { useForgetPasswordForm } from '../../hooks/forget-password';
 

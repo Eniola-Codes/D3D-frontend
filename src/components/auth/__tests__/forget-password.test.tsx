@@ -2,10 +2,10 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { useForgetPasswordForm } from '../hooks/forget-password';
 import { ForgetPassword } from '../components/user-auth/forget-password';
-import { toastFunc } from '@/lib/utils/toasts';
+import { toastFunc } from '@/lib/utils/shared/toasts';
 import { routes } from '@/lib/constants/page-routes';
 import { submitForgetPasswordFormData } from '@/lib/utils/auth/form-handlers';
-import { toastErrorHandler } from '@/lib/utils/error-handler';
+import { toastErrorHandler } from '@/lib/utils/shared/error-handler';
 import {
   EMAIL_IS_REQUIRED,
   EMAIL_SENT_SUCCESSFULLY,
@@ -33,12 +33,12 @@ describe('submitForgetPasswordFormData()', () => {
     },
   }));
 
-  vi.mock('@/lib/utils/error-handler', () => ({
-    toastErrorHandler: vi.fn(),
+  vi.mock('@/lib/utils/shared/toasts', () => ({
+    toastFunc: vi.fn(),
   }));
 
-  vi.mock('@/lib/utils/toasts', () => ({
-    toastFunc: vi.fn(),
+  vi.mock('@/lib/utils/shared/error-handler', () => ({
+    toastErrorHandler: vi.fn(),
   }));
 
   describe('Forget Password flow', () => {

@@ -1,13 +1,4 @@
-import {
-  BadgeCheck,
-  Box,
-  Headset,
-  Home,
-  List,
-  MessageCircleMore,
-  Pickaxe,
-  Search,
-} from 'lucide-react';
+import { BadgeCheck, Headset, Home, MessageCircleMore, Pickaxe, ShoppingCart } from 'lucide-react';
 import { routes } from '../constants/page-routes';
 
 export const sidebarNavData = {
@@ -24,22 +15,12 @@ export const sidebarNavData = {
       url: '#',
       icon: Pickaxe,
     },
-    {
-      name: 'Find Products',
-      url: `${routes.dashboard.path.base}${routes.dashboard.path.findProducts}`,
-      icon: Search,
-    },
   ],
   myStore: [
     {
       name: 'My Products',
-      url: '#',
-      icon: Box,
-    },
-    {
-      name: 'Import List',
-      url: '#',
-      icon: List,
+      url: `${routes.dashboard.path.base}${routes.dashboard.path.myProducts}`,
+      icon: ShoppingCart,
     },
   ],
 };
@@ -61,5 +42,5 @@ export const TABLET_BREAKPOINT = 1024;
 
 export const labelMap: Record<string, string> = {
   dashboard: 'Dashboard',
-  products: 'Find products',
+  products: 'My Products',
 };

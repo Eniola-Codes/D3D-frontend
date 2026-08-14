@@ -6,7 +6,8 @@ import { IBrand, IPriceRange } from '@/interfaces/product';
 import { ProductItemCopy } from '../product-actions/product-item-copy';
 import Image from 'next/image';
 import Link from 'next/link';
-import { shimmer, toBase64 } from '@/lib/utils/image-shimmer';
+import { shimmer, toBase64 } from '@/lib/utils/shared/image-shimmer';
+import { routes } from '@/lib/constants/page-routes';
 
 export function ProductItem({
   handle,
@@ -37,10 +38,9 @@ export function ProductItem({
     >
       <div className="relative h-50 w-full shrink-0 overflow-hidden bg-white">
         <Link
-          href={`/product/${handle}`}
-          prefetch
+          href={`${routes.dashboard.path.base}${routes.dashboard.path.myProducts}/${handle}`}
           aria-label={title}
-          className="relative z-[1] block h-full w-full"
+          className="relative z-1 block h-full w-full"
         >
           <Image
             className="m-auto h-full w-full object-cover"
@@ -63,9 +63,7 @@ export function ProductItem({
           <ProductItemCopy title={title} />
         </div>
         <div className="mt-4 flex items-center justify-between">
-          <p className="text-base font-semibold">
-            US$ {price?.minVariantPrice} - {price?.maxVariantPrice}
-          </p>
+          <p className="text-base font-semibold">From ${price?.minVariantPrice}</p>
         </div>
         <div className="mt-2 flex items-center justify-between text-xs text-neutral-600">
           <p>Rating</p>

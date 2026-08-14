@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { toTitle } from '@/lib/utils/dashboard/layout';
+import { isActive, toTitle } from '@/lib/utils/dashboard/layout';
 
 export function SidebarLinks({
   groupName,
@@ -32,7 +32,7 @@ export function SidebarLinks({
         {items.map(item => (
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton
-              isActive={pathname === item.url}
+              isActive={isActive(item.url, pathname)}
               className="data-[active=true]:bg-gray-200"
               asChild
             >
