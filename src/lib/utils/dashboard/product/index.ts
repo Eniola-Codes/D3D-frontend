@@ -2,14 +2,6 @@ import { routes } from '@/lib/constants/page-routes';
 
 export * from './variants';
 
-export const getRating = ({ rating }: { rating: number }) => {
-  const ratingText = `${'★'.repeat(Math.round(rating))} ${rating.toFixed(1)}`;
-
-  return {
-    ratingText,
-  };
-};
-
 export function buildProductSearchParams(searchParams: {
   [key: string]: string | string[] | undefined;
 }): URLSearchParams {

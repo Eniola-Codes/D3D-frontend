@@ -14,7 +14,8 @@ export default function RelatedProducts({ products }: RelatedProductsProps) {
           handle={product.handle}
           title={product.title}
           src={product.featuredImage}
-          rating={product.rating}
+          description={product.shortDescription}
+          options={product.options}
           brand={product.brand}
           price={product.priceRange}
           priority={index < 4}

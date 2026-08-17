@@ -12,26 +12,22 @@ test.describe('Find Products', () => {
     await expect(page.getByRole('button', { name: /Sort:/ })).toBeVisible();
   });
 
-  test('should load product grid from API', async ({ page }) => {
+  test.only('should load product grid from API', async ({ page }) => {
     await gotoMyProducts(page);
 
-    const firstCard = page.locator('#product-list').locator('div').first();
+    const firstCard = page.locator('#product-list > div').first();
+    const details = firstCard.locator('#product-details');
+    const title = details.locator('h3 span').last();
+    const description = details.locator(':scope > p').first();
+    const price = details.getByText(/^From \$/);
 
     await expect(firstCard).toBeVisible();
-    await expect(firstCard.locator('h3 span').last()).toBeVisible();
-    await expect(firstCard.locator('h3 span').last()).not.toBeEmpty();
-    await expect(
-      firstCard.locator('#product-details').locator('div').nth(1).locator('p')
-    ).toBeVisible();
-    await expect(
-      firstCard.locator('#product-details').locator('div').nth(1).locator('p')
-    ).not.toBeEmpty();
-    await expect(
-      firstCard.locator('#product-details').locator('div').nth(2).locator('p').last()
-    ).toBeVisible();
-    await expect(
-      firstCard.locator('#product-details').locator('div').nth(2).locator('p').last()
-    ).not.toBeEmpty();
+    await expect(title).toBeVisible();
+    await expect(title).not.toBeEmpty();
+    await expect(description).toBeVisible();
+    await expect(description).not.toBeEmpty();
+    await expect(price).toBeVisible();
+    await expect(price).not.toBeEmpty();
   });
 
   test('should search and update URL', async ({ page }) => {

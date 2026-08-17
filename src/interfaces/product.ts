@@ -28,12 +28,19 @@ export interface Product {
   handle: string;
   url: string;
   description: string;
+  shortDescription: string;
+  attributes: {
+    title: string;
+    value: string;
+  }[];
+  features: {
+    title: string;
+    value: string;
+  }[];
   options: ProductOptionCombo[];
   featuredImage: string;
   shipping: IShipping;
   priceRange: IPriceRange;
-  rating: number;
-  reviews: IReview[];
   seo: ISEO;
   brand: IBrand;
   variants?: IVariant[];
@@ -69,7 +76,6 @@ export interface IVariant {
 export interface VariantOption {
   title: string;
   value: string;
-  _id?: string;
 }
 
 export type ProductOptionCombo = VariantOption[];
@@ -91,12 +97,6 @@ export interface Variant {
 export interface VariantResponse {
   variant: Variant;
   message: string;
-}
-
-export interface IReview {
-  review: string;
-  rating: number;
-  name: string;
 }
 
 export interface ISEO {
@@ -136,10 +136,10 @@ export interface ProductListItem {
   handle: string;
   title: string;
   featuredImage: string;
-  rating: number;
-  description: string;
+  shortDescription: string;
   brand: IBrand;
   priceRange: IPriceRange;
+  options: ProductOptionCombo[];
 }
 export interface ProductListPagination {
   currentPage: number;

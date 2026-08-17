@@ -10,7 +10,7 @@ export default function ProductList({ products }: { products: ProductListItem[] 
       id="product-list"
     >
       {products.map((product, index) => (
-        <div key={product.handle} className="animate-fadeIn relative transition-opacity">
+        <div key={product.handle} className="group animate-fadeIn relative transition-opacity">
           <Link
             href={`${routes.dashboard.path.base}${routes.dashboard.path.myProducts}/${product.handle}`}
             aria-label={product.title}
@@ -20,7 +20,8 @@ export default function ProductList({ products }: { products: ProductListItem[] 
             handle={product.handle}
             title={product.title}
             src={product.featuredImage}
-            rating={product.rating}
+            description={product.shortDescription}
+            options={product.options}
             brand={product.brand}
             price={product.priceRange}
             priority={index < 4}
