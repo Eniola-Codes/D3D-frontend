@@ -12,7 +12,7 @@ test.describe('Find Products', () => {
     await expect(page.getByRole('button', { name: /Sort:/ })).toBeVisible();
   });
 
-  test.only('should load product grid from API', async ({ page }) => {
+  test('should load product grid from API', async ({ page }) => {
     await gotoMyProducts(page);
 
     const firstCard = page.locator('#product-list > div').first();
