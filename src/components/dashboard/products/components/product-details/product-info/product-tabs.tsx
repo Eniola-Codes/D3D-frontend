@@ -7,9 +7,9 @@ export default function ProductTabs({ product }: ProductTabsProps) {
   const { description, features, attributes } = product;
 
   return (
-    <div className="mt-10 mb-5">
+    <div className="mt-10">
       <Tabs defaultValue="description">
-        <TabsList className="rounded-sm bg-gray-200 px-2 py-4">
+        <TabsList className="mx-auto rounded-sm bg-gray-200 px-2 py-4 md:mx-0">
           <TabsTrigger
             value="description"
             className="rounded-sm p-3 data-[state=active]:bg-[#f5f5f5]"
@@ -26,14 +26,16 @@ export default function ProductTabs({ product }: ProductTabsProps) {
             Features
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="description" className="pt-3 [&_p]:mb-4 [&_p:last-child]:mb-0">
+        <TabsContent value="description" className="pt-2">
           {description ? (
-            <div dangerouslySetInnerHTML={{ __html: description }} />
+            <div className="rounded-sm border bg-white p-4 leading-relaxed [&_p]:mb-4 [&_p:last-child]:mb-0">
+              <div dangerouslySetInnerHTML={{ __html: description }} />
+            </div>
           ) : (
             <ProductTabEmptyState message="No description available for this product." />
           )}
         </TabsContent>
-        <TabsContent value="attributes" className="pt-3">
+        <TabsContent value="attributes" className="pt-2">
           {attributes?.length > 0 ? (
             <div className="rounded-sm border">
               <Table>
@@ -54,7 +56,7 @@ export default function ProductTabs({ product }: ProductTabsProps) {
             <ProductTabEmptyState message="No attributes available for this product." />
           )}
         </TabsContent>
-        <TabsContent value="features" className="pt-3">
+        <TabsContent value="features" className="pt-2">
           {features?.length > 0 ? (
             <div className="rounded-sm border">
               <Table>

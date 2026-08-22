@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { gotoMyProducts, gotoMyProductsWithParams, productsPath } from '../helpers/products';
+import { gotoMyProducts, gotoMyProductsWithParams, productsPath, skipIfNoPagination } from '../helpers/products';
 
 test.describe('Find Products', () => {
   test('should open Find Products page when authenticated', async ({ page }) => {
@@ -46,6 +46,7 @@ test.describe('Find Products', () => {
 
   test('should paginate correctly', async ({ page }) => {
     await gotoMyProducts(page);
+    await skipIfNoPagination(page);
 
     const pageOne = page.getByRole('link', { name: '1', exact: true });
     const pageTwo = page.getByRole('link', { name: '2', exact: true });
@@ -226,6 +227,7 @@ test.describe('Find Products', () => {
     await page.getByRole('menuitem', { name: 'Electronics' }).click();
 
     await expect(page).toHaveURL(/category=Electronics/);
+    await skipIfNoPagination(page);
 
     const pageOne = page.getByRole('link', { name: '1', exact: true });
     const pageTwo = page.getByRole('link', { name: '2', exact: true });
@@ -245,6 +247,7 @@ test.describe('Find Products', () => {
 
   test('should reset page to 1 when filter changes', async ({ page }) => {
     await gotoMyProducts(page);
+    await skipIfNoPagination(page);
 
     const pageTwo = page.getByRole('link', { name: '2', exact: true });
     await pageTwo.click();

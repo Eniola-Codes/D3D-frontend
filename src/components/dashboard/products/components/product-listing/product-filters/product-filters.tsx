@@ -8,6 +8,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { SearchForm } from '@/components/ui/search-form';
+import { Button } from '@/components/ui/button';
 import { useProductFilters } from '@/components/dashboard/products/hooks/use-product-filters';
 import { sortOptions, priceOptions } from '@/lib/data/product';
 import { ProductListFilter } from '@/interfaces/product';
@@ -53,25 +54,25 @@ export function ProductFilter({
 
   return (
     <div className="bg-background border-border sticky top-0 z-10 w-full border-b">
-      <div className="mx-auto max-w-400 px-4 py-3 sm:py-4 lg:px-6">
+      <div className="mx-auto max-w-400 px-3 py-3 lg:px-5">
         <div className="flex flex-row items-center gap-2">
           <SearchForm
             className="w-full flex-1"
             value={filters.search}
             onChange={e => handleFilterChange('search', e.target.value)}
           />
-          <button
+          <Button
             onClick={handleResetFilters}
             disabled={!hasActiveFilters || isPending}
-            className="w-20 min-w-20 cursor-pointer rounded-sm bg-gray-900 py-2 text-sm whitespace-nowrap text-white transition-colors hover:bg-gray-800 disabled:cursor-not-allowed disabled:bg-gray-400 sm:hidden"
+            className="bg-gray-900 py-2 text-white hover:bg-gray-800 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:opacity-100 sm:hidden"
           >
             Reset
-          </button>
+          </Button>
         </div>
 
         <div
           className={cn(
-            'mt-3 flex items-center justify-between sm:mt-4 sm:flex-row',
+            'mt-3 flex items-center justify-between sm:flex-row',
             isPending && 'pointer-events-none opacity-60'
           )}
         >
@@ -221,13 +222,13 @@ export function ProductFilter({
             </DropdownMenu>
           </div>
 
-          <button
+          <Button
             onClick={handleResetFilters}
             disabled={!hasActiveFilters || isPending}
-            className="ml-2 hidden w-20 min-w-20 cursor-pointer rounded-sm bg-gray-900 py-2 text-sm whitespace-nowrap text-white transition-colors hover:bg-gray-800 disabled:cursor-not-allowed disabled:bg-gray-400 sm:block xl:ml-3"
+            className="ml-2 hidden bg-gray-900 py-2 text-white hover:bg-gray-800 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:opacity-100 sm:flex xl:ml-3"
           >
             Reset
-          </button>
+          </Button>
         </div>
       </div>
     </div>

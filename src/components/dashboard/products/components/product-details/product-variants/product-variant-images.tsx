@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils/shared/class-merge';
 import { shimmer, toBase64 } from '@/lib/utils/shared/image-shimmer';
-import type { ProductImageSliderProps } from '@/interfaces/product';
+import type { ProductImageSliderProps } from '@/interfaces/variants';
 import { useProductVariantImages } from '@/components/dashboard/products/hooks/use-product-variant-images';
 
 export default function ProductVariantImages({

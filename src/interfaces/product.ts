@@ -1,3 +1,5 @@
+import type { IVariant, ProductOptionCombo } from '@/interfaces/variants';
+
 export interface Edge<T> {
   node: T;
 }
@@ -14,12 +16,6 @@ export interface Connection<T> {
 export interface Money {
   amount: string;
   currencyCode: string;
-}
-
-export interface ProductOption {
-  id: string;
-  name: string;
-  values: string[];
 }
 
 export interface Product {
@@ -48,10 +44,12 @@ export interface Product {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
 export interface IPriceRange {
   minVariantPrice: number;
   maxVariantPrice: number;
 }
+
 export interface IBrand {
   handle: string;
   title: string;
@@ -61,42 +59,6 @@ export interface IBrand {
   shipping: IShipping;
   createdAt: Date;
   updatedAt: Date;
-}
-export interface IVariant {
-  id: string;
-  title: string;
-  price: number;
-  compareAtPrice: number;
-  available: boolean;
-  sku: string;
-  barcode: string;
-  images: string[];
-}
-
-export interface VariantOption {
-  title: string;
-  value: string;
-}
-
-export type ProductOptionCombo = VariantOption[];
-
-export interface Variant {
-  _id: string;
-  handle: string;
-  sku: string;
-  url: string;
-  price: number;
-  inStock: boolean;
-  images: string[];
-  options: VariantOption[];
-  product: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface VariantResponse {
-  variant: Variant;
-  message: string;
 }
 
 export interface ISEO {
@@ -109,28 +71,13 @@ export interface IShipping {
   deliveryTime?: string;
 }
 
-export interface IOption {
-  title: string;
-  values: string[];
-}
-
-export interface ProductVariant {
-  id: string;
-  title: string;
-  availableForSale: boolean;
-  selectedOptions: {
-    name: string;
-    value: string;
-  }[];
-  price: Money;
-}
-
 export interface Image {
   url: string;
   altText: string;
   width: number;
   height: number;
 }
+
 export interface ProductListItem {
   _id: string;
   handle: string;
@@ -141,6 +88,7 @@ export interface ProductListItem {
   priceRange: IPriceRange;
   options: ProductOptionCombo[];
 }
+
 export interface ProductListPagination {
   currentPage: number;
   nextPage: number;
@@ -169,6 +117,7 @@ export interface ProductListFilter {
 
 export interface ProductResponse {
   product: Product;
+  relatedProducts: Product[];
   message: string;
 }
 
@@ -197,27 +146,6 @@ export interface ImportProductButtonProps {
   className?: string;
 }
 
-export interface ProductVariantOptionsProps {
-  options: ProductOptionCombo[];
-  selection: Record<string, string>;
-}
-
-export interface ProductVariantSectionProps {
-  product: Product;
-  selection: Record<string, string>;
-  variant: Variant;
-}
-
 export interface ProductTabsProps {
   product: Product;
-}
-
-export interface ProductImageSliderProps {
-  images: string[];
-  title: string;
-  featuredImage: string;
-}
-
-export interface RelatedProductsProps {
-  products: Product[];
 }

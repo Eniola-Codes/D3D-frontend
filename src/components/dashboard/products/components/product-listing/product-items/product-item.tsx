@@ -1,7 +1,8 @@
 import clsx from 'clsx';
 import { ProductItemActions } from '../product-actions/product-item-actions';
 import { ProductBrandBadge } from '../product-actions/product-brand-badge';
-import { IBrand, IPriceRange, ProductOptionCombo } from '@/interfaces/product';
+import { IBrand, IPriceRange } from '@/interfaces/product';
+import { ProductOptionCombo } from '@/interfaces/variants';
 import { ProductItemCopy } from '../product-actions/product-item-copy';
 import Image from 'next/image';
 import Link from 'next/link';

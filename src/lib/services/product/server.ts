@@ -1,6 +1,7 @@
 import { apiServerService } from '@/lib/services/api/server';
 import { endpoints } from '@/lib/constants/endpoints';
-import type { ProductListResponse, ProductResponse, VariantResponse } from '@/interfaces/product';
+import type { ProductListResponse, ProductResponse } from '@/interfaces/product';
+import type { VariantResponse } from '@/interfaces/variants';
 
 export const productServerService = {
   async getProducts(params?: URLSearchParams) {

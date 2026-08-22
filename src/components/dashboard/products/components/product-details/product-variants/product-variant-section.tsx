@@ -1,8 +1,8 @@
 'use client';
 
-import { Truck, RotateCcw, ShieldCheck, Hash, ExternalLink } from 'lucide-react';
+import { Hash, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils/shared/class-merge';
-import type { ProductVariantSectionProps } from '@/interfaces/product';
+import type { ProductVariantSectionProps } from '@/interfaces/variants';
 import ProductImageSlider from '@/components/dashboard/products/components/product-details/product-variants/product-variant-images';
 import ProductVariantOptions from '@/components/dashboard/products/components/product-details/product-variants/product-variant-options';
 import ImportProductButton from '@/components/dashboard/products/components/product-details/product-actions/import-product-button';
@@ -19,12 +19,12 @@ export default function ProductVariantSection({
   const { website, logo, title: brandTitle } = brand;
 
   return (
-    <div className="flex flex-col gap-8 md:flex-row">
-      <div className="sticky top-0 min-w-0 md:w-1/2">
+    <div className="flex flex-col gap-4 lg:flex-row lg:gap-6 xl:gap-8">
+      <div className="top-0 min-w-0 lg:sticky lg:w-1/2">
         <ProductImageSlider images={images} title={title} featuredImage={featuredImage} />
       </div>
-      <div className="mt-2 md:w-1/2">
-        <div className="md:sticky md:top-5">
+      <div className="lg:w-1/2 xl:mt-2">
+        <div className="lg:sticky lg:top-5">
           <h1 className="text-3xl font-bold">{title}</h1>
 
           <div className="mt-2 flex items-center gap-2">
@@ -99,7 +99,7 @@ export default function ProductVariantSection({
             <ImportProductButton product={product} className="w-full" />
           </div>
 
-          <div className="grid grid-cols-1 gap-4 border-t border-b py-4 sm:grid-cols-3">
+          {/* <div className="grid grid-cols-1 gap-4 border-t border-b py-4 sm:grid-cols-3">
             <div className="flex items-center">
               <Truck className="text-primary mr-2 h-5 w-5" />
               <div>
@@ -121,7 +121,7 @@ export default function ProductVariantSection({
                 <p className="text-muted-foreground text-xs">Protected payments</p>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
