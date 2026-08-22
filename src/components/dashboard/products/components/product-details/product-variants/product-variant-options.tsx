@@ -1,6 +1,6 @@
 'use client';
 
-import type { ProductVariantOptionsProps } from '@/interfaces/product';
+import type { ProductVariantOptionsProps } from '@/interfaces/variants';
 import { cn } from '@/lib/utils/shared/class-merge';
 import { colorToHex, isColorOption } from '@/lib/utils/dashboard/product';
 import { useProductVariantOptions } from '@/components/dashboard/products/hooks/use-product-variant-options';
@@ -19,7 +19,7 @@ export default function ProductVariantOptions({
   return (
     <div className="space-y-6">
       {options.map(option => {
-        const selectedValue = selected[option.title] ?? option.values[0];
+        const selectedValue = selected[option.title] ?? option.values[0]?.value;
         const showSwatches = isColorOption(option.title);
 
         return (
@@ -33,10 +33,9 @@ export default function ProductVariantOptions({
 
             {showSwatches ? (
               <div className="flex flex-wrap gap-3" role="radiogroup" aria-label={option.title}>
-                {option.values.map(value => {
+                {option.values.map(({ value, hex }) => {
                   const isSelected = value === selectedValue;
                   const isAvailable = isValueAvailable(option.title, value);
-                  const hex = colorToHex(value);
 
                   return (
                     <button
@@ -61,7 +60,7 @@ export default function ProductVariantOptions({
                     >
                       <span
                         className="border-border h-7 w-7 rounded-full border"
-                        style={{ backgroundColor: hex }}
+                        style={{ backgroundColor: colorToHex(value, hex) }}
                       />
                     </button>
                   );
@@ -69,7 +68,7 @@ export default function ProductVariantOptions({
               </div>
             ) : (
               <div className="flex flex-wrap gap-2" role="radiogroup" aria-label={option.title}>
-                {option.values.map(value => {
+                {option.values.map(({ value }) => {
                   const isSelected = value === selectedValue;
                   const isAvailable = isValueAvailable(option.title, value);
 

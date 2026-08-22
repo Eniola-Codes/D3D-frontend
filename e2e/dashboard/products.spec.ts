@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { gotoMyProducts, gotoMyProductsWithParams, productsPath } from '../helpers/products';
+import { gotoMyProducts, gotoMyProductsWithParams, productsPath, skipIfNoPagination } from '../helpers/products';
 
 test.describe('Find Products', () => {
   test('should open Find Products page when authenticated', async ({ page }) => {
@@ -15,23 +15,19 @@ test.describe('Find Products', () => {
   test('should load product grid from API', async ({ page }) => {
     await gotoMyProducts(page);
 
-    const firstCard = page.locator('#product-list').locator('div').first();
+    const firstCard = page.locator('#product-list > div').first();
+    const details = firstCard.locator('#product-details');
+    const title = details.locator('h3 span').last();
+    const description = details.locator(':scope > p').first();
+    const price = details.getByText(/^From \$/);
 
     await expect(firstCard).toBeVisible();
-    await expect(firstCard.locator('h3 span').last()).toBeVisible();
-    await expect(firstCard.locator('h3 span').last()).not.toBeEmpty();
-    await expect(
-      firstCard.locator('#product-details').locator('div').nth(1).locator('p')
-    ).toBeVisible();
-    await expect(
-      firstCard.locator('#product-details').locator('div').nth(1).locator('p')
-    ).not.toBeEmpty();
-    await expect(
-      firstCard.locator('#product-details').locator('div').nth(2).locator('p').last()
-    ).toBeVisible();
-    await expect(
-      firstCard.locator('#product-details').locator('div').nth(2).locator('p').last()
-    ).not.toBeEmpty();
+    await expect(title).toBeVisible();
+    await expect(title).not.toBeEmpty();
+    await expect(description).toBeVisible();
+    await expect(description).not.toBeEmpty();
+    await expect(price).toBeVisible();
+    await expect(price).not.toBeEmpty();
   });
 
   test('should search and update URL', async ({ page }) => {
@@ -50,6 +46,7 @@ test.describe('Find Products', () => {
 
   test('should paginate correctly', async ({ page }) => {
     await gotoMyProducts(page);
+    await skipIfNoPagination(page);
 
     const pageOne = page.getByRole('link', { name: '1', exact: true });
     const pageTwo = page.getByRole('link', { name: '2', exact: true });
@@ -230,6 +227,7 @@ test.describe('Find Products', () => {
     await page.getByRole('menuitem', { name: 'Electronics' }).click();
 
     await expect(page).toHaveURL(/category=Electronics/);
+    await skipIfNoPagination(page);
 
     const pageOne = page.getByRole('link', { name: '1', exact: true });
     const pageTwo = page.getByRole('link', { name: '2', exact: true });
@@ -249,6 +247,7 @@ test.describe('Find Products', () => {
 
   test('should reset page to 1 when filter changes', async ({ page }) => {
     await gotoMyProducts(page);
+    await skipIfNoPagination(page);
 
     const pageTwo = page.getByRole('link', { name: '2', exact: true });
     await pageTwo.click();

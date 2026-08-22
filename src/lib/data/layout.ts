@@ -2,7 +2,7 @@ import { BadgeCheck, Headset, Home, MessageCircleMore, Pickaxe, ShoppingCart } f
 import { routes } from '../constants/page-routes';
 
 export const sidebarNavData = {
-  gettingStarted: [
+  Overview: [
     {
       name: 'Home',
       url: routes.dashboard.path.base,
@@ -11,8 +11,8 @@ export const sidebarNavData = {
   ],
   discover: [
     {
-      name: 'Extract Products',
-      url: '#',
+      name: 'Find Products',
+      url: `${routes.dashboard.path.base}${routes.dashboard.path.findProducts}`,
       icon: Pickaxe,
     },
   ],
@@ -43,4 +43,5 @@ export const TABLET_BREAKPOINT = 1024;
 export const labelMap: Record<string, string> = {
   dashboard: 'Dashboard',
   products: 'My Products',
+  find: 'Find Products',
 };
