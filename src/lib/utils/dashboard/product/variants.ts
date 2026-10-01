@@ -1,11 +1,13 @@
-import type { IOption, ProductOptionCombo } from '@/interfaces/product';
+import type { IOption, IOptionValue, ProductOptionCombo } from '@/interfaces/variants';
 import { COLOR_HEX, SIZE_RANK } from '@/lib/data/variant';
 
 export function isColorOption(title: string) {
   return ['color', 'colour', 'colors', 'colours'].includes(title.trim().toLowerCase());
 }
 
-export function colorToHex(value: string): string {
+export function colorToHex(value: string, hex?: string): string {
+  if (hex) return hex;
+
   const key = value.trim().toLowerCase();
   if (COLOR_HEX[key]) return COLOR_HEX[key];
 
@@ -22,35 +24,45 @@ function sizeRank(value: string) {
   return SIZE_RANK[value.trim().toLowerCase().replace(/\s+/g, '')];
 }
 
-export function sortOptionValues(values: string[]) {
-  if (values.length === 0) return values;
+export function sortOptionValues(entries: IOptionValue[]) {
+  if (entries.length === 0) return entries;
+
+  const values = entries.map(entry => entry.value);
 
   if (values.every(isNumericValue)) {
-    return [...values].sort((a, b) => Number(a.trim()) - Number(b.trim()));
+    return [...entries].sort((a, b) => Number(a.value.trim()) - Number(b.value.trim()));
   }
 
   if (values.every(value => sizeRank(value) !== undefined)) {
-    return [...values].sort((a, b) => sizeRank(a)! - sizeRank(b)!);
+    return [...entries].sort((a, b) => sizeRank(a.value)! - sizeRank(b.value)!);
   }
 
-  return values;
+  return entries;
 }
 
 export function buildOptionsFromCombos(combos: ProductOptionCombo[]): IOption[] {
-  const valuesByTitle = new Map<string, Set<string>>();
+  const valuesByTitle = new Map<string, Map<string, IOptionValue>>();
 
   for (const combo of combos) {
     for (const option of combo) {
       if (!valuesByTitle.has(option.title)) {
-        valuesByTitle.set(option.title, new Set());
+        valuesByTitle.set(option.title, new Map());
       }
-      valuesByTitle.get(option.title)!.add(option.value);
+
+      const values = valuesByTitle.get(option.title)!;
+
+      if (!values.has(option.value)) {
+        values.set(option.value, {
+          value: option.value,
+          hex: option.hex,
+        });
+      }
     }
   }
 
   return Array.from(valuesByTitle.entries()).map(([title, values]) => ({
     title,
-    values: sortOptionValues(Array.from(values)),
+    values: sortOptionValues(Array.from(values.values())),
   }));
 }
 
@@ -59,7 +71,7 @@ export function initialSelections(combos: ProductOptionCombo[]) {
   if (!options.length) return {};
 
   const primaryTitle = getPrimaryOptionTitle(options.map(option => option.title));
-  const primaryValue = options.find(option => option.title === primaryTitle)?.values[0];
+  const primaryValue = options.find(option => option.title === primaryTitle)?.values[0]?.value;
   if (!primaryTitle || !primaryValue) return {};
 
   const combo = pickPreferredCombo(combos, primaryTitle, primaryValue);
@@ -124,7 +136,7 @@ function pickPreferredCombo(combos: ProductOptionCombo[], optionTitle: string, v
 
   for (const option of options) {
     if (option.title === optionTitle) continue;
-    preferred[option.title] = option.values[0];
+    preferred[option.title] = option.values[0].value;
   }
 
   return matching.find(combo => selectionMatchesCombo(combo, preferred)) ?? matching[0];

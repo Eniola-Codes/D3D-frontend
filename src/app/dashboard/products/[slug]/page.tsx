@@ -1,9 +1,11 @@
 import { notFound, redirect } from 'next/navigation';
 import DashboardLayout from '@/components/dashboard/layout/components';
-import { ProductPageProps, ProductResponse, VariantResponse } from '@/interfaces/product';
+import { ProductPageProps, ProductResponse } from '@/interfaces/product';
+import { VariantResponse } from '@/interfaces/variants';
 import { productServerService } from '@/lib/services/product/server';
 import ProductVariantSection from '@/components/dashboard/products/components/product-details/product-variants/product-variant-section';
 import ProductTabs from '@/components/dashboard/products/components/product-details/product-info/product-tabs';
+import RelatedProducts from '@/components/dashboard/products/components/product-details/product-info/related-products';
 import { routes } from '@/lib/constants/page-routes';
 import { initialSelections, selectionsToQuery } from '@/lib/utils/dashboard/product';
 
@@ -49,14 +51,14 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
 
   return (
     <DashboardLayout>
-      <div className="container px-6 py-5">
+      <div className="p-3 lg:p-5">
         <ProductVariantSection
           selection={selection}
           product={productResponse.product}
           variant={variantResponse.variant}
         />
-
         <ProductTabs product={productResponse.product} />
+        <RelatedProducts products={productResponse.relatedProducts} />
       </div>
     </DashboardLayout>
   );

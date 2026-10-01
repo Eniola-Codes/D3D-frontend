@@ -1,6 +1,6 @@
 import { useEffect, useState, useTransition } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import type { ProductOptionCombo } from '@/interfaces/product';
+import type { ProductOptionCombo } from '@/interfaces/variants';
 import {
   buildOptionsFromCombos,
   getPrimaryOptionTitle,

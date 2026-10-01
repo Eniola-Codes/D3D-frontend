@@ -40,7 +40,7 @@ export function Navbar({ user }: { user: IUser }) {
   const segments = pathname.split('/').filter(Boolean);
 
   return (
-    <header className="flex shrink-0 items-center justify-between gap-2 border-b px-4 py-2 sm:px-6 sm:py-3 lg:px-8">
+    <header className="flex w-full min-w-0 shrink-0 items-center justify-between gap-2 overflow-x-hidden border-b px-4 py-2 sm:px-6 sm:py-3 lg:px-8">
       <div className="flex items-center gap-2">
         <SidebarTrigger className="-ml-1 md:hidden" />
         <Separator

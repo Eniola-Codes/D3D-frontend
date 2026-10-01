@@ -11,7 +11,8 @@ export function ProductContent({
   response: ProductListResponse;
 }) {
   if (response.products.length === 0) {
-    return <EmptyState />;
+    const hasActiveFilters = [...params.keys()].some(key => key !== 'page');
+    return <EmptyState hasActiveFilters={hasActiveFilters} />;
   }
 
   return (
