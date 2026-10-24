@@ -1,10 +1,5 @@
 import { test, expect } from '@playwright/test';
-import {
-  gotoMyProducts,
-  gotoProduct,
-  productsPath,
-  skipIfNoProducts,
-} from '../helpers/products/product-list';
+import { gotoMyProducts, productsPath, skipIfNoProducts } from '../helpers/products/product-list';
 import {
   firstAvailableVariantOption,
   gotoFirstProductDetail,
@@ -192,7 +187,7 @@ test.describe('Product Details', () => {
     await expect(shortDescription).not.toBeEmpty();
   });
 
-  test.only('should keep selected variant radio checked after selection', async ({ page }) => {
+  test('should keep selected variant radio checked after selection', async ({ page }) => {
     await gotoFirstProductDetail(page);
     await skipIfNoVariantOptions(page);
 
