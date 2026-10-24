@@ -1,7 +1,12 @@
 import { test, expect } from '@playwright/test';
-import { gotoMyProducts, gotoMyProductsWithParams, productsPath, skipIfNoPagination } from '../helpers/products';
+import {
+  gotoMyProducts,
+  gotoMyProductsWithParams,
+  productsPath,
+  skipIfNoPagination,
+} from '../helpers/products/product-list';
 
-test.describe('Find Products', () => {
+test.describe('My Products', () => {
   test('should open Find Products page when authenticated', async ({ page }) => {
     await gotoMyProducts(page);
 

@@ -36,6 +36,7 @@ export default function ProductVariantImages({
           height={500}
           placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
           priority
+          data-testid="main-image"
         />
 
         {displayImages.length > 1 ? (
