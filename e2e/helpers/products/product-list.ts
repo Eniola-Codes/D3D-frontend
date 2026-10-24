@@ -27,3 +27,16 @@ export async function skipIfNoPagination(page: Page) {
   const hasPagination = await pageTwo.isVisible().catch(() => false);
   test.skip(!hasPagination, 'Skipped because pagination is not available');
 }
+
+export async function skipIfNoProducts(page: Page) {
+  const firstCard = page.locator('#product-list > div').first();
+  const hasProducts = await firstCard.isVisible().catch(() => false);
+  test.skip(!hasProducts, 'Skipped because product catalog is empty');
+}
+
+export async function gotoProduct(page: Page, slug: string, params?: Record<string, string>) {
+  const search = params ? `?${new URLSearchParams(params).toString()}` : '';
+  await page.goto(`${productsPath}/${slug}${search}`);
+  await page.waitForLoadState('domcontentloaded');
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible({ timeout: 20_000 });
+}

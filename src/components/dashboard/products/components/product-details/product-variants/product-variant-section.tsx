@@ -91,7 +91,7 @@ export default function ProductVariantSection({
             </div>
             <div className="text-muted-foreground flex items-center space-x-1.5 text-sm">
               <Hash className="h-4 w-4" />
-              <span>{sku || 'N/A'}</span>
+              <span data-testid="product-sku">{sku || 'N/A'}</span>
             </div>
           </div>
 
